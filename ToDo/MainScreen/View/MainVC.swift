@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MainVC: UIViewController {
 	
@@ -14,6 +15,20 @@ class MainVC: UIViewController {
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
 	let newTaskVC = NewTaskVC()
+	
+	//MARK: - viewWillAppear
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
+		do{
+			CoreDataMethods.coreDataModel = try context.fetch(fetchRequest)
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		tableView.reloadData()
+	}
+	
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
@@ -76,12 +91,13 @@ class MainVC: UIViewController {
 extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return ViewModel.items.count
+		return CoreDataMethods.coreDataModel.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell  = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-		let items = ViewModel.items[indexPath.row]
+		//let items = ViewModel.items[indexPath.row]
+		let items = CoreDataMethods.coreDataModel[indexPath.row]
 		
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle

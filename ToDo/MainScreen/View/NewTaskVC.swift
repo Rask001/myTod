@@ -17,6 +17,8 @@ class NewTaskVC: UIViewController {
 	let switchAlertRepeat = UISwitch()
 	let navigationBar     = UINavigationBar()
 	
+	var coreData = CoreDataMethods()
+	var date = Date()
 	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -82,9 +84,19 @@ class NewTaskVC: UIViewController {
 		self.navigationBar.items              = [navigationItem]
 		self.view.addSubview(navigationBar)
 	}
+	
 	@objc func continueFunc(){
+		guard let text = textField.text, !text.isEmpty else { return }
+		coreData.saveTask(withTitle: text, withTime: "22:22", withDate: date, withCheck: false, withAlarmLabelBuul: switchAlert.isOn, withRepeatLabelBool: false)
+		cancelFunc()
+		
 	}
 	@objc func cancelFunc(){
+		self.textField.text = nil
+		self.dataPicker.isEnabled = false
+		switchAlert.isOn = false
+		switchAlertRepeat.isOn = false
+		dismiss(animated: true, completion: nil)
 	}
 }
 

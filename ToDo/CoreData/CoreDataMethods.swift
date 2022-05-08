@@ -8,10 +8,10 @@ import UIKit
 import CoreData
 
 class CoreDataMethods {
-	var coreDataModel = [Tasks]()
+	static var coreDataModel = [Tasks]()
 	
 	//MARK: - SAVE TASK
-	func saveTask(withTitle title: String, withTime time: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
+	public func saveTask(withTitle title: String, withTime time: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 		let context = appDelegate.persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
@@ -24,7 +24,7 @@ class CoreDataMethods {
 		model.repeatImage = repead
 		do{
 			try context.save()
-			coreDataModel.append(model)
+			CoreDataMethods.coreDataModel.append(model)
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}

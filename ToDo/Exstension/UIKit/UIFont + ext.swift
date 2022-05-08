@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 extension UIFont {
+	
 	static func avenir20() -> UIFont? {
 		return UIFont.init(name: "Avenir", size: 20)
 	}
@@ -20,4 +21,9 @@ extension UIFont {
 	static func avenirNext16() -> UIFont? {
 		return UIFont.init(name: "Avenir Next", size: 16)
 	}
+	
+	static func futura17() -> UIFont? {
+		return UIFont.init(name: "Futura", size: 17)
+	}
+	
 }

@@ -12,7 +12,7 @@ class CoreDataMethods {
 	
 	//MARK: - SAVE TASK
 	func saveTask(withTitle title: String, withTime time: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
-		let appDelegate = UIApplication.shared.delegate as! AppDelegate
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 		let context = appDelegate.persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)

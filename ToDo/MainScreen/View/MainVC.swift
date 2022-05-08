@@ -12,10 +12,13 @@ class MainVC: UIViewController {
 	//MARK: - Properties
 	static var shared = MainVC()
 	var tableView = UITableView()
+	let buttonNewTask = UIButton()
+	let newTaskVC = NewTaskVC()
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		setupButton()
 		confugureTableView()
 	}
 	
@@ -37,14 +40,35 @@ class MainVC: UIViewController {
 		tableView.dataSource = self
 	}
 	
+	func setupButton(){
+		self.tableView.addSubview(buttonNewTask)
+	 // self.buttonNewTask.frame = CGRect(x: self.view.bounds.width/2 - 60, y: 670, width: 120, height: 50)
+		self.buttonNewTask.backgroundColor    = UIColor(named: "BlackWhite")
+		self.buttonNewTask.titleLabel?.font   = .futura17()
+		self.buttonNewTask.layer.cornerRadius = 10
+		self.buttonNewTask.setTitle("New task", for: .normal)
+		self.buttonNewTask.setTitleColor(UIColor(named: "WhiteBlack"), for: .normal)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+	}
+	
+	@objc func goToNewTaskVC() {
+		Router.shared.present(currentVC: self, presentedVC: newTaskVC)
+	}
+	
+	//MARK: - Set Constraits
 	func setConstraits() {
-			tableView.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -2),
-			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-			tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5),
-			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5)
-		])
+			tableView.translatesAutoresizingMaskIntoConstraints     = false
+		  buttonNewTask.translatesAutoresizingMaskIntoConstraints = false
+	
+			tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -2).isActive       = true
+			tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
+			tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 5).isActive              = true
+			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
+		
+		  buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -150).isActive = true
+		  buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
+			buttonNewTask.widthAnchor.constraint(equalToConstant: 120).isActive                             = true
+			buttonNewTask.heightAnchor.constraint(equalToConstant: 50).isActive                             = true
 	}
 }
 
@@ -56,7 +80,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
 		let cell  = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let items = ViewModel.items[indexPath.row]
 		

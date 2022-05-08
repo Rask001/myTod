@@ -16,13 +16,13 @@ extension Tasks {
         return NSFetchRequest<Tasks>(entityName: "Tasks")
     }
 
-    @NSManaged public var textTask: String?
-    @NSManaged public var timeLabel: String?
+    @NSManaged public var taskTitle: String?
+    @NSManaged public var taskTime: String?
     @NSManaged public var timeLabelDate: Date?
     @NSManaged public var createdAt: Date?
-    @NSManaged public var alarmLabel: Bool
-    @NSManaged public var completed: Bool
-    @NSManaged public var repeatLabel: Bool
+    @NSManaged public var alarmImage: Bool
+    @NSManaged public var check: Bool
+    @NSManaged public var repeatImage: Bool
 
 }
 

@@ -7,8 +7,10 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class NewTaskVC: UIViewController {
+	
 	//MARK: - Properties
 	let textField         = UITextField()
 	let dataPicker        = UIDatePicker()
@@ -89,8 +91,10 @@ class NewTaskVC: UIViewController {
 		guard let text = textField.text, !text.isEmpty else { return }
 		coreData.saveTask(withTitle: text, withTime: "22:22", withDate: date, withCheck: false, withAlarmLabelBuul: switchAlert.isOn, withRepeatLabelBool: false)
 		cancelFunc()
-		
+		NotificationCenter.default.post(name: Notification.Name("NewTask"), object: .none)
 	}
+	
+	
 	@objc func cancelFunc(){
 		self.textField.text = nil
 		self.dataPicker.isEnabled = false
@@ -111,7 +115,7 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.view.addSubview(self.dataPicker)
 		self.view.addSubview(self.switchAlert)
 		self.view.addSubview(self.switchAlertRepeat)
-		self.view.addSubview(self.repeatPicker)
+		//self.view.addSubview(self.repeatPicker)
 	}
 	
 	func setConstraits() {

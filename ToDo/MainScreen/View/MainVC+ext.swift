@@ -14,11 +14,14 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		return coreDataModel.count
 	}
 	
-//	//MARK: Delete Cell
-//	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//		coreDataMethods.deleteCell(indexPath: indexPath)
-//	}
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
+	}
 	
+	//MARK: Delete Cell
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+		CoreDataMethods.shared.deleteCell(indexPath: indexPath, presentedViewController: self)
+	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell  = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
@@ -34,7 +37,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: - Notification
 	func notification(){
-		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("NewTask"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("Reload"), object: .none)
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification){

@@ -9,13 +9,14 @@ import UIKit
 import CoreData
 
 class MainVC: UIViewController {
-	var coreDataModel: [Tasks] = []
 	
 	//MARK: - Properties
 	static var shared   = MainVC()
 	var tableView       = UITableView()
 	let buttonNewTask   = UIButton()
 	let newTaskVC       = NewTaskVC()
+	//var coreDataModel   = [Tasks]()
+	var coreDataModel: [Tasks] = []
 	
 	//MARK: - viewWillAppear
 	override func viewWillAppear(_ animated: Bool) {
@@ -33,6 +34,7 @@ class MainVC: UIViewController {
 	}
 	
 	
+	//MARK: - Mhetods
 	func confugureTableView() {
 		self.view.backgroundColor = .systemBlue
 		self.view.addSubview(tableView)
@@ -62,8 +64,9 @@ class MainVC: UIViewController {
 	}
 	
 	@objc func goToNewTaskVC() {
-		Router.shared.present(currentVC: self, presentedVC: newTaskVC)
+		present(newTaskVC, animated: true, completion: nil)
 	}
+	
 	
 	//MARK: - Set Constraits
 	func setConstraits() {

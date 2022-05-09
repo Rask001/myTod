@@ -8,7 +8,7 @@ import UIKit
 import CoreData
 
 class CoreDataMethods {
-	
+	static let shared = CoreDataMethods()
 	//MARK: - SAVE TASK
 	func saveTask(withTitle title: String, withTime time: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -28,40 +28,41 @@ class CoreDataMethods {
 			print(error.localizedDescription)
 		}
 	}
+	//(MainVC.shared.coreDataModel[indexPath.row]
 	
-//	public func deleteCell(indexPath: IndexPath) {
-//		//tappedRigid()
-//		let task = CoreDataMethods.coreDataModel[indexPath.row]
-//		let nameCell = task.taskTitle
-//		let areYouSureAllert = UIAlertController(title: "Delete '\(nameCell)'?", message: nil, preferredStyle: .actionSheet)
-//		let yesAction = UIAlertAction(title: "Delete", style: .destructive){
-//			[self] action in
-//		let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//		let context = appDelegate.persistentContainer.viewContext
-//		let index = indexPath.row
-//
-//		//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(nameCell)"])
-//
-//			context.delete(CoreDataMethods.coreDataModel[index] as NSManagedObject)
-//			CoreDataMethods.coreDataModel.remove(at: index)
-//
-//		let _ : NSError! = nil
-//		do {
-//			MainVC.shared.tableView.deleteRows(at: [indexPath], with: .left)
-//
-//
-//			try context.save()
-//			MainVC.shared.tableView.reloadData()
-//		} catch {
-//			print("error : \(error)")
-//		}
-//	}
-//
-//		let noAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
-//		}
-//		areYouSureAllert.addAction(yesAction)
-//		areYouSureAllert.addAction(noAction)
-//		MainVC.shared.present(areYouSureAllert, animated: true)
-//	}
+	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
+		//tappedRigid()
+		MainVC.shared.fetchRequest()
+		let tableView  = MainVC.shared.tableView
+		let model      = MainVC.shared.coreDataModel
+		let task       = MainVC.shared.coreDataModel[indexPath.row]
+		let taskTitle  = task.taskTitle
+		areYouSureAllert(taskTitle: taskTitle!, indexPath: indexPath, model: model, tabelView: tableView, presentedViewController: presentedViewController)
+	}
+	
+	private func areYouSureAllert(taskTitle: String, indexPath: IndexPath, model: Array<Any>, tabelView: UITableView,  presentedViewController: UIViewController){
+		var model            = model
+		let areYouSureAllert = UIAlertController(title: "Delete '\(taskTitle)'?", message: nil, preferredStyle: .actionSheet)
+		let noAction         = UIAlertAction(title: "Cancel", style: .cancel)
+		let yesAction        = UIAlertAction(title: "Delete", style: .destructive){ action in
+			
+			let appDelegate    = UIApplication.shared.delegate as! AppDelegate
+			let context        = appDelegate.persistentContainer.viewContext
+			//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(nameCell)"])
+			context.delete(model[indexPath.row] as! NSManagedObject)
+			model.remove(at: indexPath.row)
+			let _ : NSError! = nil
+			do {
+				tabelView.deleteRows(at: [indexPath], with: .left)
+				try context.save()
+				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+			} catch {
+				print("error : \(error)")
+			}
+		}
+		areYouSureAllert.addAction(yesAction)
+		areYouSureAllert.addAction(noAction)
+		presentedViewController.present(areYouSureAllert, animated: true)
+	}
 	
 }

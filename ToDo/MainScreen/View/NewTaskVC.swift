@@ -91,7 +91,7 @@ class NewTaskVC: UIViewController {
 		guard let text = textField.text, !text.isEmpty else { return }
 		coreData.saveTask(withTitle: text, withTime: "22:22", withDate: date, withCheck: false, withAlarmLabelBuul: switchAlert.isOn, withRepeatLabelBool: false)
 		cancelFunc()
-		NotificationCenter.default.post(name: Notification.Name("NewTask"), object: .none)
+		NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 	}
 	
 	

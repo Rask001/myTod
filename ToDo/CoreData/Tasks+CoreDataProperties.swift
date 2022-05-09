@@ -27,5 +27,4 @@ extension Tasks {
 }
 
 extension Tasks : Identifiable {
-
 }

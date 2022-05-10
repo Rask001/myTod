@@ -24,14 +24,64 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell  = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-		let items = coreDataModel[indexPath.row]
+		
+		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
+		let items  = coreDataModel[indexPath.row]
+		let button = cell.buttonCell
+		button.tag = indexPath.row
+		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
+		let timeLabelDate = items.timeLabelDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
 		cell.alarmImageView.isHidden  = items.alarmImage
 		cell.repeatImageView.isHidden = items.repeatImage
-		cell.buttonCell.isEnabled     = items.check
+		
+	
+		if items.check == false {
+			button.backgroundColor = MainVC.shared.view.backgroundColor
+			button.setImage(nil, for: .normal)
+			if timeLabelDate! < Date() {
+					painting(cell: cell, color: .red, colorTwo: .red)
+					strikethroughStyle(cell: cell)
+			}else{
+				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
+				strikethroughStyle(cell: cell)
+			}
+			//sendReminderNotification("Напоминание \(task.timeLabel!)", task.text, task.timeLabelDate!)
+		}else{
+			button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
+			button.backgroundColor         = .white
+			button.tintColor               = .lightGray
+			painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
+			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+				//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(task.text)"])
+		}
 		return cell
+	}
+	
+	private func strikethroughStyle(cell: CustomCell){
+		cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
+	}
+	
+	private func painting(cell: CustomCell, color: UIColor, colorTwo: UIColor) {
+		cell.repeatImageView.tintColor  = color
+		cell.alarmImageView.tintColor   = color
+		cell.taskTime.textColor         = color
+		cell.taskTitle.textColor        = colorTwo
+	}
+	
+	
+	@objc func saveCheckmark(sender: UIButton) {
+		//tappedSoft()
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		let model       = coreDataModel[sender.tag]
+		model.check.toggle()
+		do {
+			try context.save()
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		tableView.reloadData()
 	}
 	
 	

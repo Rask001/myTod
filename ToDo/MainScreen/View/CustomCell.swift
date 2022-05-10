@@ -4,9 +4,9 @@ import UIKit
 class CustomCell: UITableViewCell {
 	
 	static let identifier = "CustomCell"
-	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
+		contentView.backgroundColor = .clear
 		addSubviewAndConfigure()
 		setConstraintsCell()
 	}
@@ -40,7 +40,8 @@ class CustomCell: UITableViewCell {
 		let buttonCell                      = UIButton(type: .system)
 		buttonCell.layer.cornerRadius       = 10
 		buttonCell.backgroundColor          = MainVC.shared.view.backgroundColor
-		buttonCell.isEnabled                = true
+		//buttonCell.isEnabled                = true
+		//buttonCell.addTarget(CustomCell.self, action: #selector(), for: .touchUpInside)
 		return buttonCell
 	}()
 	
@@ -62,15 +63,17 @@ class CustomCell: UITableViewCell {
 		return repeatImageView
 	}()
 	
+	
 	func addSubviewAndConfigure(){
 		self.backgroundColor = .clear
 		self.selectionStyle = .none
+		self.addSubview(backgroundViewCell)
 		self.backgroundViewCell.addSubview(taskTime)
 		self.backgroundViewCell.addSubview(alarmImageView)
 		self.backgroundViewCell.addSubview(repeatImageView)
 		self.backgroundViewCell.addSubview(buttonCell)
 		self.backgroundViewCell.addSubview(taskTitle)
-		self.addSubview(backgroundViewCell)
+		
 	}
 	
 	func setConstraintsCell() {

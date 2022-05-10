@@ -15,7 +15,6 @@ class MainVC: UIViewController {
 	var tableView       = UITableView()
 	let buttonNewTask   = UIButton()
 	let newTaskVC       = NewTaskVC()
-	//var coreDataModel   = [Tasks]()
 	var coreDataModel: [Tasks] = []
 	
 	//MARK: - viewWillAppear
@@ -83,4 +82,3 @@ class MainVC: UIViewController {
 			buttonNewTask.heightAnchor.constraint(equalToConstant: 50).isActive                             = true
 	}
 }
-

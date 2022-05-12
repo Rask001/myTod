@@ -27,6 +27,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
+		sendReminderNotification("Напоминание \(time)", title, date)
 	}
 	
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
@@ -38,10 +39,12 @@ class CoreDataMethods {
 		let areYouSureAllert = UIAlertController(title: "Delete '\(taskTitle)'?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "Cancel", style: .cancel)
 		let yesAction        = UIAlertAction(title: "Delete", style: .destructive){ action in
+		let context          = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		
 			
-			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-			//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(taskTitle)"]
-			context.delete(model[indexPath.row] as NSManagedObject)
+			UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(taskTitle)"])
+																																					 
+			context.delete(task as NSManagedObject)
 			model.remove(at: indexPath.row)
 			
 			let _ : NSError! = nil

@@ -7,16 +7,28 @@
  
 import UIKit
 import CoreData
+import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
+	let notificationCenter = UNUserNotificationCenter.current()
+	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		 window = UIWindow(frame: UIScreen.main.bounds)
 		 window?.rootViewController = MainVC()
 		 window?.makeKeyAndVisible()
+		 
+		 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+			 guard success else { return }
+			 self.notificationCenter.getNotificationSettings { (settings) in
+				 guard settings.authorizationStatus == .authorized else { return }
+			 }
+		 }
+		 notificationCenter.delegate = self
+		 
 		 return true
 	 }
 
@@ -63,5 +75,18 @@ lazy var persistentContainer: NSPersistentContainer = {
 	            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
 	        }
 	    }
+	}
+}
+
+
+//MARK: NOTIFICATION EXTENSION
+extension AppDelegate: UNUserNotificationCenterDelegate {
+	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+		completionHandler([.sound, .banner])
+		print("уведомление в то время как приложение открыто")
+	}
+	
+	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+		print("тут можно что-нибудь сделать когда пользователь нажимает на уведомление")
 	}
 }

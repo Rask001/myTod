@@ -24,7 +24,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		CoreDataMethods.shared.deleteCell(indexPath: indexPath, presentedViewController: self)
 	}
 	
-	
 	//MARK: cellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
@@ -41,33 +40,34 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
 		
+		
+		
+		
 		if items.check == false {
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
 			if timeLabelDate! < Date() {
-				if items.taskTime != "" {
+			if items.taskTime != "" {
 					painting(cell: cell, color: .red, colorTwo: .red)
 					strikethroughStyle(cell: cell)
 				}else{
 					painting(cell: cell, color: .black, colorTwo: .black)
 					strikethroughStyle(cell: cell)
 				}
-
+//
 		}else{
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 				strikethroughStyle(cell: cell)
-			}
-			//sendReminderNotification("Напоминание \(task.timeLabel!)", task.text, task.timeLabelDate!)
+				}
+			sendReminderNotification("Напоминание \(items.taskTime!)", items.taskTitle, items.timeLabelDate!)
 		}else{
 			button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
 			button.backgroundColor         = .white
 			button.tintColor               = .lightGray
 			painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-				//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(task.text)"])
+				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
 		}
-		
-		
 		
 		return cell
 	}

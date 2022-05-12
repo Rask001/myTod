@@ -22,6 +22,14 @@ extension UIFont {
 		return UIFont.init(name: "Avenir Next", size: 16)
 	}
 	
+	static func avenirNext16Bold() -> UIFont? {
+		return UIFont.init(name: "Avenir Next Bold", size: 16)
+	}
+	
+	static func avenirNext20() -> UIFont? {
+		return UIFont.init(name: "Avenir Next", size: 20)
+	}
+	
 	static func futura17() -> UIFont? {
 		return UIFont.init(name: "Futura", size: 17)
 	}

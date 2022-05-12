@@ -18,11 +18,14 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		return 1
 	}
 	
+	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		CoreDataMethods.shared.deleteCell(indexPath: indexPath, presentedViewController: self)
 	}
 	
+	
+	//MARK: cellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
@@ -30,20 +33,27 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
-		let timeLabelDate = items.timeLabelDate
+		let timeLabelDate             = items.timeLabelDate
+		cell.taskDate.text            = items.taskDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
-		cell.alarmImageView.isHidden  = items.alarmImage
-		cell.repeatImageView.isHidden = items.repeatImage
+		cell.taskTime.isHidden        = !items.alarmImage
+		cell.alarmImageView.isHidden  = !items.alarmImage
+		cell.repeatImageView.isHidden = !items.repeatImage
 		
-	
 		if items.check == false {
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
 			if timeLabelDate! < Date() {
+				if items.taskTime != "" {
 					painting(cell: cell, color: .red, colorTwo: .red)
 					strikethroughStyle(cell: cell)
-			}else{
+				}else{
+					painting(cell: cell, color: .black, colorTwo: .black)
+					strikethroughStyle(cell: cell)
+				}
+
+		}else{
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 				strikethroughStyle(cell: cell)
 			}
@@ -56,6 +66,9 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
 				//UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(task.text)"])
 		}
+		
+		
+		
 		return cell
 	}
 	
@@ -67,6 +80,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.repeatImageView.tintColor  = color
 		cell.alarmImageView.tintColor   = color
 		cell.taskTime.textColor         = color
+		cell.taskDate.textColor         = color
 		cell.taskTitle.textColor        = colorTwo
 	}
 	
@@ -74,7 +88,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	@objc func saveCheckmark(sender: UIButton) {
 		//tappedSoft()
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let model       = coreDataModel[sender.tag]
+		let model   = coreDataModel[sender.tag]
 		model.check.toggle()
 		do {
 			try context.save()

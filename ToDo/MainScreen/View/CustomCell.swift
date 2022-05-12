@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 class CustomCell: UITableViewCell {
-	
+	static let shared = CustomCell()
 	static let identifier = "CustomCell"
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,18 +30,23 @@ class CustomCell: UITableViewCell {
 	}()
 	
 	var taskTime: UILabel                 = {
-		let taskTime                        = UILabel(font: .avenirNext16()!, textColor: .black)
+		let taskTime                        = UILabel(font: .avenirNext20()!, textColor: .black)
 		taskTime.textAlignment              = .left
 		taskTime.adjustsFontSizeToFitWidth  = true
 		return taskTime
+	}()
+	
+	var taskDate: UILabel                 = {
+		let taskDate                        = UILabel(font: .avenirNext16Bold()!, textColor: .black)
+		taskDate.textAlignment              = .left
+		taskDate.adjustsFontSizeToFitWidth  = true
+		return taskDate
 	}()
 	
 	var buttonCell: UIButton              = {
 		let buttonCell                      = UIButton(type: .system)
 		buttonCell.layer.cornerRadius       = 10
 		buttonCell.backgroundColor          = MainVC.shared.view.backgroundColor
-		//buttonCell.isEnabled                = true
-		//buttonCell.addTarget(CustomCell.self, action: #selector(), for: .touchUpInside)
 		return buttonCell
 	}()
 	
@@ -73,6 +78,7 @@ class CustomCell: UITableViewCell {
 		self.backgroundViewCell.addSubview(repeatImageView)
 		self.backgroundViewCell.addSubview(buttonCell)
 		self.backgroundViewCell.addSubview(taskTitle)
+		self.backgroundViewCell.addSubview(taskDate)
 		
 	}
 	
@@ -81,11 +87,18 @@ class CustomCell: UITableViewCell {
 		backgroundViewCell.translatesAutoresizingMaskIntoConstraints = false
 		buttonCell.translatesAutoresizingMaskIntoConstraints         = false
 		taskTitle.translatesAutoresizingMaskIntoConstraints          = false
+		taskDate.translatesAutoresizingMaskIntoConstraints           = false
 		
 		NSLayoutConstraint.activate([
 			taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1),
 			taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3),
-			taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/6),
+			taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/6)
+		])
+		
+		NSLayoutConstraint.activate([
+			taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1),
+			taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3),
+			taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/6)
 		])
 		
 		NSLayoutConstraint.activate([

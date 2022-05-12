@@ -19,8 +19,10 @@ class NewTaskVC: UIViewController {
 	let switchAlertRepeat = UISwitch()
 	let navigationBar     = UINavigationBar()
 	
-	var coreData = CoreDataMethods()
-	var date = Date()
+	var coreData  = CoreDataMethods()
+	var date      = Date()
+	var timelabel = ""
+	var dateLabel = ""
 	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -38,6 +40,8 @@ class NewTaskVC: UIViewController {
 		navigationBarSetup()
 		pickerRepeatSetup()
 		setConstraits()
+		switchAlertSetup()
+		switchAlertRepeatSetup()
 	}
 	
 	
@@ -54,27 +58,46 @@ class NewTaskVC: UIViewController {
 	
 	func pickerSetup() {
 		let dateNow = Date()
-		self.dataPicker.isEnabled = false
-		self.dataPicker.minimumDate = dateNow
-		self.dataPicker.timeZone = .autoupdatingCurrent
-		//self.dataPicker.addTarget(self, action: #selector(dataPickerChange(paramDataPicker:)), for: .valueChanged)
+	  self.dataPicker.isHidden     = true
+		self.dataPicker.minimumDate  = dateNow
+		self.dataPicker.timeZone     = .autoupdatingCurrent
+		self.dataPicker.addTarget(self, action: #selector(dataPickerChange(paramDataPicker:)), for: .valueChanged)
+	}
+	
+	@objc func dataPickerChange(paramDataPicker:UIDatePicker) {
+		if paramDataPicker.isEqual(self.dataPicker) {
+			let dateFromDP = paramDataPicker.date
+//			let dateComponentsChange = dataPicker.calendar.dateComponents([.month, .day, .hour, .minute], from: dateFromDP)
+			let timeFormatter = DateFormatter()
+			let dateFormatter = DateFormatter()
+			//dateFormatter.locale = Locale(identifier: "ru_RU")
+			timeFormatter.dateFormat = "HH:mm"
+			dateFormatter.dateFormat = "dd.MM"
+			timelabel = timeFormatter.string(from: dateFromDP)
+			dateLabel = dateFormatter.string(from: dateFromDP)
+//			newDate = dateFromDP
+		}
 	}
 		
+	
 	func pickerRepeatSetup() {
 	}
 	
 	func switchAlertSetup(){
 		switchAlert.isOn = false
-		//switchAlert.addTarget(self, action: #selector(reminder), for: .valueChanged)
+		switchAlert.addTarget(self, action: #selector(visibility), for: .valueChanged)
+	}
+	@objc func visibility() {
+		switchAlert.isOn == true ? (self.dataPicker.isHidden = false) : (self.dataPicker.isHidden = true)
 	}
 	
-//	func switchAlertRepeatSetup(){
-//		switchAlertRepeat.isOn = false
-//		//switchAlertRepeat.addTarget(self, action: #selector(repeatReminder), for: .valueChanged)
-//	}
+	func switchAlertRepeatSetup(){
+		switchAlertRepeat.isOn = false
+		//switchAlertRepeat.addTarget(self, action: #selector(repeatReminder), for: .valueChanged)
+	}
 	
 	func navigationBarSetup() {
-		let leftButton = UIBarButtonItem(title: "cancel", style: .plain, target: self, action: #selector(cancelFunc))
+		let leftButton  = UIBarButtonItem(title: "cancel", style: .plain, target: self, action: #selector(cancelFunc))
 		let rightButton = UIBarButtonItem(title: "continue", style: .plain, target: self, action: #selector(continueFunc))
 		self.navigationBar.frame              = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
 		self.navigationBar.barTintColor       = .secondarySystemBackground
@@ -88,18 +111,29 @@ class NewTaskVC: UIViewController {
 	}
 	
 	@objc func continueFunc(){
-		guard let text = textField.text, !text.isEmpty else { return }
-		coreData.saveTask(withTitle: text, withTime: "22:22", withDate: date, withCheck: false, withAlarmLabelBuul: switchAlert.isOn, withRepeatLabelBool: false)
+		guard let text   = textField.text, !text.isEmpty else { return }
+		let switchAlert  = switchAlert.isOn
+		let switchRepeat = switchAlertRepeat.isOn
+		
+		coreData.saveTask(withTitle: text,
+											withTimeLabel:       timelabel,
+											withDateLabel:       dateLabel,
+											withDate:            date,
+											withCheck:           false,
+											withAlarmLabelBuul:  switchAlert,
+											withRepeatLabelBool: switchRepeat)
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 	}
 	
 	
 	@objc func cancelFunc(){
-		self.textField.text = nil
-		self.dataPicker.isEnabled = false
-		switchAlert.isOn = false
-		switchAlertRepeat.isOn = false
+		self.textField.text       = nil
+		self.dataPicker.isHidden  = true
+		switchAlert.isOn          = false
+		switchAlertRepeat.isOn    = false
+		timelabel                 = ""
+		dateLabel                 = ""
 		dismiss(animated: true, completion: nil)
 	}
 }

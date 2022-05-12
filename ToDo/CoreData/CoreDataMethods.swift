@@ -10,12 +10,13 @@ import CoreData
 class CoreDataMethods {
 	static let shared = CoreDataMethods()
 	//MARK: - SAVE TASK
-	func saveTask(withTitle title: String, withTime time: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
+	func saveTask(withTitle title: String, withTimeLabel time: String, withDateLabel dateLabel: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
 		model.taskTitle     = title
 		model.taskTime      = time
+		model.taskDate      = dateLabel
 		model.timeLabelDate = date
 		model.check         = check
 		model.alarmImage    = alarm

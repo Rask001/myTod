@@ -24,6 +24,8 @@ class NewTaskVC: UIViewController {
 	var timelabel = ""
 	var dateLabel = ""
 	
+	var dateLabelDate = Date()
+	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -75,6 +77,7 @@ class NewTaskVC: UIViewController {
 			dateFormatter.dateFormat = "dd.MM"
 			timelabel = timeFormatter.string(from: dateFromDP)
 			dateLabel = dateFormatter.string(from: dateFromDP)
+			dateLabelDate = dateFromDP
 //			newDate = dateFromDP
 		}
 	}
@@ -118,7 +121,7 @@ class NewTaskVC: UIViewController {
 		coreData.saveTask(withTitle: text,
 											withTimeLabel:       timelabel,
 											withDateLabel:       dateLabel,
-											withDate:            date,
+											withDate:            dateLabelDate,
 											withCheck:           false,
 											withAlarmLabelBuul:  switchAlert,
 											withRepeatLabelBool: switchRepeat)

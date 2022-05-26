@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		 window?.rootViewController = MainVC()
 		 window?.makeKeyAndVisible()
 		 
+		 //запрос у пользователя на отправку локал нотификейшн
 		 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
 			 guard success else { return }
 			 self.notificationCenter.getNotificationSettings { (settings) in

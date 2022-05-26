@@ -42,7 +42,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		
 		
 		
-		
 		if items.check == false {
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)

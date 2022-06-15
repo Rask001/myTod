@@ -20,11 +20,11 @@ class NewTaskVC: UIViewController {
 	let navigationBar     = UINavigationBar()
 	
 	var coreData  = CoreDataMethods()
-	var date      = Date()
+	//var date      = Date()
+	var dateLabelDate = Date()
 	var timelabel = ""
 	var dateLabel = ""
-	
-	var dateLabelDate = Date()
+
 	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -60,7 +60,7 @@ class NewTaskVC: UIViewController {
 	
 	func pickerSetup() {
 		let dateNow = Date()
-	  self.dataPicker.isHidden     = true
+	  self.dataPicker.isEnabled    = false
 		self.dataPicker.minimumDate  = dateNow
 		self.dataPicker.timeZone     = .autoupdatingCurrent
 		self.dataPicker.addTarget(self, action: #selector(dataPickerChange(paramDataPicker:)), for: .valueChanged)
@@ -91,7 +91,7 @@ class NewTaskVC: UIViewController {
 		switchAlert.addTarget(self, action: #selector(visibility), for: .valueChanged)
 	}
 	@objc func visibility() {
-		switchAlert.isOn == true ? (self.dataPicker.isHidden = false) : (self.dataPicker.isHidden = true)
+		switchAlert.isOn == false ? (self.dataPicker.isEnabled = false) : (self.dataPicker.isEnabled = true)
 	}
 	
 	func switchAlertRepeatSetup(){
@@ -117,8 +117,10 @@ class NewTaskVC: UIViewController {
 		guard let text   = textField.text, !text.isEmpty else { return }
 		let switchAlert  = switchAlert.isOn
 		let switchRepeat = switchAlertRepeat.isOn
-		
-		coreData.saveTask(withTitle: text,
+		if switchAlert == true {
+			guard timelabel != "" else { return }
+			guard dateLabel != "" else { return }
+		coreData.saveTask(withTitle:           text,
 											withTimeLabel:       timelabel,
 											withDateLabel:       dateLabel,
 											withDate:            dateLabelDate,
@@ -126,13 +128,24 @@ class NewTaskVC: UIViewController {
 											withAlarmLabelBuul:  switchAlert,
 											withRepeatLabelBool: switchRepeat)
 		cancelFunc()
-		NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+			NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+		} else {
+			coreData.saveTask(withTitle:           text,
+												withTimeLabel:       "",
+												withDateLabel:       "",
+												withDate:            nil,
+												withCheck:           false,
+												withAlarmLabelBuul:  switchAlert,
+												withRepeatLabelBool: switchRepeat)
+			cancelFunc()
+				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+		}
 	}
 	
 	
 	@objc func cancelFunc(){
 		self.textField.text       = nil
-		self.dataPicker.isHidden  = true
+		self.dataPicker.isEnabled = false
 		switchAlert.isOn          = false
 		switchAlertRepeat.isOn    = false
 		timelabel                 = ""

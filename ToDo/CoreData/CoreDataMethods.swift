@@ -10,7 +10,7 @@ import CoreData
 class CoreDataMethods {
 	static let shared = CoreDataMethods()
 	//MARK: - SAVE TASK
-	func saveTask(withTitle title: String, withTimeLabel time: String, withDateLabel dateLabel: String, withDate date: Date, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
+	func saveTask(withTitle title: String, withTimeLabel time: String, withDateLabel dateLabel: String, withDate date: Date?, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
@@ -27,7 +27,8 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		sendReminderNotification("Напоминание \(time)", title, date)
+		guard date != nil else { return }
+			sendReminderNotification("Напоминание \(time)", title, date!)
 	}
 	
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {

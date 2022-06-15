@@ -41,10 +41,10 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.repeatImageView.isHidden = !items.repeatImage
 		
 		
-		
 		if items.check == false {
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
+			
 			if timeLabelDate! < Date() {
 			if items.taskTime != "" {
 					painting(cell: cell, color: .red, colorTwo: .red)
@@ -67,7 +67,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
 				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
 		}
-		
 		return cell
 	}
 	

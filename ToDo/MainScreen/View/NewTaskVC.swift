@@ -30,6 +30,8 @@ class NewTaskVC: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		self.textField.becomeFirstResponder()
+		pickerSetup()
+		pickerRepeatSetup()
 	}
 	
 	
@@ -37,10 +39,8 @@ class NewTaskVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		textFieldSetup()
-		pickerSetup()
 		addSubviewAndConfigure()
 		navigationBarSetup()
-		pickerRepeatSetup()
 		setConstraits()
 		switchAlertSetup()
 		switchAlertRepeatSetup()

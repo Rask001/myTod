@@ -17,15 +17,15 @@ class NewTaskVC: UIViewController {
 	let switchAlert       = UISwitch()
 	let switchAlertRepeat = UISwitch()
 	let navigationBar     = UINavigationBar()
-	var alertLabel        = UIImageView()
-	var repeatLabel       = UIImageView()
+	let alertLabel        = UIImageView()
+	let repeatLabel       = UIImageView()
 	var repeatSegmented   = UISegmentedControl()
+	var coreData          = CoreDataMethods()
+	var dateLabelDate     = Date()
+	var timelabel         = ""
+	var dateLabel         = ""
+	var segmentedItems    = ["hour", "day", "week", "month"]
 	
-	var coreData  = CoreDataMethods()
-	var dateLabelDate = Date()
-	var timelabel = ""
-	var dateLabel = ""
-	var segmentedItems = ["hour", "day", "week", "month"]
 	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -87,15 +87,15 @@ class NewTaskVC: UIViewController {
 	}
 		
 	func alertLabelSetup() {
-		alertLabel.image                = UIImage(systemName: "alarm")
-		alertLabel.tintColor            = .gray
-		alertLabel.contentMode          = .scaleAspectFit
+		alertLabel.image         = UIImage(systemName: "alarm")
+		alertLabel.tintColor     = .gray
+		alertLabel.contentMode   = .scaleAspectFit
 	}
 	
 	func repeatLabelSetup() {
-		repeatLabel.image                = UIImage(systemName: "repeat")
-		repeatLabel.tintColor            = .gray
-		repeatLabel.contentMode          = .scaleAspectFit
+		repeatLabel.image        = UIImage(systemName: "repeat")
+		repeatLabel.tintColor    = .gray
+		repeatLabel.contentMode  = .scaleAspectFit
 	}
 	
 	
@@ -111,19 +111,19 @@ class NewTaskVC: UIViewController {
 	}
 	@objc func visibilityDataPickerAndSwitchAlertRepeat() {
 		if switchAlert.isOn == true {
-			self.dataPicker.isEnabled = true
-			self.switchAlertRepeat.isEnabled = true
-		} else {
-			self.dataPicker.isEnabled = false
-			self.switchAlertRepeat.isEnabled = false
-			self.switchAlertRepeat.isOn = false
-			self.repeatSegmented.isEnabled = false
+			self.dataPicker.isEnabled            = true
+			self.switchAlertRepeat.isEnabled     = true
+		} else{
+			self.dataPicker.isEnabled            = false
+			self.switchAlertRepeat.isEnabled     = false
+			self.switchAlertRepeat.isOn          = false
+			self.repeatSegmented.isEnabled       = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		}
 	}
 	
 	func switchAlertRepeatSetup(){
-		switchAlertRepeat.isOn = false
+		switchAlertRepeat.isOn      = false
 		switchAlertRepeat.isEnabled = false
 		switchAlertRepeat.addTarget(self, action: #selector(visibilityRepeatSegmented), for: .valueChanged)
 	}

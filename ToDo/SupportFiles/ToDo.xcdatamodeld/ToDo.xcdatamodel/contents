@@ -8,9 +8,10 @@
         <attribute name="taskDate" optional="YES" attributeType="String"/>
         <attribute name="taskTime" optional="YES" attributeType="String"/>
         <attribute name="taskTitle" attributeType="String"/>
+        <attribute name="timeInterval" optional="YES" attributeType="String"/>
         <attribute name="timeLabelDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
     <elements>
-        <element name="Tasks" positionX="0" positionY="0" width="128" height="149"/>
+        <element name="Tasks" positionX="0" positionY="0" width="128" height="164"/>
     </elements>
 </model>

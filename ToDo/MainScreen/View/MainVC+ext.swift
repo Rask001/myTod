@@ -40,7 +40,13 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
 		
+		visualViewCell(items: items, button: button, timeLabelDate: timeLabelDate, cell: cell)
 		
+		return cell
+	}
+	
+	//визуальное отоброжение ячеек в зависимости от статуса задачи
+	private func visualViewCell(items: Tasks, button: UIButton, timeLabelDate: Date?, cell: CustomCell) {
 		if items.check == false { // если таск не отмечен как выполненный
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
@@ -65,7 +71,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
 			UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
 		}
-		return cell
 	}
 	
 	private func strikethroughStyle(cell: CustomCell){

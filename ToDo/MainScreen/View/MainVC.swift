@@ -55,7 +55,7 @@ class MainVC: UIViewController {
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = UIColor(named: "BlackWhite")
-		self.buttonNewTask.titleLabel?.font   = .futura17()
+		self.buttonNewTask.titleLabel?.font   = .NoteworthyBold20()
 		self.buttonNewTask.layer.cornerRadius = 10
 		self.buttonNewTask.setTitle("New task", for: .normal)
 		self.buttonNewTask.setTitleColor(UIColor(named: "WhiteBlack"), for: .normal)

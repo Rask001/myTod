@@ -23,7 +23,7 @@ class CustomCell: UITableViewCell {
 	}()
 	
 	var taskTitle: UILabel                = {
-		let taskTitle                       = UILabel(font: .avenir20()!, textColor: .black)
+		let taskTitle                       = UILabel(font: .NoteworthyBold20()!, textColor: .black)
 		taskTitle.textAlignment             = .left
 		taskTitle.adjustsFontSizeToFitWidth = true
 		return taskTitle
@@ -37,7 +37,7 @@ class CustomCell: UITableViewCell {
 	}()
 	
 	var taskDate: UILabel                 = {
-		let taskDate                        = UILabel(font: .avenirNext16Bold()!, textColor: .black)
+		let taskDate                        = UILabel(font: .avenirNext20()!, textColor: .black)
 		taskDate.textAlignment              = .left
 		taskDate.adjustsFontSizeToFitWidth  = true
 		return taskDate

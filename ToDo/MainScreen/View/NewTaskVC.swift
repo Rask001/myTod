@@ -14,36 +14,39 @@ class NewTaskVC: UIViewController {
 	//MARK: - Properties
 	let textField         = UITextField()
 	let dataPicker        = UIDatePicker()
-	let repeatPicker      = UIPickerView()
 	let switchAlert       = UISwitch()
 	let switchAlertRepeat = UISwitch()
 	let navigationBar     = UINavigationBar()
+	var alertLabel        = UIImageView()
+	var repeatLabel       = UIImageView()
+	var repeatSegmented   = UISegmentedControl()
 	
 	var coreData  = CoreDataMethods()
-	//var date      = Date()
 	var dateLabelDate = Date()
 	var timelabel = ""
 	var dateLabel = ""
-
+	var segmentedItems = ["hour", "day", "week", "month"]
 	
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		self.textField.becomeFirstResponder()
 		pickerSetup()
-		pickerRepeatSetup()
 	}
 	
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		setupSegmented()
 		textFieldSetup()
 		addSubviewAndConfigure()
 		navigationBarSetup()
-		setConstraits()
 		switchAlertSetup()
 		switchAlertRepeatSetup()
+		alertLabelSetup()
+		repeatLabelSetup()
+		setConstraits()
 	}
 	
 	
@@ -60,7 +63,8 @@ class NewTaskVC: UIViewController {
 	
 	func pickerSetup() {
 		let dateNow = Date()
-	  self.dataPicker.isEnabled    = false
+		self.dataPicker.isEnabled    = false
+		self.dataPicker.date         = dateNow
 		self.dataPicker.minimumDate  = dateNow
 		self.dataPicker.timeZone     = .autoupdatingCurrent
 		self.dataPicker.addTarget(self, action: #selector(dataPickerChange(paramDataPicker:)), for: .valueChanged)
@@ -82,21 +86,55 @@ class NewTaskVC: UIViewController {
 		}
 	}
 		
-	
-	func pickerRepeatSetup() {
+	func alertLabelSetup() {
+		alertLabel.image                = UIImage(systemName: "alarm")
+		alertLabel.tintColor            = .gray
+		alertLabel.contentMode          = .scaleAspectFit
 	}
+	
+	func repeatLabelSetup() {
+		repeatLabel.image                = UIImage(systemName: "repeat")
+		repeatLabel.tintColor            = .gray
+		repeatLabel.contentMode          = .scaleAspectFit
+	}
+	
+	
+	func setupSegmented() {
+		repeatSegmented = UISegmentedControl(items: segmentedItems)
+		repeatSegmented.isEnabled = false
+	}
+	
 	
 	func switchAlertSetup(){
 		switchAlert.isOn = false
-		switchAlert.addTarget(self, action: #selector(visibility), for: .valueChanged)
+		switchAlert.addTarget(self, action: #selector(visibilityDataPickerAndSwitchAlertRepeat), for: .valueChanged)
 	}
-	@objc func visibility() {
-		switchAlert.isOn == false ? (self.dataPicker.isEnabled = false) : (self.dataPicker.isEnabled = true)
+	@objc func visibilityDataPickerAndSwitchAlertRepeat() {
+		if switchAlert.isOn == true {
+			self.dataPicker.isEnabled = true
+			self.switchAlertRepeat.isEnabled = true
+		} else {
+			self.dataPicker.isEnabled = false
+			self.switchAlertRepeat.isEnabled = false
+			self.switchAlertRepeat.isOn = false
+			self.repeatSegmented.isEnabled = false
+			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+		}
 	}
 	
 	func switchAlertRepeatSetup(){
 		switchAlertRepeat.isOn = false
-		//switchAlertRepeat.addTarget(self, action: #selector(repeatReminder), for: .valueChanged)
+		switchAlertRepeat.isEnabled = false
+		switchAlertRepeat.addTarget(self, action: #selector(visibilityRepeatSegmented), for: .valueChanged)
+	}
+	
+	@objc func visibilityRepeatSegmented() {
+		if switchAlertRepeat.isOn == false {
+			self.repeatSegmented.isEnabled = false
+			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+		}else{
+			self.repeatSegmented.isEnabled = true
+		}
 	}
 	
 	func navigationBarSetup() {
@@ -165,7 +203,9 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.view.addSubview(self.dataPicker)
 		self.view.addSubview(self.switchAlert)
 		self.view.addSubview(self.switchAlertRepeat)
-		//self.view.addSubview(self.repeatPicker)
+		self.view.addSubview(self.alertLabel)
+		self.view.addSubview(self.repeatLabel)
+		self.view.addSubview(self.repeatSegmented)
 	}
 	
 	func setConstraits() {
@@ -176,34 +216,33 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
 
 		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.dataPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive          = true
 		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
 		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 130).isActive         = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
-		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive         = true
+		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive         = true
 		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                 = true
 		
 		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                           = false
-		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive   = true
+		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive   = true
 		self.switchAlertRepeat.topAnchor.constraint(equalTo: self.switchAlert.bottomAnchor, constant: 30).isActive = true
 		
-//		self.repeatPicker.translatesAutoresizingMaskIntoConstraints                                                = false
-//		self.repeatPicker.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive        = true
-//		self.repeatPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive     = true
-//		self.repeatPicker.topAnchor.constraint(equalTo: self.switchAlertRepeat.topAnchor).isActive                 = true
+		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                  = false
+		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
+		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                       = true
+		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive          = true
+		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
 		
-	}
-
-}
-
-
-extension NewTaskVC: UIPickerViewDataSource {
-	func numberOfComponents(in pickerView: UIPickerView) -> Int {
-		1
-	}
-	
-	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-		10
+		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                 = false
+		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                     = true
+		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                      = true
+		self.repeatLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive         = true
+		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive          = true
+		
+		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                             = false
+		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 200).isActive                                 = true
+		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                 = true
+		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive            = true
+		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive  = true
 	}
 }

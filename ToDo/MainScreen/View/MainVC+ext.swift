@@ -41,31 +41,29 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.repeatImageView.isHidden = !items.repeatImage
 		
 		
-		if items.check == false {
+		if items.check == false { // если таск не отмечен как выполненный
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
-			
-			if timeLabelDate! < Date() {
-			if items.taskTime != "" {
+			if timeLabelDate == nil { // если у него нет даты и выремени выполнения, то есть нил.
+				painting(cell: cell, color: .black, colorTwo: .black)
+				strikethroughStyle(cell: cell)
+			}else{ // если дата и время просрочены красим в красный
+				if timeLabelDate! < Date() {
 					painting(cell: cell, color: .red, colorTwo: .red)
 					strikethroughStyle(cell: cell)
-				}else{
-					painting(cell: cell, color: .black, colorTwo: .black)
+				}else{ // если не просрочены делаем стандартными
+					painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 					strikethroughStyle(cell: cell)
 				}
-//
-		}else{
-				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
-				strikethroughStyle(cell: cell)
-				}
-			sendReminderNotification("Напоминание \(items.taskTime!)", items.taskTitle, items.timeLabelDate!)
-		}else{
+				sendReminderNotification("Напоминание \(items.taskTime!)", items.taskTitle, items.timeLabelDate!)
+			}
+		}else{ // если ставим отметку выполненного таск: красим в серый зачеркиваем и удаляем пуш
 			button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
 			button.backgroundColor         = .white
 			button.tintColor               = .lightGray
 			painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 			cell.taskTitle.attributedText  = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
+			UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
 		}
 		return cell
 	}

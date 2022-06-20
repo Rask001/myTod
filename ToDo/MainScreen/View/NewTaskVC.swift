@@ -36,13 +36,13 @@ class NewTaskVC: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		self.textField.becomeFirstResponder()
-		pickerSetup()
 	}
 	
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		pickerSetup()
 		setupSegmented()
 		textFieldSetup()
 		addSubviewAndConfigure()
@@ -65,11 +65,19 @@ class NewTaskVC: UIViewController {
 		self.textField.placeholder        = " craete new task"
 		self.textField.borderStyle        = UITextField.BorderStyle.none
 		self.textField.backgroundColor    = UIColor(named: "WhiteBlack")
+		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
+	}
+	
+	@objc func textFieldDidChande() {
+		switchAlert.isEnabled = true
+		if textField.text == ""{
+			allEnabled()
+		}
 	}
 	
 	func infoLabelSetup() {
 		infoLabel.textAlignment = .center
-		infoLabel.text = ""
+		infoLabel.text = "Just write you note"
 	}
 	
 	
@@ -126,6 +134,9 @@ class NewTaskVC: UIViewController {
 			timelabel = timeFormatter.string(from: dateFromDP)
 			dateLabel = dateFormatter.string(from: dateFromDP)
 			dateLabelDate = dateFromDP
+			if switchAlertRepeat.isOn == true {
+				infoLabel.text = "repeat every \(repeatSegmented) at \(timelabel)"
+			}
 //			newDate = dateFromDP
 		}
 	}
@@ -151,8 +162,20 @@ class NewTaskVC: UIViewController {
 	
 	
 	func switchAlertSetup(){
+		switchAlert.isEnabled = false
 		switchAlert.isOn = false
 		switchAlert.addTarget(self, action: #selector(visibilityDataPickerAndSwitchAlertRepeat), for: .valueChanged)
+	}
+	
+	func allEnabled() {
+		switchAlert.isEnabled = false
+		switchAlertRepeat.isEnabled = false
+		repeatSegmented.isEnabled = false
+		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+		dataPicker.isEnabled = false
+		switchAlert.isOn = false
+		switchAlertRepeat.isOn = false
+		setTimePicker.isHidden = true
 	}
 	
 	@objc func repeatSegmentedChange(paramRepeatSegmented: UISegmentedControl) {
@@ -186,12 +209,14 @@ class NewTaskVC: UIViewController {
 		if switchAlert.isOn == true {
 			self.dataPicker.isEnabled            = true
 			self.switchAlertRepeat.isEnabled     = true
+			infoLabel.text = "Set the date and time of the reminder"
 		} else{
 			self.dataPicker.isEnabled            = false
 			self.switchAlertRepeat.isEnabled     = false
 			self.switchAlertRepeat.isOn          = false
 			self.repeatSegmented.isEnabled       = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+			infoLabel.text = "Create your note"
 		}
 	}
 	
@@ -206,9 +231,12 @@ class NewTaskVC: UIViewController {
 			self.repeatSegmented.isEnabled = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 			self.dataPicker.minimumDate  = Date()
+			self.setTimePicker.isHidden = true
+			self.infoLabel.text = "Set the date and time of the reminder"
 		}else{
 			self.repeatSegmented.isEnabled = true
 			self.dataPicker.minimumDate  = nil
+			self.infoLabel.text = "Choose a repeat rate"
 		}
 	}
 	
@@ -259,12 +287,18 @@ class NewTaskVC: UIViewController {
 	
 	
 	@objc func cancelFunc(){
-		self.textField.text       = nil
-		self.dataPicker.isEnabled = false
-		switchAlert.isOn          = false
-		switchAlertRepeat.isOn    = false
-		timelabel                 = ""
-		dateLabel                 = ""
+		self.textField.text         = nil
+		self.dataPicker.isEnabled   = false
+		switchAlert.isOn            = false
+		switchAlertRepeat.isOn      = false
+		setTimePicker.isHidden      = true
+		repeatSegmented.isEnabled   = false
+		switchAlertRepeat.isEnabled = false
+		switchAlert.isEnabled       = false
+		infoLabel.text              = "Just write you note"
+		timelabel                   = ""
+		dateLabel                   = ""
+		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
 	}
 }
@@ -299,11 +333,11 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
-		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive         = true
+		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive         = true
 		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                 = true
 		
 		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                           = false
-		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive   = true
+		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive   = true
 		self.switchAlertRepeat.topAnchor.constraint(equalTo: self.switchAlert.bottomAnchor, constant: 30).isActive = true
 		
 		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                  = false
@@ -319,7 +353,7 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive          = true
 		
 		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                             = false
-		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 230).isActive                                 = true
+		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 240).isActive                                 = true
 		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                 = true
 		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive            = true
 		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive  = true
@@ -334,6 +368,6 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.infoLabel.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
 		self.infoLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                       = true
 		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
-		self.infoLabel.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 25).isActive     = true
+		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 35).isActive     = true
 	}
 }

@@ -12,8 +12,10 @@ import CoreData
 class NewTaskVC: UIViewController {
 	
 	//MARK: - Properties
+	let infoLabel         = UILabel()
 	let textField         = UITextField()
 	let dataPicker        = UIDatePicker()
+	let setTimePicker     = UIDatePicker()
 	let switchAlert       = UISwitch()
 	let switchAlertRepeat = UISwitch()
 	let navigationBar     = UINavigationBar()
@@ -22,9 +24,11 @@ class NewTaskVC: UIViewController {
 	var repeatSegmented   = UISegmentedControl()
 	var coreData          = CoreDataMethods()
 	var dateLabelDate     = Date()
+	var timeHRepeatLabel  = ""
+	var timeMRepeatLabel  = ""
 	var timelabel         = ""
 	var dateLabel         = ""
-	var segmentedItems    = ["hour", "day", "week", "month"]
+	var segmentedItems    = ["day", "week", "month", "set time"]
 	var repeatTime        = String?(nil)
 	
 	
@@ -48,6 +52,8 @@ class NewTaskVC: UIViewController {
 		alertLabelSetup()
 		repeatLabelSetup()
 		setConstraits()
+		setTimePickerSetup()
+		infoLabelSetup()
 	}
 	
 	
@@ -61,6 +67,11 @@ class NewTaskVC: UIViewController {
 		self.textField.backgroundColor    = UIColor(named: "WhiteBlack")
 	}
 	
+	func infoLabelSetup() {
+		infoLabel.textAlignment = .center
+		infoLabel.text = ""
+	}
+	
 	
 	func pickerSetup() {
 		let dateNow = Date()
@@ -71,7 +82,39 @@ class NewTaskVC: UIViewController {
 		self.dataPicker.addTarget(self, action: #selector(dataPickerChange(paramDataPicker:)), for: .valueChanged)
 	}
 	
-	@objc func dataPickerChange(paramDataPicker:UIDatePicker) {
+	func setTimePickerSetup() {
+		self.setTimePicker.isHidden = true
+		self.setTimePicker.datePickerMode = .time
+		self.setTimePicker.preferredDatePickerStyle = .wheels
+		self.setTimePicker.addTarget(self, action: #selector(setTimePicker(paramDataPicker:)), for: .valueChanged)
+	}
+	
+	@objc func setTimePicker(paramDataPicker: UIDatePicker) {
+		let timeFromDP = paramDataPicker.date
+		let timeHourFormatter = DateFormatter()
+		let timeMinFormatter = DateFormatter()
+		timeHourFormatter.dateFormat = "H"
+		timeMinFormatter.dateFormat = "m"
+		timeHRepeatLabel = timeHourFormatter.string(from: timeFromDP)
+		timeMRepeatLabel = timeMinFormatter.string(from: timeFromDP)
+		var hour = ""
+		var min = ""
+		timeHRepeatLabel != "1" ? (hour = "hours") : (hour = "hour")
+		timeMRepeatLabel != "1" ? (min = "minutes") : (min = "minute")
+		if timeHRepeatLabel == "0", timeMRepeatLabel == "0"  {
+			infoLabel.text = "no repeat"
+		} else if
+			timeMRepeatLabel == "0" {
+			infoLabel.text = "repeat every \(timeHRepeatLabel) \(hour)"
+		} else if
+			timeHRepeatLabel == "0" {
+			infoLabel.text = "repeat every \(timeMRepeatLabel) \(min)"
+		} else {
+			infoLabel.text = "repeat every \(timeHRepeatLabel) \(hour) \(timeMRepeatLabel) \(min)"
+		}
+	}
+	
+	@objc func dataPickerChange(paramDataPicker: UIDatePicker) {
 		if paramDataPicker.isEqual(self.dataPicker) {
 			let dateFromDP = paramDataPicker.date
 //			let dateComponentsChange = dataPicker.calendar.dateComponents([.month, .day, .hour, .minute], from: dateFromDP)
@@ -117,16 +160,24 @@ class NewTaskVC: UIViewController {
 			let repeatFromSegmented = paramRepeatSegmented.selectedSegmentIndex
 			
 			if repeatFromSegmented == 0 {
+				self.setTimePicker.isHidden = true
 				self.repeatTime = "3600"
+				infoLabel.text = "repeat every day at \(timelabel)"
 			} else if
 				repeatFromSegmented == 1 {
+				self.setTimePicker.isHidden = true
 				self.repeatTime = "86400"
+				infoLabel.text = "repeat every weak at \(timelabel)"
 			} else if
 				repeatFromSegmented == 2 {
+				self.setTimePicker.isHidden = true
 				self.repeatTime = "604800"
+				infoLabel.text = "repeat every month at \(timelabel)"
 			} else if
 				repeatFromSegmented == 3 {
-				self.repeatTime = "62"
+				self.view.endEditing(true)
+				self.setTimePicker.isHidden = false
+				//self.repeatTime = "62"
 			}
 		}
 	}
@@ -154,8 +205,10 @@ class NewTaskVC: UIViewController {
 		if switchAlertRepeat.isOn == false {
 			self.repeatSegmented.isEnabled = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+			self.dataPicker.minimumDate  = Date()
 		}else{
 			self.repeatSegmented.isEnabled = true
+			self.dataPicker.minimumDate  = nil
 		}
 	}
 	
@@ -230,6 +283,8 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.view.addSubview(self.alertLabel)
 		self.view.addSubview(self.repeatLabel)
 		self.view.addSubview(self.repeatSegmented)
+		self.view.addSubview(self.setTimePicker)
+		self.view.addSubview(self.infoLabel)
 	}
 	
 	func setConstraits() {
@@ -241,7 +296,7 @@ extension NewTaskVC: UITextFieldDelegate {
 
 		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
-		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 130).isActive         = true
+		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
 		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive         = true
@@ -264,9 +319,21 @@ extension NewTaskVC: UITextFieldDelegate {
 		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive          = true
 		
 		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                             = false
-		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 200).isActive                                 = true
+		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 230).isActive                                 = true
 		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                 = true
 		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive            = true
 		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive  = true
+		
+		self.setTimePicker.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.setTimePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
+		self.setTimePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
+		self.setTimePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+		self.setTimePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 60).isActive = true
+		
+		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                   = false
+		self.infoLabel.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
+		self.infoLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                       = true
+		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
+		self.infoLabel.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 25).isActive     = true
 	}
 }

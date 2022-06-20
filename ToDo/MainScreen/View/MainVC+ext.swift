@@ -33,13 +33,16 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 		let timeLabelDate             = items.timeLabelDate
-		cell.taskDate.text            = items.taskDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
 		cell.taskTime.isHidden        = !items.alarmImage
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
-		
+		if items.repeatImage == false {
+			cell.taskDate.text          = items.taskDate
+		}else{
+			cell.taskDate.text          = "every \(items.timeInterval ?? "") seconds"
+		}
 		visualViewCell(items: items, button: button, timeLabelDate: timeLabelDate, cell: cell)
 		
 		return cell

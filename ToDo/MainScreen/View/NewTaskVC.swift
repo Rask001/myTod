@@ -25,6 +25,7 @@ class NewTaskVC: UIViewController {
 	var timelabel         = ""
 	var dateLabel         = ""
 	var segmentedItems    = ["hour", "day", "week", "month"]
+	var repeatTime        = String?(nil)
 	
 	
 	//MARK: - viewDidAppear
@@ -102,6 +103,7 @@ class NewTaskVC: UIViewController {
 	func setupSegmented() {
 		repeatSegmented = UISegmentedControl(items: segmentedItems)
 		repeatSegmented.isEnabled = false
+		repeatSegmented.addTarget(self, action: #selector(repeatSegmentedChange(paramRepeatSegmented:)), for: .valueChanged)
 	}
 	
 	
@@ -109,6 +111,26 @@ class NewTaskVC: UIViewController {
 		switchAlert.isOn = false
 		switchAlert.addTarget(self, action: #selector(visibilityDataPickerAndSwitchAlertRepeat), for: .valueChanged)
 	}
+	
+	@objc func repeatSegmentedChange(paramRepeatSegmented: UISegmentedControl) {
+		if paramRepeatSegmented.isEqual(self.repeatSegmented){
+			let repeatFromSegmented = paramRepeatSegmented.selectedSegmentIndex
+			
+			if repeatFromSegmented == 0 {
+				self.repeatTime = "3600"
+			} else if
+				repeatFromSegmented == 1 {
+				self.repeatTime = "86400"
+			} else if
+				repeatFromSegmented == 2 {
+				self.repeatTime = "604800"
+			} else if
+				repeatFromSegmented == 3 {
+				self.repeatTime = "62"
+			}
+		}
+	}
+	
 	@objc func visibilityDataPickerAndSwitchAlertRepeat() {
 		if switchAlert.isOn == true {
 			self.dataPicker.isEnabled            = true
@@ -164,7 +186,8 @@ class NewTaskVC: UIViewController {
 											withDate:            dateLabelDate,
 											withCheck:           false,
 											withAlarmLabelBuul:  switchAlert,
-											withRepeatLabelBool: switchRepeat)
+											withRepeatLabelBool: switchRepeat,
+		                  withTimeInterval: repeatTime)
 		cancelFunc()
 			NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		} else {
@@ -174,7 +197,8 @@ class NewTaskVC: UIViewController {
 												withDate:            nil,
 												withCheck:           false,
 												withAlarmLabelBuul:  switchAlert,
-												withRepeatLabelBool: switchRepeat)
+												withRepeatLabelBool: switchRepeat,
+												withTimeInterval: repeatTime)
 			cancelFunc()
 				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		}

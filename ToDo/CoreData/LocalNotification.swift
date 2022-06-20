@@ -29,8 +29,10 @@ func sendReminderNotification(_ title: String, _ body: String, _ date: Date, _ r
 	
 	guard repeats == true else { return }
 	
+	//let timeIntString = Int(timeInterval!) ?? 0
+	let timeIntStr = (timeInterval! as NSString).integerValue
 	
-	let timeIntervalTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(Int(timeInterval)), repeats: repeats)
+	let timeIntervalTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(timeIntStr), repeats: repeats)
 	let request2 = UNNotificationRequest(identifier: "id_\(body)", content: content, trigger: timeIntervalTrigger)
 		UNUserNotificationCenter.current().add(request2) { error in
 			if error != nil {

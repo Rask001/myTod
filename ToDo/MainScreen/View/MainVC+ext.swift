@@ -61,7 +61,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 					painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 					strikethroughStyle(cell: cell)
 				}
-				sendReminderNotification("Напоминание \(items.taskTime!)", items.taskTitle, items.timeLabelDate!)
+				sendReminderNotification("Напоминание \(items.taskTime!)", items.taskTitle, items.timeLabelDate!, items.repeatImage, items.timeInterval)
 			}
 		}else{ // если ставим отметку выполненного таск: красим в серый зачеркиваем и удаляем пуш
 			button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)

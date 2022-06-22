@@ -28,6 +28,8 @@ class NewTaskVC: UIViewController {
 	var timeMRepeatLabel  = ""
 	var timelabel         = ""
 	var dateLabel         = ""
+	var monthLabel        = ""
+	var dayOfMonthLabel   = ""
 	var segmentedItems    = ["day", "week", "month", "set time"]
 	var repeatTime        = String?(nil)
 	
@@ -76,6 +78,7 @@ class NewTaskVC: UIViewController {
 	}
 	
 	func infoLabelSetup() {
+		infoLabel.numberOfLines = 2
 		infoLabel.textAlignment = .center
 		infoLabel.text = "Just write you note"
 	}
@@ -118,7 +121,7 @@ class NewTaskVC: UIViewController {
 			timeHRepeatLabel == "0" {
 			infoLabel.text = "repeat every \(timeMRepeatLabel) \(min)"
 		} else {
-			infoLabel.text = "repeat every \(timeHRepeatLabel) \(hour) \(timeMRepeatLabel) \(min)"
+			infoLabel.text = "repeat every\n \(timeHRepeatLabel) \(hour) \(timeMRepeatLabel) \(min)"
 		}
 	}
 	
@@ -128,14 +131,27 @@ class NewTaskVC: UIViewController {
 //			let dateComponentsChange = dataPicker.calendar.dateComponents([.month, .day, .hour, .minute], from: dateFromDP)
 			let timeFormatter = DateFormatter()
 			let dateFormatter = DateFormatter()
+			let dateFormatterMonth = DateFormatter()
+			let dayOfMonth = DateFormatter()
 			//dateFormatter.locale = Locale(identifier: "ru_RU")
 			timeFormatter.dateFormat = "HH:mm"
 			dateFormatter.dateFormat = "dd.MM"
+			dateFormatterMonth.dateFormat = "EEEE, MMM d"
+			dayOfMonth.dateFormat = "d"
 			timelabel = timeFormatter.string(from: dateFromDP)
 			dateLabel = dateFormatter.string(from: dateFromDP)
+			monthLabel = dateFormatterMonth.string(from: dateFromDP)
+			dayOfMonthLabel = dayOfMonth.string(from: dateFromDP)
 			dateLabelDate = dateFromDP
 			if switchAlertRepeat.isOn == true {
-				infoLabel.text = "repeat every \(repeatSegmented) at \(timelabel)"
+				infoLabel.text = "repeat every week at \(timelabel)"
+				if repeatSegmented.selectedSegmentIndex == 2 {
+					infoLabel.text = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
+				} else if repeatSegmented.selectedSegmentIndex == 0 {
+					infoLabel.text = "repeat every day\n at \(timelabel)"
+				}
+			} else {
+				infoLabel.text = "the reminder will be set for\n \(monthLabel) \(timelabel)"
 			}
 //			newDate = dateFromDP
 		}
@@ -183,23 +199,28 @@ class NewTaskVC: UIViewController {
 			let repeatFromSegmented = paramRepeatSegmented.selectedSegmentIndex
 			
 			if repeatFromSegmented == 0 {
+				self.dataPicker.isEnabled = true
 				self.setTimePicker.isHidden = true
 				self.repeatTime = "3600"
 				infoLabel.text = "repeat every day at \(timelabel)"
 			} else if
 				repeatFromSegmented == 1 {
+				self.dataPicker.isEnabled = true
 				self.setTimePicker.isHidden = true
 				self.repeatTime = "86400"
 				infoLabel.text = "repeat every weak at \(timelabel)"
 			} else if
 				repeatFromSegmented == 2 {
+				self.dataPicker.isEnabled = true
 				self.setTimePicker.isHidden = true
 				self.repeatTime = "604800"
-				infoLabel.text = "repeat every month at \(timelabel)"
+				infoLabel.text = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
 			} else if
 				repeatFromSegmented == 3 {
 				self.view.endEditing(true)
+				self.dataPicker.isEnabled = false
 				self.setTimePicker.isHidden = false
+				infoLabel.text = "repeat every..."
 				//self.repeatTime = "62"
 			}
 		}
@@ -216,6 +237,7 @@ class NewTaskVC: UIViewController {
 			self.switchAlertRepeat.isOn          = false
 			self.repeatSegmented.isEnabled       = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+			self.setTimePicker.isHidden = true
 			infoLabel.text = "Create your note"
 		}
 	}
@@ -366,8 +388,8 @@ extension NewTaskVC: UITextFieldDelegate {
 		
 		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                   = false
 		self.infoLabel.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
-		self.infoLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                       = true
+		self.infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                       = true
 		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
-		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 35).isActive     = true
+		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20).isActive     = true
 	}
 }

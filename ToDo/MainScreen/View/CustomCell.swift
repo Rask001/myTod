@@ -69,9 +69,10 @@ class CustomCell: UITableViewCell {
 	}()
 	
 	
+	//MARK: - SetConstraints
 	func addSubviewAndConfigure(){
 		self.backgroundColor = .clear
-		self.selectionStyle = .none
+		self.selectionStyle  = .none
 		self.addSubview(backgroundViewCell)
 		self.backgroundViewCell.addSubview(taskTime)
 		self.backgroundViewCell.addSubview(alarmImageView)
@@ -79,49 +80,34 @@ class CustomCell: UITableViewCell {
 		self.backgroundViewCell.addSubview(buttonCell)
 		self.backgroundViewCell.addSubview(taskTitle)
 		self.backgroundViewCell.addSubview(taskDate)
-		
 	}
 	
 	func setConstraintsCell() {
-		taskTime.translatesAutoresizingMaskIntoConstraints           = false
-		backgroundViewCell.translatesAutoresizingMaskIntoConstraints = false
-		buttonCell.translatesAutoresizingMaskIntoConstraints         = false
-		taskTitle.translatesAutoresizingMaskIntoConstraints          = false
-		taskDate.translatesAutoresizingMaskIntoConstraints           = false
+		taskTime.translatesAutoresizingMaskIntoConstraints                                                         = false
+		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1).isActive            = true
+		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
+		taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/6).isActive                              = true
 		
-		NSLayoutConstraint.activate([
-			taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1),
-			taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3),
-			taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/6)
-		])
+		taskDate.translatesAutoresizingMaskIntoConstraints                                                         = false
+		taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1).isActive                   = true
+		taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
+		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/6).isActive                              = true
 		
-		NSLayoutConstraint.activate([
-			taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1),
-			taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3),
-			taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/6)
-		])
+		backgroundViewCell.translatesAutoresizingMaskIntoConstraints                                               = false
+		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive              = true
+		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive          = true
+		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive                     = true
+		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive             = true
 		
-		NSLayoutConstraint.activate([
-			backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2),
-			backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
-			backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-			backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5)
-		])
+		buttonCell.translatesAutoresizingMaskIntoConstraints                                                       = false
+		buttonCell.centerYAnchor.constraint(equalTo: self.backgroundViewCell.centerYAnchor).isActive               = true
+		buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10).isActive = true
+		buttonCell.heightAnchor.constraint(equalToConstant: 35).isActive                                           = true
+		buttonCell.widthAnchor.constraint(equalToConstant: 35).isActive                                            = true
 		
-		NSLayoutConstraint.activate([
-			buttonCell.centerYAnchor.constraint(equalTo: self.backgroundViewCell.centerYAnchor),
-			buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10),
-			buttonCell.heightAnchor.constraint(equalToConstant: 35),
-			buttonCell.widthAnchor.constraint(equalToConstant: 35)
-		])
-		
-		NSLayoutConstraint.activate([
-			taskTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-			taskTitle.leadingAnchor.constraint(equalTo: buttonCell.trailingAnchor, constant: 8),
-			taskTitle.trailingAnchor.constraint(equalTo: self.repeatImageView.leadingAnchor, constant: -3)
-		])
+		taskTitle.translatesAutoresizingMaskIntoConstraints                                                        = false
+		taskTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive                                   = true
+		taskTitle.leadingAnchor.constraint(equalTo: buttonCell.trailingAnchor, constant: 8).isActive               = true
+		taskTitle.trailingAnchor.constraint(equalTo: self.repeatImageView.leadingAnchor, constant: -3).isActive    = true
 	}
-	
-	
-	
 }

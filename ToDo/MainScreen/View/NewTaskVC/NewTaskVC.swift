@@ -138,22 +138,9 @@ class NewTaskVC: UIViewController {
 	
 	@objc func dataPickerChange(paramDataPicker: UIDatePicker) {
 		if paramDataPicker.isEqual(self.dataPicker) {
-			let dateFromDP = paramDataPicker.date
-			//			let dateComponentsChange = dataPicker.calendar.dateComponents([.month, .day, .hour, .minute], from: dateFromDP)
-			let timeFormatter = DateFormatter()
-			let dateFormatter = DateFormatter()
-			let dateFormatterMonth = DateFormatter()
-			let dayOfMonth = DateFormatter()
-			//dateFormatter.locale = Locale(identifier: "ru_RU")
-			timeFormatter.dateFormat = "HH:mm"
-			dateFormatter.dateFormat = "dd.MM"
-			dateFormatterMonth.dateFormat = "EEEE, MMM d"
-			dayOfMonth.dateFormat = "d"
-			timelabel = timeFormatter.string(from: dateFromDP)
-			dateLabel = dateFormatter.string(from: dateFromDP)
-			monthLabel = dateFormatterMonth.string(from: dateFromDP)
-			dayOfMonthLabel = dayOfMonth.string(from: dateFromDP)
-			dateLabelDate = dateFromDP
+			
+			dateFormatter(dateFromDP: paramDataPicker)
+			
 			if switchAlertRepeat.isOn == true {
 				infoLabel.text = "repeat every \(weekDays) at \(timelabel)"
 				if repeatSegmented.selectedSegmentIndex == 2 {
@@ -164,44 +151,60 @@ class NewTaskVC: UIViewController {
 			} else {
 				infoLabel.text = "the reminder will be set for\n \(monthLabel) \(timelabel)"
 			}
-			//			newDate = dateFromDP
 		}
+	}
+	
+	func dateFormatter(dateFromDP: UIDatePicker) {
+		let dateFromDP                = dateFromDP.date
+		let timeFormatter             = DateFormatter()
+		let dateFormatter             = DateFormatter()
+		let dateFormatterMonth        = DateFormatter()
+		let dayOfMonth                = DateFormatter()
+		timeFormatter.dateFormat      = "HH:mm"
+		dateFormatter.dateFormat      = "dd.MM"
+		dateFormatterMonth.dateFormat = "EEEE, MMM d"
+		dayOfMonth.dateFormat         = "d"
+		timelabel                     = timeFormatter.string(from: dateFromDP)
+		dateLabel                     = dateFormatter.string(from: dateFromDP)
+		monthLabel                    = dateFormatterMonth.string(from: dateFromDP)
+		dayOfMonthLabel               = dayOfMonth.string(from: dateFromDP)
+		dateLabelDate                 = dateFromDP
 	}
 		
 	func alertLabelSetup() {
-		alertLabel.image         = UIImage(systemName: "alarm")
-		alertLabel.tintColor     = .gray
-		alertLabel.contentMode   = .scaleAspectFit
+		alertLabel.image              = UIImage(systemName: "alarm")
+		alertLabel.tintColor          = .gray
+		alertLabel.contentMode        = .scaleAspectFit
 	}
 	
 	func repeatLabelSetup() {
-		repeatLabel.image        = UIImage(systemName: "repeat")
-		repeatLabel.tintColor    = .gray
-		repeatLabel.contentMode  = .scaleAspectFit
+		repeatLabel.image             = UIImage(systemName: "repeat")
+		repeatLabel.tintColor         = .gray
+		repeatLabel.contentMode       = .scaleAspectFit
 	}
 	
 	
 	func setupSegmented() {
-		repeatSegmented = UISegmentedControl(items: segmentedItems)
-		repeatSegmented.isEnabled = false
+		repeatSegmented               = UISegmentedControl(items: segmentedItems)
+		repeatSegmented.isEnabled     = false
 		repeatSegmented.addTarget(self, action: #selector(repeatSegmentedChange(paramRepeatSegmented:)), for: .valueChanged)
 	}
 	
 	
 	func switchAlertSetup(){
-		switchAlert.isEnabled = false
-		switchAlert.isOn = false
+		switchAlert.isEnabled         = false
+		switchAlert.isOn              = false
 		switchAlert.addTarget(self, action: #selector(visibilityDataPickerAndSwitchAlertRepeat), for: .valueChanged)
 	}
 	
 	func allEnabled() {
-		switchAlert.isEnabled       = false
-		switchAlertRepeat.isEnabled = false
-		repeatSegmented.isEnabled   = false
-		dataPicker.isEnabled        = false
-		switchAlert.isOn            = false
-		switchAlertRepeat.isOn      = false
-		setTimePicker.isHidden      = true
+		switchAlert.isEnabled         = false
+		switchAlertRepeat.isEnabled   = false
+		repeatSegmented.isEnabled     = false
+		dataPicker.isEnabled          = false
+		switchAlert.isOn              = false
+		switchAlertRepeat.isOn        = false
+		setTimePicker.isHidden        = true
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 	}
 	
@@ -210,33 +213,33 @@ class NewTaskVC: UIViewController {
 			let repeatFromSegmented = paramRepeatSegmented.selectedSegmentIndex
 			
 			if repeatFromSegmented == 0 {
-				self.dataPicker.isEnabled = true
+				self.dataPicker.isEnabled   = true
 				self.setTimePicker.isHidden = true
-				self.setWeekDay.isHidden = true
-				self.repeatTime = "3600"
-				infoLabel.text = "repeat every day at \(timelabel)"
+				self.setWeekDay.isHidden    = true
+				self.repeatTime             = "3600"
+				infoLabel.text              = "repeat every day at \(timelabel)"
 			} else if
 				repeatFromSegmented == 1 {
 				self.view.endEditing(true)
-				self.dataPicker.isEnabled = true
+				self.dataPicker.isEnabled   = true
 				self.setTimePicker.isHidden = true
-				self.setWeekDay.isHidden = false
-				self.repeatTime = "86400"
-				infoLabel.text = "repeat every \(weekDays) at \(timelabel)"
+				self.setWeekDay.isHidden    = false
+				self.repeatTime             = "86400"
+				infoLabel.text              = "repeat every \(weekDays) at \(timelabel)"
 			} else if
 				repeatFromSegmented == 2 {
-				self.dataPicker.isEnabled = true
+				self.dataPicker.isEnabled   = true
 				self.setTimePicker.isHidden = true
-				self.setWeekDay.isHidden = true
-				self.repeatTime = "604800"
-				infoLabel.text = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
+				self.setWeekDay.isHidden    = true
+				self.repeatTime             = "604800"
+				infoLabel.text              = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
 			} else if
 				repeatFromSegmented == 3 {
 				self.view.endEditing(true)
-				self.dataPicker.isEnabled = false
+				self.dataPicker.isEnabled   = false
 				self.setTimePicker.isHidden = false
-				self.setWeekDay.isHidden = true
-				infoLabel.text = "repeat every..."
+				self.setWeekDay.isHidden    = true
+				infoLabel.text              = "repeat every..."
 				//self.repeatTime = "62"
 			}
 		}
@@ -270,6 +273,7 @@ class NewTaskVC: UIViewController {
 			self.repeatSegmented.isEnabled = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 			self.dataPicker.minimumDate    = Date()
+			self.dataPicker.isEnabled      = true
 			self.setTimePicker.isHidden    = true
 			self.setWeekDay.isHidden       = true
 			self.infoLabel.text            = "Set the date and time of the reminder"
@@ -308,7 +312,7 @@ class NewTaskVC: UIViewController {
 											withCheck:           false,
 											withAlarmLabelBuul:  switchAlert,
 											withRepeatLabelBool: switchRepeat,
-		                  withTimeInterval: repeatTime)
+		                  withTimeInterval:    repeatTime)
 		cancelFunc()
 			NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		} else {
@@ -319,7 +323,7 @@ class NewTaskVC: UIViewController {
 												withCheck:           false,
 												withAlarmLabelBuul:  switchAlert,
 												withRepeatLabelBool: switchRepeat,
-												withTimeInterval: repeatTime)
+												withTimeInterval:    repeatTime)
 			cancelFunc()
 				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		}
@@ -327,8 +331,8 @@ class NewTaskVC: UIViewController {
 	
 	
 	@objc func cancelFunc(){
-		textField.text         = nil
-		dataPicker.isEnabled   = false
+		textField.text              = nil
+		dataPicker.isEnabled        = false
 		switchAlert.isOn            = false
 		switchAlertRepeat.isOn      = false
 		setTimePicker.isHidden      = true
@@ -348,106 +352,20 @@ class NewTaskVC: UIViewController {
 //MARK: - Extension
 
 extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
-	
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {
 		return 1
 	}
-	
 	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
 		return 7
 	}
-	
 	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
 		let result = weekDaysArray[row]
 		weekDays = result
-		
-		switch row {
-		case 0:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 1:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 2:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 3:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 4:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 5:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		case 6:
-			infoLabel.text = "repeat every \(result) at \(timelabel)"
-		default:
-			infoLabel.text = "repeat every week at \(timelabel)"
-		}
 		return result
 	}
-	func addSubviewAndConfigure(){
-		self.view.backgroundColor = .secondarySystemBackground
-		self.view.addSubview(self.textField)
-		self.view.addSubview(self.dataPicker)
-		self.view.addSubview(self.switchAlert)
-		self.view.addSubview(self.switchAlertRepeat)
-		self.view.addSubview(self.alertLabel)
-		self.view.addSubview(self.repeatLabel)
-		self.view.addSubview(self.repeatSegmented)
-		self.view.addSubview(self.setTimePicker)
-		self.view.addSubview(self.infoLabel)
-		self.view.addSubview(self.setWeekDay)
-	}
-	
-	func setConstraits() {
-		self.textField.translatesAutoresizingMaskIntoConstraints                                                   = false
-		self.textField.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
-		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                       = true
-		self.textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80 ).isActive                  = true
-		self.textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
-
-		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
-		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
-		
-		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
-		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive         = true
-		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                 = true
-		
-		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                           = false
-		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive   = true
-		self.switchAlertRepeat.topAnchor.constraint(equalTo: self.switchAlert.bottomAnchor, constant: 30).isActive = true
-		
-		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
-		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                       = true
-		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive          = true
-		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
-		
-		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                 = false
-		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                     = true
-		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                      = true
-		self.repeatLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive         = true
-		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive          = true
-		
-		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                             = false
-		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 240).isActive                                 = true
-		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                 = true
-		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive            = true
-		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive  = true
-		
-		self.setTimePicker.translatesAutoresizingMaskIntoConstraints                                               = false
-		self.setTimePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
-		self.setTimePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
-		self.setTimePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
-		self.setTimePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
-		
-		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
-		self.setWeekDay.heightAnchor.constraint(equalToConstant: 120).isActive                                     = true
-		self.setWeekDay.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
-		self.setWeekDay.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
-		
-		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                   = false
-		self.infoLabel.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
-		self.infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                       = true
-		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
-		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20).isActive           = true
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		let result = weekDaysArray[row]
+		weekDays = result
+		infoLabel.text = "repeat every \(result) at \(timelabel)"
 	}
 }

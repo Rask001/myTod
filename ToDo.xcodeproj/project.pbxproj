@@ -14,6 +14,7 @@
 		3A4F561E27EF948300ECF06B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561C27EF948300ECF06B /* LaunchScreen.storyboard */; };
 		3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A576E6A282D9B2F004F108B /* LocalNotification.swift */; };
 		3A7FFA5A2865C49F00A7CC27 /* CodeLayoutNTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA592865C49F00A7CC27 /* CodeLayoutNTVC.swift */; };
+		3A7FFA5E28661EE500A7CC27 /* NewTaskVC+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTaskVC+ext.swift */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
 		3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */; };
 		3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */; };
@@ -36,6 +37,7 @@
 		3A4F561F27EF948300ECF06B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A576E6A282D9B2F004F108B /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		3A7FFA592865C49F00A7CC27 /* CodeLayoutNTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeLayoutNTVC.swift; sourceTree = "<group>"; };
+		3A7FFA5D28661EE500A7CC27 /* NewTaskVC+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTaskVC+ext.swift"; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				3AD1FF8328284092002ECA67 /* NewTaskVC.swift */,
+				3A7FFA5D28661EE500A7CC27 /* NewTaskVC+ext.swift */,
 				3A7FFA592865C49F00A7CC27 /* CodeLayoutNTVC.swift */,
 			);
 			path = NewTaskVC;
@@ -254,6 +257,7 @@
 				3A37A8D228296FD000407F67 /* MainVC+ext.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3ADBF4E32827F5EF000BA06B /* ViewModel.swift in Sources */,
+				3A7FFA5E28661EE500A7CC27 /* NewTaskVC+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3ADBF4D82827F362000BA06B /* Model.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* MainVC.swift in Sources */,

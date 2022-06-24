@@ -13,6 +13,7 @@ class NewTaskVC: UIViewController {
 	
 	//MARK: - Properties
 	let infoLabel         = UILabel()
+	let zaplatka          = UILabel()
 	let textField         = UITextField()
 	let dataPicker        = UIDatePicker()
 	let setTimePicker     = UIDatePicker()
@@ -35,6 +36,7 @@ class NewTaskVC: UIViewController {
 	var segmentedItems    = ["day", "week", "month", "set time"]
 	let weekDaysArray     = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	var repeatTime        = String?(nil)
+	var repeatIntTime = Int()
 	
 	
 	//MARK: - viewDidAppear
@@ -60,6 +62,8 @@ class NewTaskVC: UIViewController {
 		setTimePickerSetup()
 		infoLabelSetup()
 		setWeekDaySetup()
+		zaplatkaSetup()
+		tapObserves()
 	}
 	
 	
@@ -81,12 +85,12 @@ class NewTaskVC: UIViewController {
 		}
 	}
 	
+	
 	func infoLabelSetup() {
 		infoLabel.numberOfLines = 2
 		infoLabel.textAlignment = .center
 		infoLabel.text = "Just write you note"
 	}
-	
 	
 	func pickerSetup() {
 		let dateNow = Date()
@@ -110,7 +114,6 @@ class NewTaskVC: UIViewController {
 		self.setWeekDay.delegate   = self
 	}
 	
-	
 	@objc func setTimePicker(paramDataPicker: UIDatePicker) {
 		let timeFromDP = paramDataPicker.date
 		let timeHourFormatter = DateFormatter()
@@ -119,6 +122,14 @@ class NewTaskVC: UIViewController {
 		timeMinFormatter.dateFormat = "m"
 		timeHRepeatLabel = timeHourFormatter.string(from: timeFromDP)
 		timeMRepeatLabel = timeMinFormatter.string(from: timeFromDP)
+		
+		
+		
+		repeatIntTime = ((Int(timeHRepeatLabel) ?? 0)*3600) + ((Int(timeMRepeatLabel) ?? 0)*60)
+		
+		
+		
+		
 		var hour = ""
 		var min = ""
 		timeHRepeatLabel != "1" ? (hour = "hours") : (hour = "hour")
@@ -183,13 +194,11 @@ class NewTaskVC: UIViewController {
 		repeatLabel.contentMode       = .scaleAspectFit
 	}
 	
-	
 	func setupSegmented() {
 		repeatSegmented               = UISegmentedControl(items: segmentedItems)
 		repeatSegmented.isEnabled     = false
 		repeatSegmented.addTarget(self, action: #selector(repeatSegmentedChange(paramRepeatSegmented:)), for: .valueChanged)
 	}
-	
 	
 	func switchAlertSetup(){
 		switchAlert.isEnabled         = false
@@ -214,44 +223,57 @@ class NewTaskVC: UIViewController {
 			
 			if repeatFromSegmented == 0 {
 				self.dataPicker.isEnabled   = true
+				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = true
+				self.zaplatka.isHidden      = false
 				self.repeatTime             = "3600"
 				infoLabel.text              = "repeat every day at \(timelabel)"
 			} else if
 				repeatFromSegmented == 1 {
 				self.view.endEditing(true)
 				self.dataPicker.isEnabled   = true
+				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = false
-				self.repeatTime             = "86400"
+				self.zaplatka.isHidden      = false
+				//self.repeatTime             = "86400"
 				infoLabel.text              = "repeat every \(weekDays) at \(timelabel)"
 			} else if
 				repeatFromSegmented == 2 {
+				self.zaplatka.isHidden = true
 				self.dataPicker.isEnabled   = true
+				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = true
-				self.repeatTime             = "604800"
+				//self.repeatTime             = "604800"
 				infoLabel.text              = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
 			} else if
 				repeatFromSegmented == 3 {
 				self.view.endEditing(true)
+				self.zaplatka.isHidden = true
 				self.dataPicker.isEnabled   = false
+				self.dataPicker.isHidden    = true
 				self.setTimePicker.isHidden = false
 				self.setWeekDay.isHidden    = true
-				infoLabel.text              = "repeat every..."
-				//self.repeatTime = "62"
+				infoLabel.text              = "set the repeat time"
+//				self.repeatTime = String(repeatIntTime)
 			}
 		}
 	}
 	
 	@objc func visibilityDataPickerAndSwitchAlertRepeat() {
 		if switchAlert.isOn == true {
+			self.zaplatka.isHidden = true
 			self.dataPicker.isEnabled            = true
+			self.dataPicker.isHidden             = false
 			self.switchAlertRepeat.isEnabled     = true
 			self.infoLabel.text                  = "Set the date and time of the reminder"
 		} else{
+			self.zaplatka.isHidden = true
 			self.dataPicker.isEnabled            = false
+			self.dataPicker.isHidden             = false
+			self.dataPicker.minimumDate          = Date()
 			self.switchAlertRepeat.isEnabled     = false
 			self.switchAlertRepeat.isOn          = false
 			self.repeatSegmented.isEnabled       = false
@@ -270,15 +292,19 @@ class NewTaskVC: UIViewController {
 	
 	@objc func visibilityRepeatSegmented() {
 		if switchAlertRepeat.isOn == false {
+			self.zaplatka.isHidden = true
 			self.repeatSegmented.isEnabled = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 			self.dataPicker.minimumDate    = Date()
 			self.dataPicker.isEnabled      = true
+			self.dataPicker.isHidden       = false
 			self.setTimePicker.isHidden    = true
 			self.setWeekDay.isHidden       = true
 			self.infoLabel.text            = "Set the date and time of the reminder"
 		}else{
+			self.zaplatka.isHidden = true
 			self.repeatSegmented.isEnabled = true
+			self.dataPicker.isHidden       = false
 			self.dataPicker.minimumDate    = nil
 			self.infoLabel.text            = "Choose a repeat rate"
 		}
@@ -302,7 +328,8 @@ class NewTaskVC: UIViewController {
 		guard let text   = textField.text, !text.isEmpty else { return }
 		let switchAlert  = switchAlert.isOn
 		let switchRepeat = switchAlertRepeat.isOn
-		if switchAlert == true {
+		if switchAlert == true, switchRepeat == false {
+//			guard switchRepeat == false else { return }
 			guard timelabel != "" else { return }
 			guard dateLabel != "" else { return }
 		coreData.saveTask(withTitle:           text,
@@ -316,6 +343,13 @@ class NewTaskVC: UIViewController {
 		cancelFunc()
 			NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		} else {
+			
+			
+			
+			self.repeatTime = String(repeatIntTime)
+			
+			
+			
 			coreData.saveTask(withTitle:           text,
 												withTimeLabel:       "",
 												withDateLabel:       "",
@@ -324,13 +358,14 @@ class NewTaskVC: UIViewController {
 												withAlarmLabelBuul:  switchAlert,
 												withRepeatLabelBool: switchRepeat,
 												withTimeInterval:    repeatTime)
+			print(repeatTime)
 			cancelFunc()
 				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
 		}
 	}
 	
-	
 	@objc func cancelFunc(){
+		zaplatka.isHidden           = true
 		textField.text              = nil
 		dataPicker.isEnabled        = false
 		switchAlert.isOn            = false
@@ -345,27 +380,5 @@ class NewTaskVC: UIViewController {
 		dateLabel                   = ""
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
-	}
-}
-
-
-//MARK: - Extension
-
-extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
-	func numberOfComponents(in pickerView: UIPickerView) -> Int {
-		return 1
-	}
-	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-		return 7
-	}
-	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-		let result = weekDaysArray[row]
-		weekDays = result
-		return result
-	}
-	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-		let result = weekDaysArray[row]
-		weekDays = result
-		infoLabel.text = "repeat every \(result) at \(timelabel)"
 	}
 }

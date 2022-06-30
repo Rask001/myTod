@@ -11,7 +11,7 @@ import UIKit
 extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return coreDataModel.count
+		return CoreDataMethods.shared.coreDataModel.count
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -28,7 +28,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-		let items  = coreDataModel[indexPath.row]
+		let items  = CoreDataMethods.shared.coreDataModel[indexPath.row]
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
@@ -89,39 +89,28 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	
-	@objc func saveCheckmark(sender: UIButton) {
+	@objc private func saveCheckmark(sender: UIButton) {
 		//tappedSoft()
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let model   = coreDataModel[sender.tag]
+		let model   = CoreDataMethods.shared.coreDataModel[sender.tag]
 		model.check.toggle()
 		do {
 			try context.save()
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		tableView.reloadData()
+		self.tableView.reloadData()
 	}
 	
 	
 	//MARK: - Notification
 	func notification(){
-		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("Reload"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("DeleteCellVisual"), object: .none)
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification){
-		fetchRequest()
+		CoreDataMethods.shared.fetchRequest()
 		self.tableView.reloadData()
-	}
-	
-	
-	//MARK: - Fetch Request
-	func fetchRequest(){
-		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
-		do{
-			coreDataModel = try context.fetch(fetchRequest)
-		} catch let error as NSError {
-			print(error.localizedDescription)
-		}
 	}
 }

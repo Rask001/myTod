@@ -15,12 +15,11 @@ class MainVC: UIViewController {
 	var tableView       = UITableView()
 	let buttonNewTask   = UIButton()
 	let newTaskVC       = NewTaskVC()
-	var coreDataModel: [Tasks] = []
 	
 	//MARK: - viewWillAppear
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		fetchRequest()
+		CoreDataMethods.shared.fetchRequest()
 	}
 	
 	
@@ -34,7 +33,7 @@ class MainVC: UIViewController {
 	
 	
 	//MARK: - Mhetods
-	func confugureTableView() {
+	private func confugureTableView() {
 		self.view.backgroundColor = .systemBlue
 		self.view.addSubview(tableView)
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
@@ -47,7 +46,7 @@ class MainVC: UIViewController {
 		setConstraits()
 	}
 	
-	func setTableViewDelegates(){
+	private func setTableViewDelegates(){
 		tableView.delegate   = self
 		tableView.dataSource = self
 	}
@@ -62,13 +61,13 @@ class MainVC: UIViewController {
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 	}
 	
-	@objc func goToNewTaskVC() {
+	@objc private func goToNewTaskVC() {
 		present(newTaskVC, animated: true, completion: nil)
 	}
 	
 	
 	//MARK: - Set Constraits
-	func setConstraits() {
+	private func setConstraits() {
 		  tableView.translatesAutoresizingMaskIntoConstraints                                             = false
 			tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -2).isActive       = true
 			tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true

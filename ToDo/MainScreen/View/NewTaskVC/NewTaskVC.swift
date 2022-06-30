@@ -145,6 +145,7 @@ class NewTaskVC: UIViewController {
 		} else {
 			infoLabel.text = "repeat every \(timeHRepeatLabel) \(hour) \(timeMRepeatLabel) \(min)"
 		}
+		print (repeatIntTime)
 	}
 	
 	@objc func dataPickerChange(paramDataPicker: UIDatePicker) {
@@ -237,7 +238,6 @@ class NewTaskVC: UIViewController {
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = false
 				self.zaplatka.isHidden      = false
-				//self.repeatTime             = "86400"
 				infoLabel.text              = "repeat every \(weekDays) at \(timelabel)"
 			} else if
 				repeatFromSegmented == 2 {
@@ -246,7 +246,6 @@ class NewTaskVC: UIViewController {
 				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = true
-				//self.repeatTime             = "604800"
 				infoLabel.text              = "repeat every month on the\n \(dayOfMonthLabel)th at \(timelabel)"
 			} else if
 				repeatFromSegmented == 3 {
@@ -257,7 +256,6 @@ class NewTaskVC: UIViewController {
 				self.setTimePicker.isHidden = false
 				self.setWeekDay.isHidden    = true
 				infoLabel.text              = "set the repeat time"
-//				self.repeatTime = String(repeatIntTime)
 			}
 		}
 	}
@@ -328,10 +326,10 @@ class NewTaskVC: UIViewController {
 		guard let text   = textField.text, !text.isEmpty else { return }
 		let switchAlert  = switchAlert.isOn
 		let switchRepeat = switchAlertRepeat.isOn
-		if switchAlert == true, switchRepeat == false {
-//			guard switchRepeat == false else { return }
-			guard timelabel != "" else { return }
-			guard dateLabel != "" else { return }
+		if switchRepeat == true {
+				//switchRepeat == false
+			//guard switchRepeat == false else { return }
+			self.repeatTime = String(repeatIntTime)
 		coreData.saveTask(withTitle:           text,
 											withTimeLabel:       timelabel,
 											withDateLabel:       dateLabel,
@@ -340,16 +338,12 @@ class NewTaskVC: UIViewController {
 											withAlarmLabelBuul:  switchAlert,
 											withRepeatLabelBool: switchRepeat,
 		                  withTimeInterval:    repeatTime)
+//			print(switchRepeat)
+//			print(repeatTime!)
 		cancelFunc()
-			NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		} else {
-			
-			
-			
 			self.repeatTime = String(repeatIntTime)
-			
-			
-			
 			coreData.saveTask(withTitle:           text,
 												withTimeLabel:       "",
 												withDateLabel:       "",
@@ -358,9 +352,10 @@ class NewTaskVC: UIViewController {
 												withAlarmLabelBuul:  switchAlert,
 												withRepeatLabelBool: switchRepeat,
 												withTimeInterval:    repeatTime)
-			print(repeatTime)
+			print(switchRepeat)
+			print(repeatTime!)
 			cancelFunc()
-				NotificationCenter.default.post(name: Notification.Name("Reload"), object: .none)
+				NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		}
 	}
 	

@@ -24,9 +24,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		CoreDataMethods.shared.deleteCell(indexPath: indexPath, presentedViewController: self)
 	}
 	
-	//MARK: cellForRowAt
+	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
+		self.setupCustomCell(tableView: tableView, indexPath: indexPath)
+	}
+	
+	private func setupCustomCell(tableView: UITableView, indexPath: IndexPath) -> CustomCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let items  = CoreDataMethods.shared.coreDataModel[indexPath.row]
 		let button = cell.buttonCell
@@ -38,13 +41,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.taskTime.isHidden        = !items.alarmImage
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
-		if items.repeatImage == false {
+		if items.repeatImage          == false {
 			cell.taskDate.text          = items.taskDate
 		}else{
 			cell.taskDate.text          = "every \(items.timeInterval ?? "") seconds"
 		}
 		visualViewCell(items: items, button: button, timeLabelDate: timeLabelDate, cell: cell)
-		
 		return cell
 	}
 	
@@ -106,9 +108,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	//MARK: - Notification
 	func notification(){
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
-		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("DeleteCellVisual"), object: .none)
 	}
-	
 	@objc func tableViewReloadData(notification: NSNotification){
 		CoreDataMethods.shared.fetchRequest()
 		self.tableView.reloadData()

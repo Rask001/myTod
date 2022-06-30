@@ -36,6 +36,7 @@ class CoreDataMethods {
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
+		self.fetchRequest()
 		//tappedRigid()
 		let model            = coreDataModel
 		let task             = coreDataModel[indexPath.row]
@@ -58,8 +59,8 @@ class CoreDataMethods {
 		model.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
+			//MainVC.shared.tableView.deleteRows(at: [indexPath], with: .left)
 			try context.save()
-			MainVC.shared.tableView.deleteRows(at: [indexPath], with: .left)
       NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		} catch {
 			print("error : \(error)")

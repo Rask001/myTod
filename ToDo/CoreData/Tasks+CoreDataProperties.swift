@@ -22,8 +22,8 @@ extension Tasks {
     @NSManaged public var timeLabelDate: Date?
     @NSManaged public var createdAt: Date?
     @NSManaged public var alarmImage: Bool
+	  @NSManaged public var repeatImage: Bool
     @NSManaged public var check: Bool
-    @NSManaged public var repeatImage: Bool
 	  @NSManaged public var timeInterval: String?
 
 }

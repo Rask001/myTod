@@ -12,17 +12,17 @@ class CoreDataMethods {
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
-	func saveTask(withTitle title: String, withTimeLabel time: String, withDateLabel dateLabel: String, withDate date: Date?, withCheck check: Bool, withAlarmLabelBuul alarm: Bool, withRepeatLabelBool repead: Bool, withTimeInterval timeInterval: String?) {
+	func saveTask(taskTitle: String, taskTime: String, taskDate: String, timeLabelDate: Date?, check: Bool, alarmImage: Bool, repeatImage: Bool, timeInterval: String?) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
-		model.taskTitle     = title
-		model.taskTime      = time
-		model.taskDate      = dateLabel
-		model.timeLabelDate = date
+		model.taskTitle     = taskTitle
+		model.taskTime      = taskTime
+		model.taskDate      = taskDate
+		model.timeLabelDate = timeLabelDate
 		model.check         = check
-		model.alarmImage    = alarm
-		model.repeatImage   = repead
+		model.alarmImage    = alarmImage
+		model.repeatImage   = repeatImage
 		model.timeInterval  = timeInterval
 		do{
 			try context.save()
@@ -30,20 +30,19 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		guard date != nil else { return }
-		sendReminderNotification("Напоминание \(time)", title, date!, repead, timeInterval)
+		guard timeLabelDate != nil else { return }
+		sendReminderNotification("Напоминание \(taskTime)", taskTitle, timeLabelDate!, repeatImage, timeInterval)
 	}
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
-		self.fetchRequest()
 		//tappedRigid()
 		let model            = coreDataModel
 		let task             = coreDataModel[indexPath.row]
 		let taskTitle        = task.taskTitle
 		let areYouSureAllert = UIAlertController(title: "Delete '\(taskTitle)'?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
-		let yesAction        = UIAlertAction(title: "Yes, delete '\(taskTitle)'", style: .destructive) { _ in
+		let yesAction        = UIAlertAction(title: "Yes, delete '\(taskTitle)'", style: .destructive) {_ in 
 			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task, model: model)
 		}
 		areYouSureAllert.addAction(noAction)
@@ -59,7 +58,6 @@ class CoreDataMethods {
 		model.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
-			//MainVC.shared.tableView.deleteRows(at: [indexPath], with: .left)
 			try context.save()
       NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		} catch {

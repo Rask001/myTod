@@ -22,7 +22,6 @@ extension NewTaskVC {
 		self.view.addSubview(self.setTimePicker)
 		self.view.addSubview(self.infoLabel)
 		self.view.addSubview(self.setWeekDay)
-		self.view.addSubview(self.zaplatka)
 	}
 	
 	func setConstraits() {
@@ -35,12 +34,6 @@ extension NewTaskVC {
 		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
 		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
-		
-		self.zaplatka.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.zaplatka.leadingAnchor.constraint(equalTo: self.dataPicker.leadingAnchor).isActive               = true
-		self.zaplatka.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
-		self.zaplatka.heightAnchor.constraint(equalToConstant: 35).isActive = true
-		self.zaplatka.widthAnchor.constraint(equalToConstant: 121).isActive = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
 		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive         = true

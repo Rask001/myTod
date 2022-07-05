@@ -25,20 +25,9 @@ extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDe
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		let result = weekDaysArray[row]
 		weekDays = result
-		infoLabel.text = "repeat every \(result) at \(timelabel)"
+		infoLabel.text = "repeat every \(result) at \(TaskModel.shared.taskTime!)"
 	}
 	
-	func tapObserves(){
-	let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-		tap.numberOfTapsRequired = 2
-		self.zaplatka.addGestureRecognizer(tap)
-	}
-	
-	func zaplatkaSetup() {
-		zaplatka.backgroundColor = self.view.backgroundColor
-		zaplatka.isHidden = true
-		zaplatka.isUserInteractionEnabled = true
-	}
 	
 	@objc func handleTap() {
 		print("tap")

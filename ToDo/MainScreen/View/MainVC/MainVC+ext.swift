@@ -29,6 +29,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		self.setupCustomCell(tableView: tableView, indexPath: indexPath)
 	}
 	
+	//TODO: сделать cell.taskDate.text = "every \(items.timeInterval!) seconds" в норм формат. и вообще переделать реализацию
+	//MARK: VisualViewCell
 	private func setupCustomCell(tableView: UITableView, indexPath: IndexPath) -> CustomCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let items  = CoreDataMethods.shared.coreDataModel[indexPath.row]
@@ -41,10 +43,10 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 		cell.taskTime.isHidden        = !items.alarmImage
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
-		if items.repeatImage          == false {
-			cell.taskDate.text          = items.taskDate
+		if items.repeatImage == false {
+		cell.taskDate.text            = items.taskDate
 		}else{
-			cell.taskDate.text          = "every \(items.timeInterval ?? "") seconds"
+		cell.taskDate.text            = "every \(Int(items.timeInterval!)!/60) min"
 		}
 		visualViewCell(items: items, button: button, timeLabelDate: timeLabelDate, cell: cell)
 		return cell
@@ -94,7 +96,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	@objc private func saveCheckmark(sender: UIButton) {
 		//tappedSoft()
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let model   = CoreDataMethods.shared.coreDataModel[sender.tag]
+		let model = CoreDataMethods.shared.coreDataModel[sender.tag]
 		model.check.toggle()
 		do {
 			try context.save()

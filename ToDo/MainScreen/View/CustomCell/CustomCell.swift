@@ -53,7 +53,7 @@ class CustomCell: UITableViewCell {
 	var alarmImageView: UIImageView       = {
 		let alarmImageView                  = UIImageView()
 		alarmImageView.image                = UIImage(systemName: "alarm")
-		alarmImageView.frame                = CGRect(x: 280, y: 5, width: 12, height: 12)
+		alarmImageView.frame                = CGRect(x: 282, y: 6, width: 14, height: 14)
 		alarmImageView.tintColor            = .gray
 		alarmImageView.contentMode          = .scaleAspectFit
 		return alarmImageView
@@ -62,7 +62,7 @@ class CustomCell: UITableViewCell {
 	var repeatImageView: UIImageView      = {
 		let repeatImageView                 = UIImageView()
 		repeatImageView.image               = UIImage(systemName: "repeat")
-		repeatImageView.frame               = CGRect(x: 265, y: 5, width: 13, height: 13)
+		repeatImageView.frame               = CGRect(x: 265, y: 6, width: 16, height: 16)
 		repeatImageView.tintColor           = .gray
 		repeatImageView.contentMode         = .scaleAspectFit
 		return repeatImageView
@@ -86,12 +86,12 @@ class CustomCell: UITableViewCell {
 		taskTime.translatesAutoresizingMaskIntoConstraints                                                         = false
 		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1).isActive            = true
 		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
-		taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/6).isActive                              = true
+		taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                              = true
 		
 		taskDate.translatesAutoresizingMaskIntoConstraints                                                         = false
 		taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1).isActive                   = true
 		taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
-		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/6).isActive                              = true
+		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                              = true
 		
 		backgroundViewCell.translatesAutoresizingMaskIntoConstraints                                               = false
 		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive              = true

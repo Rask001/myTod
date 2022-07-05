@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreData
 
 class MainVC: UIViewController {
 	
@@ -22,6 +21,11 @@ class MainVC: UIViewController {
 		CoreDataMethods.shared.fetchRequest()
 	}
 	
+//	var viewModel: CellViewModelProtocol? {
+//		didSet {
+//			fillUI()
+//		}
+//	}
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
@@ -29,12 +33,18 @@ class MainVC: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
+		//fillUI()
 	}
 	
+//	fileprivate func fillUI() {
+//		if !isViewLoaded { return }
+//		guard let viewModel = viewModel else { return }
+//
+//	}
 	
 	//MARK: - Mhetods
 	private func confugureTableView() {
-		self.view.backgroundColor = .systemBlue
+		self.view.backgroundColor = .backgroundColor
 		self.view.addSubview(tableView)
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 		self.tableView.backgroundColor  = .clear//UIColor(named: "BGColor")

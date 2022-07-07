@@ -12,15 +12,26 @@ class CoreDataMethods {
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
-	func saveTask(taskTitle: String, taskTime: String, taskDate: String, timeLabelDate: Date?, check: Bool, alarmImage: Bool, repeatImage: Bool, timeInterval: String?) {
+	func saveTask(taskTitle:    String,
+								taskTime:     String,
+								taskDate:     String,
+								taskDateDate: Date?,
+								createdAt:    Date?,
+								check:        Bool,
+								overdue:      Bool,
+								alarmImage:   Bool,
+								repeatImage:  Bool,
+								timeInterval: String?) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
 		model.taskTitle     = taskTitle
 		model.taskTime      = taskTime
 		model.taskDate      = taskDate
-		model.timeLabelDate = timeLabelDate
+		model.taskDateDate  = taskDateDate
+		model.createdAt     = createdAt
 		model.check         = check
+		model.overdue       = overdue
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.timeInterval  = timeInterval
@@ -30,8 +41,13 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		guard timeLabelDate != nil else { return }
-		sendReminderNotification("Напоминание \(taskTime)", taskTitle, timeLabelDate!, repeatImage, timeInterval)
+		
+		guard alarmImage == true else { return }
+		if repeatImage == true {
+			LocalNotification.shared.sendRepeatNotification("repeat every \(Int(timeInterval!)!/60) min", taskTitle, timeInterval!)
+		} else if alarmImage == true, repeatImage == false {
+			LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate!)
+		}
 	}
 	
 	//MARK: - Delete Cell

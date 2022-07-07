@@ -13,7 +13,6 @@ protocol CellViewModelProtocol {
 	var taskTime      : String? { get }
 	var alarmImage    : Bool { get }
 	var repeatImage   : Bool { get }
-	var timeLabelDate : Date? { get }
 	var check         : Bool { get }
 	var createdAt     : Date? { get }
 	var timeInterval  : String? { get }

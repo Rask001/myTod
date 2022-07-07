@@ -4,6 +4,7 @@ import UIKit
 class CustomCell: UITableViewCell {
 	static let shared = CustomCell()
 	static let identifier = "CustomCell"
+	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		contentView.backgroundColor = .clear
@@ -14,6 +15,8 @@ class CustomCell: UITableViewCell {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
+	
+	var taskDateDate: Date? = nil
 	
 	var backgroundViewCell: UIView        = {
 		let view                            = UIView()
@@ -31,14 +34,14 @@ class CustomCell: UITableViewCell {
 	
 	var taskTime: UILabel                 = {
 		let taskTime                        = UILabel(font: .avenirNext20()!, textColor: .black)
-		taskTime.textAlignment              = .left
+		taskTime.textAlignment              = .center
 		taskTime.adjustsFontSizeToFitWidth  = true
 		return taskTime
 	}()
 	
 	var taskDate: UILabel                 = {
 		let taskDate                        = UILabel(font: .avenirNext20()!, textColor: .black)
-		taskDate.textAlignment              = .left
+		taskDate.textAlignment              = .center
 		taskDate.adjustsFontSizeToFitWidth  = true
 		return taskDate
 	}()
@@ -53,7 +56,6 @@ class CustomCell: UITableViewCell {
 	var alarmImageView: UIImageView       = {
 		let alarmImageView                  = UIImageView()
 		alarmImageView.image                = UIImage(systemName: "alarm")
-		alarmImageView.frame                = CGRect(x: 282, y: 6, width: 14, height: 14)
 		alarmImageView.tintColor            = .gray
 		alarmImageView.contentMode          = .scaleAspectFit
 		return alarmImageView
@@ -62,7 +64,6 @@ class CustomCell: UITableViewCell {
 	var repeatImageView: UIImageView      = {
 		let repeatImageView                 = UIImageView()
 		repeatImageView.image               = UIImage(systemName: "repeat")
-		repeatImageView.frame               = CGRect(x: 265, y: 6, width: 16, height: 16)
 		repeatImageView.tintColor           = .gray
 		repeatImageView.contentMode         = .scaleAspectFit
 		return repeatImageView
@@ -83,31 +84,43 @@ class CustomCell: UITableViewCell {
 	}
 	
 	func setConstraintsCell() {
-		taskTime.translatesAutoresizingMaskIntoConstraints                                                         = false
-		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1).isActive            = true
-		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
-		taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                              = true
+		repeatImageView.translatesAutoresizingMaskIntoConstraints                                                    = false
+		repeatImageView.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 4).isActive       = true
+		repeatImageView.trailingAnchor.constraint(equalTo: self.alarmImageView.leadingAnchor, constant: -2).isActive = true
+		repeatImageView.widthAnchor.constraint(equalToConstant: 17).isActive                                         = true
+		repeatImageView.heightAnchor.constraint(equalToConstant: 17).isActive                                        = true
 		
-		taskDate.translatesAutoresizingMaskIntoConstraints                                                         = false
-		taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1).isActive                   = true
-		taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive = true
-		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                              = true
+		alarmImageView.translatesAutoresizingMaskIntoConstraints                                                     = false
+		alarmImageView.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 6).isActive        = true
+		alarmImageView.trailingAnchor.constraint(equalTo: self.taskTime.leadingAnchor, constant: -4).isActive        = true
+		alarmImageView.widthAnchor.constraint(equalToConstant: 14).isActive                                          = true
+		alarmImageView.heightAnchor.constraint(equalToConstant: 14).isActive                                         = true
 		
-		backgroundViewCell.translatesAutoresizingMaskIntoConstraints                                               = false
-		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive              = true
-		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive          = true
-		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive                     = true
-		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive             = true
-		
-		buttonCell.translatesAutoresizingMaskIntoConstraints                                                       = false
-		buttonCell.centerYAnchor.constraint(equalTo: self.backgroundViewCell.centerYAnchor).isActive               = true
-		buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10).isActive = true
-		buttonCell.heightAnchor.constraint(equalToConstant: 35).isActive                                           = true
-		buttonCell.widthAnchor.constraint(equalToConstant: 35).isActive                                            = true
-		
-		taskTitle.translatesAutoresizingMaskIntoConstraints                                                        = false
-		taskTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive                                   = true
-		taskTitle.leadingAnchor.constraint(equalTo: buttonCell.trailingAnchor, constant: 8).isActive               = true
-		taskTitle.trailingAnchor.constraint(equalTo: self.repeatImageView.leadingAnchor, constant: -3).isActive    = true
+		taskTime.translatesAutoresizingMaskIntoConstraints                                                           = false
+		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 1).isActive              = true
+		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive   = true
+		taskTime.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                                = true
+		  
+		taskDate.translatesAutoresizingMaskIntoConstraints                                                           = false
+		taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 1).isActive                     = true
+		taskDate.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -3).isActive   = true
+		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                                = true
+		  
+		backgroundViewCell.translatesAutoresizingMaskIntoConstraints                                                 = false
+		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive                = true
+		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive            = true
+		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive                       = true
+		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive               = true
+		  
+		buttonCell.translatesAutoresizingMaskIntoConstraints                                                         = false
+		buttonCell.centerYAnchor.constraint(equalTo: self.backgroundViewCell.centerYAnchor).isActive                 = true
+		buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10).isActive   = true
+		buttonCell.heightAnchor.constraint(equalToConstant: 35).isActive                                             = true
+		buttonCell.widthAnchor.constraint(equalToConstant: 35).isActive                                              = true
+		  
+		taskTitle.translatesAutoresizingMaskIntoConstraints                                                          = false
+		taskTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive                                     = true
+		taskTitle.leadingAnchor.constraint(equalTo: buttonCell.trailingAnchor, constant: 8).isActive                 = true
+		taskTitle.trailingAnchor.constraint(equalTo: self.repeatImageView.leadingAnchor, constant: -3).isActive      = true
 	}
 }

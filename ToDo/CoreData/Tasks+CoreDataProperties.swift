@@ -19,13 +19,13 @@ extension Tasks {
     @NSManaged public var taskTitle: String
     @NSManaged public var taskTime: String?
 	  @NSManaged public var taskDate: String?
-    @NSManaged public var timeLabelDate: Date?
+	  @NSManaged public var taskDateDate: Date?
     @NSManaged public var createdAt: Date?
     @NSManaged public var alarmImage: Bool
 	  @NSManaged public var repeatImage: Bool
     @NSManaged public var check: Bool
+	  @NSManaged public var overdue: Bool
 	  @NSManaged public var timeInterval: String?
-
 }
 
 extension Tasks : Identifiable {

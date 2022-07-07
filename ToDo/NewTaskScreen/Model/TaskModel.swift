@@ -12,22 +12,24 @@ class TaskModel: NSObject {
 	var taskTitle     : String
 	var taskTime      : String?
 	var taskDate      : String?
-	var alarmImage    : Bool
-	var repeatImage   : Bool
-	var timeLabelDate : Date?
+	var taskDateDate  : Date?
+	var alarmImage    : Bool = false
+	var repeatImage   : Bool = false
 	var check         : Bool = false
+	var overdue       : Bool = false
 	var createdAt     : Date?
-	var timeInterval  : String?
+	var timeInterval  : String? = nil
 	
 	
-	init(taskTitle: String, taskTime: String?, taskDate: String?, alarmImage: Bool, repeatImage: Bool, timeLabelDate: Date?, check: Bool, createdAt: Date?, timeInterval: String?) {
+	init(taskTitle: String, taskTime: String?, taskDate: String?, taskDateDate: Date?, alarmImage: Bool, repeatImage: Bool, check: Bool, overdue: Bool, createdAt: Date?, timeInterval: String?) {
 		self.taskTitle     = taskTitle
 		self.taskTime      = taskTime
 		self.taskDate      = taskDate
+		self.taskDateDate  = taskDateDate
 		self.alarmImage    = alarmImage
 		self.repeatImage   = repeatImage
-		self.timeLabelDate = timeLabelDate
 		self.check         = check
+		self.overdue       = overdue
 		self.createdAt     = createdAt
 		self.timeInterval  = timeInterval
 
@@ -36,11 +38,12 @@ class TaskModel: NSObject {
 	static let shared = TaskModel(taskTitle: "",
 												 taskTime: nil,
 												 taskDate: nil,
+												 taskDateDate: nil,
 												 alarmImage: false,
 												 repeatImage: false,
-												 timeLabelDate: nil,
 												 check: false,
-												 createdAt: nil,
+												 overdue: false,
+												 createdAt: Date.now,
 												 timeInterval: nil)
 	
 }

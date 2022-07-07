@@ -20,7 +20,7 @@ extension UIColor {
 		
 		// MARK: Public
 		static let borderColor = rgb(254, 250, 236)
-		static let backgroundColor = rgb(250, 138, 138)
+		static let backgroundColor = rgb(0, 66, 37)
 		static let scoreColor = rgb(255, 193, 45)
 		static let textColor = UIColor.white
 		static let playerBackgroundColor = rgb(84, 77, 126)

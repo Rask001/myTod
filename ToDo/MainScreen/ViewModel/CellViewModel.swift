@@ -9,12 +9,12 @@ import Foundation
 
 class CellViewModel: NSObject, CellViewModelProtocol {
 	
+	
 	let taskModel: TaskModel
 	var taskTitle: String
 	var taskTime: String?
 	var alarmImage: Bool
 	var repeatImage: Bool
-	var timeLabelDate: Date?
 	var check: Bool
 	var createdAt: Date?
 	var timeInterval: String?
@@ -26,7 +26,6 @@ class CellViewModel: NSObject, CellViewModelProtocol {
 		self.taskTime = taskModel.taskTime
 		self.alarmImage = taskModel.alarmImage
 		self.repeatImage = taskModel.repeatImage
-		self.timeLabelDate = taskModel.timeLabelDate
 		self.check = taskModel.check
 		self.createdAt = taskModel.createdAt
 		self.timeInterval = taskModel.timeInterval

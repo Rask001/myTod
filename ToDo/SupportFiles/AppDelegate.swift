@@ -14,22 +14,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
 
-	let notificationCenter = UNUserNotificationCenter.current()
+	//let notificationCenter = UNUserNotificationCenter.current()
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		 window = UIWindow(frame: UIScreen.main.bounds)
 		 window?.rootViewController = MainVC()
 		 window?.makeKeyAndVisible()
-		 
 		 //запрос у пользователя на отправку локал нотификейшн
-		 notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
-			 guard success else { return }
-			 self.notificationCenter.getNotificationSettings { (settings) in
-				 guard settings.authorizationStatus == .authorized else { return }
-			 }
-		 }
+		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self
-		 
+		 LocalNotificationRequest.shared.requestAuthorization(notificationCenter: notificationCenter)
 		 return true
 	 }
 
@@ -79,9 +73,10 @@ lazy var persistentContainer: NSPersistentContainer = {
 	}
 }
 
-
 //MARK: NOTIFICATION EXTENSION
 extension AppDelegate: UNUserNotificationCenterDelegate {
+
+	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 		completionHandler([.sound, .banner])
 		print("уведомление в то время как приложение открыто")

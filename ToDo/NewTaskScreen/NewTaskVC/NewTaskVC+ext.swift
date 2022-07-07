@@ -25,12 +25,6 @@ extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDe
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		let result = weekDaysArray[row]
 		weekDays = result
-		infoLabel.text = "repeat every \(result) at \(TaskModel.shared.taskTime!)"
+		infoLabel.text = "repeat every \(weekDays) at \(TaskModel.shared.taskTime!)"
 	}
-	
-	
-	@objc func handleTap() {
-		print("tap")
-	}
-	
 }

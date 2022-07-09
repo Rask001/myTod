@@ -11,7 +11,6 @@ import Foundation
 class LocalNotification {
 	static var shared = LocalNotification()
 	let content = UNMutableNotificationContent()
-
 	
 	func sendReminderNotification(_ title: String, _ body: String, _ taskDateDate: Date) {
 		self.content.title = title
@@ -42,7 +41,6 @@ class LocalNotification {
 		}
 	}
 }
-
 
 //запрос у пользователя на отправку локал нотификейшн
 class LocalNotificationRequest {

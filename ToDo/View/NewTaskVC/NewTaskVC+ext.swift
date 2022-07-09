@@ -19,12 +19,12 @@ extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDe
 	}
 	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
 		let result = weekDaysArray[row]
-		weekDays = result
+		taskStruct.weekDay = result
 		return result
 	}
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		let result = weekDaysArray[row]
-		weekDays = result
-		infoLabel.text = "repeat every \(weekDays) at \(TaskModel.shared.taskTime!)"
+		taskStruct.weekDay = result
+		infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime ?? "")"
 	}
 }

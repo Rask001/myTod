@@ -16,6 +16,18 @@ class CustomCell: UITableViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	
+	weak var cellViewModel: CellViewModel! {
+					didSet {
+						self.taskTitle.text = cellViewModel.taskTitle
+						self.taskTime.text = cellViewModel.taskTime
+						self.taskDate.text = cellViewModel.taskDate
+						self.alarmImageView.isHidden = cellViewModel.alarmImage
+						self.repeatImageView.isHidden = cellViewModel.repeatImage
+					}
+	}
+	
+	
 	var taskDateDate: Date? = nil
 	
 	var backgroundViewCell: UIView        = {

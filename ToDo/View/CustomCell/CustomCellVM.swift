@@ -16,8 +16,6 @@ class CustomCellVM {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let items  = CoreDataMethods.shared.coreDataModel[indexPath.row]
 		let button = cell.buttonCell
-		button.tag = indexPath.row
-		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 		cell.taskDateDate             = items.taskDateDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
@@ -26,9 +24,11 @@ class CustomCellVM {
 		cell.repeatImageView.isHidden = !items.repeatImage
 		if items.repeatImage == false {
 		cell.taskDate.text            = items.taskDate
-		}else{
+		} else {
 		cell.taskDate.text            = "every \(Int(items.timeInterval!)!/60) min"
 		}
+		button.tag = indexPath.row
+		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 		visualViewCell(items: items, button: button, taskDateDate: cell.taskDateDate, cell: cell)
 		return cell
 	}
@@ -36,15 +36,12 @@ class CustomCellVM {
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	private func visualViewCell(items: Tasks, button: UIButton, taskDateDate: Date?, cell: CustomCell) {
 		
-		
 		if items.check == false { // если таск не отмечен как выполненный
-	
 			button.backgroundColor = MainVC.shared.view.backgroundColor
 			button.setImage(nil, for: .normal)
 			if taskDateDate == nil { // если у него нет даты и выремени выполнения, то есть нил.
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 				strikethroughStyle(cell: cell)
-			
 				//LocalNotification.shared.sendRepeatNotification("repeat every \(Int(items.timeInterval!)!/60) min", items.taskTitle, items.timeInterval!)
 			} else { // если есть время выполнения
 				if taskDateDate! < Date() { // если дата и время просрочены красим в красный
@@ -71,7 +68,7 @@ class CustomCellVM {
 	}
 
 	
-	private func strikethroughStyle(cell: CustomCell){
+	private func strikethroughStyle(cell: CustomCell) {
 		cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
 	}
 	

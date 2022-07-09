@@ -4,7 +4,6 @@
         <attribute name="alarmImage" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="check" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="overdue" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="repeatImage" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskDate" optional="YES" attributeType="String"/>
         <attribute name="taskDateDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -13,6 +12,6 @@
         <attribute name="timeInterval" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Tasks" positionX="0" positionY="0" width="128" height="179"/>
+        <element name="Tasks" positionX="0" positionY="0" width="128" height="164"/>
     </elements>
 </model>

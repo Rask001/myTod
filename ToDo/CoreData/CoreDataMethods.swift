@@ -13,12 +13,11 @@ class CoreDataMethods {
 	
 	//MARK: - SAVE TASK
 	func saveTask(taskTitle:    String,
-								taskTime:     String,
-								taskDate:     String,
+								taskTime:     String?,
+								taskDate:     String?,
 								taskDateDate: Date?,
 								createdAt:    Date?,
 								check:        Bool,
-								overdue:      Bool,
 								alarmImage:   Bool,
 								repeatImage:  Bool,
 								timeInterval: String?) {
@@ -31,7 +30,6 @@ class CoreDataMethods {
 		model.taskDateDate  = taskDateDate
 		model.createdAt     = createdAt
 		model.check         = check
-		model.overdue       = overdue
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.timeInterval  = timeInterval
@@ -46,32 +44,30 @@ class CoreDataMethods {
 		if repeatImage == true {
 			LocalNotification.shared.sendRepeatNotification("repeat every \(Int(timeInterval!)!/60) min", taskTitle, timeInterval!)
 		} else if alarmImage == true, repeatImage == false {
-			LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate!)
+			LocalNotification.shared.sendReminderNotification("reminder \(taskTime!)", taskTitle, taskDateDate!)
 		}
 	}
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
 		//tappedRigid()
-		let model            = coreDataModel
 		let task             = coreDataModel[indexPath.row]
 		let taskTitle        = task.taskTitle
 		let areYouSureAllert = UIAlertController(title: "Delete '\(taskTitle)'?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
-		let yesAction        = UIAlertAction(title: "Yes, delete '\(taskTitle)'", style: .destructive) {_ in 
-			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task, model: model)
+		let yesAction        = UIAlertAction(title: "Yes, delete '\(taskTitle)'", style: .destructive) {_ in
+			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task)
 		}
 		areYouSureAllert.addAction(noAction)
 		areYouSureAllert.addAction(yesAction)
 		presentedViewController.present(areYouSureAllert, animated: true)
 	}
 	
-	private func deleteFromContext(indexPath: IndexPath, taskTitle: String, task: Tasks, model: [Tasks]) {
-		var model   = coreDataModel
+	private func deleteFromContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(taskTitle)"])
 		context.delete(task as NSManagedObject)
-		model.remove(at: indexPath.row)
+		coreDataModel.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
 			try context.save()
@@ -82,7 +78,7 @@ class CoreDataMethods {
 	}
 	
 	//MARK: - Fetch Request
-	public func fetchRequest(){
+	public func fetchRequest() {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
 		do{

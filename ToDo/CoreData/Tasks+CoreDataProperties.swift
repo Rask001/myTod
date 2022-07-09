@@ -16,6 +16,7 @@ extension Tasks {
         return NSFetchRequest<Tasks>(entityName: "Tasks")
     }
 
+	
     @NSManaged public var taskTitle: String
     @NSManaged public var taskTime: String?
 	  @NSManaged public var taskDate: String?
@@ -24,7 +25,6 @@ extension Tasks {
     @NSManaged public var alarmImage: Bool
 	  @NSManaged public var repeatImage: Bool
     @NSManaged public var check: Bool
-	  @NSManaged public var overdue: Bool
 	  @NSManaged public var timeInterval: String?
 }
 

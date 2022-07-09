@@ -16,12 +16,11 @@ class TaskModel: NSObject {
 	var alarmImage    : Bool = false
 	var repeatImage   : Bool = false
 	var check         : Bool = false
-	var overdue       : Bool = false
 	var createdAt     : Date?
 	var timeInterval  : String? = nil
 	
 	
-	init(taskTitle: String, taskTime: String?, taskDate: String?, taskDateDate: Date?, alarmImage: Bool, repeatImage: Bool, check: Bool, overdue: Bool, createdAt: Date?, timeInterval: String?) {
+	init(taskTitle: String, taskTime: String?, taskDate: String?, taskDateDate: Date?, alarmImage: Bool, repeatImage: Bool, check: Bool, createdAt: Date?, timeInterval: String?) {
 		self.taskTitle     = taskTitle
 		self.taskTime      = taskTime
 		self.taskDate      = taskDate
@@ -29,7 +28,6 @@ class TaskModel: NSObject {
 		self.alarmImage    = alarmImage
 		self.repeatImage   = repeatImage
 		self.check         = check
-		self.overdue       = overdue
 		self.createdAt     = createdAt
 		self.timeInterval  = timeInterval
 
@@ -42,7 +40,6 @@ class TaskModel: NSObject {
 												 alarmImage: false,
 												 repeatImage: false,
 												 check: false,
-												 overdue: false,
 												 createdAt: Date.now,
 												 timeInterval: nil)
 	

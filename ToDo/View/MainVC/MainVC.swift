@@ -9,6 +9,8 @@ import UIKit
 
 class MainVC: UIViewController {
 	
+	weak var customCell: CustomCellVM!
+	
 	//MARK: - Properties
 	static var shared   = MainVC()
 	var tableView       = UITableView()

@@ -8,7 +8,7 @@
 import Foundation
 
 struct TaskStruct {
-	var taskTitle     : String?
+	var taskTitle     : String = ""
 	var taskTime      : String?
 	var taskDate      : String?
 	var taskDateDate  : Date?

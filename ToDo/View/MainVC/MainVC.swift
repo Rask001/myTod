@@ -9,9 +9,6 @@ import UIKit
 
 class MainVC: UIViewController {
 	
-	weak var customCell: CustomCellVM!
-	//var viewModel: TableViewViewModelType?
-	
 	//MARK: - Properties
 	static var shared   = MainVC()
 	let newTaskVC       = NewTaskVC()
@@ -24,27 +21,13 @@ class MainVC: UIViewController {
 		CoreDataMethods.shared.fetchRequest()
 	}
 	
-	//var viewModel: CellViewModelProtocol? {
-//		didSet {
-//			fillUI()
-//		}
-//	}
-	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		//self.viewModel = ViewModel()
 		setupButton()
 		confugureTableView()
 		notification()
-		//fillUI()
 	}
-	
-//	fileprivate func fillUI() {
-//		if !isViewLoaded { return }
-//		guard let viewModel = viewModel else { return }
-//
-//	}
 	
 	//MARK: - Mhetods
 	private func confugureTableView() {
@@ -90,5 +73,17 @@ class MainVC: UIViewController {
 		  buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
 			buttonNewTask.widthAnchor.constraint(equalToConstant: 120).isActive                             = true
 			buttonNewTask.heightAnchor.constraint(equalToConstant: 50).isActive                             = true
+	}
+	
+	
+	//MARK: - Notification
+	func notification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
+		
+	}
+	@objc func tableViewReloadData(notification: NSNotification){
+		CoreDataMethods.shared.fetchRequest()
+		self.tableView.reloadData()
+		
 	}
 }

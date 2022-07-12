@@ -80,9 +80,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 		completionHandler([.sound, .banner])
 		print("уведомление в то время как приложение открыто")
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
 	}
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
 		print("тут можно что-нибудь сделать когда пользователь нажимает на уведомление")
+		//сделать юай алерт с кейсами: выполненно, отсрочка на...
 	}
 }

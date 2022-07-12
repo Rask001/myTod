@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 class NewTaskVC: UIViewController {
+	
 	var taskStruct = TaskStruct()
 	
 	//MARK: - Properties
@@ -69,7 +70,7 @@ class NewTaskVC: UIViewController {
 	
 	@objc private func textFieldDidChande() {
 		switchAlert.isEnabled = true
-		taskStruct.taskTitle = textField.text
+		taskStruct.taskTitle = textField.text ?? ""
 		if textField.text == ""{
 			allEnabled()
 		}
@@ -137,7 +138,7 @@ class NewTaskVC: UIViewController {
 	
 	//MARK: Set Date Picker
 	private func pickerSetup() {
-		let dateNow = Date()
+		let dateNow = Date.now
 		self.dataPicker.isEnabled    = false
 		self.dataPicker.date         = dateNow
 		self.dataPicker.minimumDate  = dateNow
@@ -318,25 +319,33 @@ private func alertLabelSetup() {
 	}
 	
 
-	@objc private func continueFunc(){
+	@objc private func continueFunc() {
 		guard let textTitle = textField.text, !textTitle.isEmpty else { return }
 		guard infoLabel.text != "Set the date and time of the reminder" else { return }
 		guard infoLabel.text != "Choose a repeat rate" else { return }
 		guard infoLabel.text != "no repeat" else { return }
 		taskStruct.createdAt  = Date.now
-		  coreData.saveTask(taskTitle:     taskStruct.taskTitle!,
-												taskTime:      taskStruct.taskTime,
-												taskDate:      taskStruct.taskDate,
-												taskDateDate:  taskStruct.taskDateDate,
-												createdAt:     taskStruct.createdAt,
-												check:         taskStruct.check,
-												alarmImage:    taskStruct.alarmImage,
-												repeatImage:   taskStruct.repeatImage,
-												timeInterval:  taskStruct.timeInterval)
+		
+		if switchAlert.isOn == false {
+			coreData.saveJustTask(taskTitle:     taskStruct.taskTitle,
+														createdAt:     taskStruct.createdAt!)
+		} else if switchAlertRepeat.isOn == true {
+			coreData.saveRepeatTask(taskTitle:   taskStruct.taskTitle,
+															createdAt:   taskStruct.createdAt!,
+															alarmImage:  taskStruct.alarmImage,
+															repeatImage: taskStruct.repeatImage,
+															timeInterval:taskStruct.timeInterval!)
+		} else {
+			coreData.saveAlertTask(taskTitle:    taskStruct.taskTitle,
+														 taskTime:     taskStruct.taskTime!,
+														 taskDate:     taskStruct.taskDate!,
+														 taskDateDate: taskStruct.taskDateDate!,
+														 createdAt:    taskStruct.createdAt!,
+														 alarmImage:   taskStruct.alarmImage)
+		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
-	
 	@objc private func cancelFunc(){
 		textField.text                = nil
 		dataPicker.isEnabled          = false
@@ -352,6 +361,8 @@ private func alertLabelSetup() {
 		taskStruct.taskDate           = ""
 		taskStruct.taskDateDate       = nil
 		taskStruct.timeInterval       = nil
+		taskStruct.repeatImage        = false
+		taskStruct.alarmImage         = false
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
 	}

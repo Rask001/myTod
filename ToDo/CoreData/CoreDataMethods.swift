@@ -13,15 +13,13 @@ class CoreDataMethods {
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
-	func saveTask(taskTitle:    String,
-								taskTime:     String?,
-								taskDate:     String?,
-								taskDateDate: Date?,
-								createdAt:    Date?,
-								check:        Bool,
-								alarmImage:   Bool,
-								repeatImage:  Bool,
-								timeInterval: String?) {
+	
+	func saveAlertTask(taskTitle:    String,
+										 taskTime:     String,
+										 taskDate:     String,
+										 taskDateDate: Date,
+										 createdAt:    Date,
+										 alarmImage:   Bool ) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
@@ -30,22 +28,65 @@ class CoreDataMethods {
 		model.taskDate      = taskDate
 		model.taskDateDate  = taskDateDate
 		model.createdAt     = createdAt
-		model.check         = check
 		model.alarmImage    = alarmImage
-		model.repeatImage   = repeatImage
-		model.timeInterval  = timeInterval
+		model.check         = false
+		model.repeatImage   = false
+		model.timeInterval  = nil
 		do{
 			try context.save()
 			coreDataModel.append(model)
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		
-		guard alarmImage == true else { return }
-		if repeatImage == true {
-			LocalNotification.shared.sendRepeatNotification("repeat every \(Int(timeInterval!)!/60) min", taskTitle, timeInterval!)
-		} else if alarmImage == true, repeatImage == false {
-			LocalNotification.shared.sendReminderNotification("reminder \(taskTime!)", taskTitle, taskDateDate!)
+		LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate)
+	}
+	
+	
+	func saveRepeatTask(taskTitle:    String,
+											createdAt:    Date,
+											alarmImage:   Bool,
+											repeatImage:  Bool,
+											timeInterval: String) {
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
+		let model = Tasks(entity: entity, insertInto: context)
+		model.taskTitle     = taskTitle
+		model.alarmImage    = alarmImage
+		model.repeatImage   = repeatImage
+		model.timeInterval  = timeInterval
+		model.createdAt     = createdAt
+		model.taskTime      = nil
+		model.taskDate      = nil
+		model.taskDateDate  = nil
+		model.check         = false
+		do{
+			try context.save()
+			coreDataModel.append(model)
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		LocalNotification.shared.sendRepeatNotification("repeat every \(Int(timeInterval)!/60) min", taskTitle, timeInterval)
+	}
+	
+	
+	func saveJustTask(taskTitle: String, createdAt: Date) {
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
+		let model = Tasks(entity: entity, insertInto: context)
+		model.taskTitle     = taskTitle
+		model.createdAt     = createdAt
+		model.taskTime      = nil
+		model.taskDate      = nil
+		model.taskDateDate  = nil
+		model.check         = false
+		model.alarmImage    = false
+		model.repeatImage   = false
+		model.timeInterval  = nil
+		do{
+			try context.save()
+			coreDataModel.append(model)
+		} catch let error as NSError {
+			print(error.localizedDescription)
 		}
 	}
 	

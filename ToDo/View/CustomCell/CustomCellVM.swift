@@ -16,6 +16,11 @@ class CustomCellVM {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let items  = CoreDataMethods.shared.coreDataModel[indexPath.row]
 		let button = cell.buttonCell
+		
+		////		guard let tableViewCell = cell, let viewModel = viewModel else { return }
+		////		let cellViewModel = viewModel?.cellViewModel(forIndexPath: indexPath)
+		////		cell.viewModel = cellViewModel
+		///
 		cell.taskDateDate             = items.taskDateDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
@@ -25,7 +30,7 @@ class CustomCellVM {
 		if items.repeatImage == false {
 		cell.taskDate.text            = items.taskDate
 		} else {
-		cell.taskDate.text            = "every \(Int(items.timeInterval!)!/60) min"
+			cell.taskDate.text            = "every \((Int(items.timeInterval!)!)/60) min" //починить, когда после установки репита начать ставить время будет не очень. нужно делать неактивным датапикер при 3ем сегменте
 		}
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
@@ -94,4 +99,3 @@ class CustomCellVM {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 }
-

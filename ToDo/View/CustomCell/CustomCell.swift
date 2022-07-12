@@ -17,15 +17,23 @@ class CustomCell: UITableViewCell {
 	}
 	
 	
-	weak var cellViewModel: CellViewModel! {
-					didSet {
-						self.taskTitle.text = cellViewModel.taskTitle
-						self.taskTime.text = cellViewModel.taskTime
-						self.taskDate.text = cellViewModel.taskDate
-						self.alarmImageView.isHidden = cellViewModel.alarmImage
-						self.repeatImageView.isHidden = cellViewModel.repeatImage
-					}
-	}
+//	var viewModel: TableViewCellViewModelType? {
+//		willSet(viewModel) {
+//			guard let viewModel = viewModel else { return }
+//			
+//			self.taskTitle.text = viewModel.taskTitle
+//			self.taskTime.text = viewModel.taskTime
+//			self.taskDate.text = viewModel.taskDate
+//			self.alarmImageView.isHidden = !viewModel.alarmImage
+//			self.repeatImageView.isHidden = !viewModel.repeatImage
+//			if viewModel.repeatImage == false {
+//				self.taskDate.text = viewModel.taskDate
+//			} else {
+//				self.taskDate.text = "every\(Int(viewModel.timeInterval!)!/60) min"
+//			}
+//			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+//		}
+//	}
 	
 	
 	var taskDateDate: Date? = nil

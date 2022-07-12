@@ -9,6 +9,7 @@ import CoreData
 
 class CoreDataMethods {
 	var coreDataModel: [Tasks] = []
+	//var model: Tasks!
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
@@ -49,13 +50,13 @@ class CoreDataMethods {
 	}
 	
 	//MARK: - Delete Cell
-	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
+	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) { 
 		//tappedRigid()
 		let task             = coreDataModel[indexPath.row]
 		let taskTitle        = task.taskTitle
-		let areYouSureAllert = UIAlertController(title: "Delete '\(taskTitle)'?", message: nil, preferredStyle: .actionSheet)
+		let areYouSureAllert = UIAlertController(title: "Delete \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
-		let yesAction        = UIAlertAction(title: "Yes, delete '\(taskTitle)'", style: .destructive) {_ in
+		let yesAction        = UIAlertAction(title: "Yes, delete \"\(taskTitle)\"", style: .destructive) {_ in
 			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task)
 		}
 		areYouSureAllert.addAction(noAction)

@@ -21,16 +21,18 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		 CustomCellVM.shared.setupCustomCell(tableView: tableView, indexPath: indexPath)
+		  CustomCellVM.shared.setupCustomCell(tableView: tableView, indexPath: indexPath)
 	}
 	
 
 	//MARK: - Notification
 	func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
+		
 	}
 	@objc func tableViewReloadData(notification: NSNotification){
 		CoreDataMethods.shared.fetchRequest()
 		self.tableView.reloadData()
+		
 	}
 }

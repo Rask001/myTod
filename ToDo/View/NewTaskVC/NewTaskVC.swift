@@ -25,8 +25,6 @@ class NewTaskVC: UIViewController {
 	let repeatLabel         = UIImageView()
 	var repeatSegmented     = UISegmentedControl()
 	var coreData            = CoreDataMethods()
-	var dayOfMonthLabel     = ""
-	var weekDays            = ""
 	var segmentedItems      = ["day", "week", "month", "set time"]
 	let weekDaysArray       = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	
@@ -152,7 +150,7 @@ class NewTaskVC: UIViewController {
 		infoLabelTextDate(paramDP: paramDataPicker, month: resulst)
 	}
 	
-	private func dateFormatter(dateFromDP: UIDatePicker) -> String {
+	private func dateFormatter(dateFromDP: UIDatePicker) -> String{
 		let dateFromDP                 = dateFromDP.date
 		let timeFormatter              = DateFormatter()
 		let dateFormatter              = DateFormatter()
@@ -164,7 +162,7 @@ class NewTaskVC: UIViewController {
 		dayOfMonth.dateFormat          = "d"
 		taskStruct.taskTime            = timeFormatter.string(from: dateFromDP)
 		taskStruct.taskDate            = dateFormatter.string(from: dateFromDP)
-		dayOfMonthLabel                = dayOfMonth.string(from: dateFromDP)
+		taskStruct.dayOfMonth          = dayOfMonth.string(from: dateFromDP)
 		let monthLabel                 = dateFormatterMonth.string(from: dateFromDP)
 		taskStruct.taskDateDate        = dateFromDP
 		return monthLabel
@@ -177,7 +175,9 @@ class NewTaskVC: UIViewController {
 		} else if repeatSegmented.selectedSegmentIndex == 1{
 			infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)"
 		} else if repeatSegmented.selectedSegmentIndex == 2 {
-			infoLabel.text = "repeat every month on the\n \(dayOfMonthLabel)th at \(taskStruct.taskTime!)"
+			infoLabel.text = "repeat every month on the\n \(taskStruct.dayOfMonth!)th at \(taskStruct.taskTime!)"
+		} else {
+			infoLabel.text = "the reminder will be set for\n \(month) \(taskStruct.taskTime!)"
 		}
 	}
 		
@@ -294,6 +294,7 @@ private func alertLabelSetup() {
 			self.setTimePicker.isHidden    = true
 			self.setWeekDay.isHidden       = true
 			self.infoLabel.text            = "Set the date and time of the reminder"
+			self.taskStruct.repeatImage    = false
 		}else{
 			self.repeatSegmented.isEnabled = true
 			self.dataPicker.isHidden       = false
@@ -333,7 +334,7 @@ private func alertLabelSetup() {
 												repeatImage:   taskStruct.repeatImage,
 												timeInterval:  taskStruct.timeInterval)
 		cancelFunc()
-			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	
 	@objc private func cancelFunc(){

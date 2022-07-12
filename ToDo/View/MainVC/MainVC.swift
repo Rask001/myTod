@@ -4,18 +4,19 @@
 //
 //  Created by Антон on 05.05.2022.
 //
-
+import CoreData
 import UIKit
 
 class MainVC: UIViewController {
 	
 	weak var customCell: CustomCellVM!
+	//var viewModel: TableViewViewModelType?
 	
 	//MARK: - Properties
 	static var shared   = MainVC()
+	let newTaskVC       = NewTaskVC()
 	var tableView       = UITableView()
 	let buttonNewTask   = UIButton()
-	let newTaskVC       = NewTaskVC()
 	
 	//MARK: - viewWillAppear
 	override func viewWillAppear(_ animated: Bool) {
@@ -23,7 +24,7 @@ class MainVC: UIViewController {
 		CoreDataMethods.shared.fetchRequest()
 	}
 	
-//	var viewModel: CellViewModelProtocol? {
+	//var viewModel: CellViewModelProtocol? {
 //		didSet {
 //			fillUI()
 //		}
@@ -32,6 +33,7 @@ class MainVC: UIViewController {
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		//self.viewModel = ViewModel()
 		setupButton()
 		confugureTableView()
 		notification()
@@ -46,22 +48,19 @@ class MainVC: UIViewController {
 	
 	//MARK: - Mhetods
 	private func confugureTableView() {
-		self.view.backgroundColor = .backgroundColor
 		self.view.addSubview(tableView)
+		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 		self.tableView.backgroundColor  = .clear//UIColor(named: "BGColor")
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = 60
 		self.tableView.isScrollEnabled  = true // скроллинг
-		setTableViewDelegates()
+		self.tableView.delegate         = self
+		self.tableView.dataSource       = self
 		setConstraits()
 	}
 	
-	private func setTableViewDelegates(){
-		tableView.delegate   = self
-		tableView.dataSource = self
-	}
 	
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)

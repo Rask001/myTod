@@ -18,4 +18,5 @@ struct TaskStruct {
 	var createdAt     : Date?
 	var timeInterval  : String? = nil
 	var weekDay       : String?
+	var dayOfMonth    : String?
 }

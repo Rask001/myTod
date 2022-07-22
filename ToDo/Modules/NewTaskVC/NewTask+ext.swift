@@ -1,5 +1,5 @@
 //
-//  NewTaskVC+exst.swift
+//  NewTask+exst.swift
 //  ToDo
 //
 //  Created by Антон on 24.06.2022.
@@ -10,7 +10,7 @@ import UIKit
 
 //MARK: - Extension
 
-extension NewTaskVC: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+extension NewTask: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {
 		return 1
 	}

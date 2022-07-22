@@ -11,7 +11,6 @@ class CustomCell: UITableViewCell {
 		addSubviewAndConfigure()
 		setConstraintsCell()
 	}
-	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -49,7 +48,7 @@ class CustomCell: UITableViewCell {
 	var buttonCell: UIButton              = {
 		let buttonCell                      = UIButton(type: .system)
 		buttonCell.layer.cornerRadius       = 10
-		buttonCell.backgroundColor          = MainVC.shared.view.backgroundColor
+		buttonCell.backgroundColor          = UIColor.backgroundColor
 		return buttonCell
 	}()
 	

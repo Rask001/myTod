@@ -1,5 +1,5 @@
 //
-//  NewTaskVC.swift
+//  NewTask.swift
 //  ToDo
 //
 //  Created by Антон on 08.05.2022.
@@ -8,10 +8,21 @@
 import Foundation
 import UIKit
 import CoreData
-
-class NewTaskVC: UIViewController {
+protocol NewTaskProtocol: AnyObject {
 	
+}
+
+class NewTask: UIViewController {
 	var taskStruct = TaskStruct()
+	private let viewModel: NewTaskViewModelProtocol
+	
+	init(viewModel: NewTaskViewModelProtocol) {
+		self.viewModel = viewModel
+		super.init(nibName: nil, bundle: nil)
+	}
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	
 	//MARK: - Properties
 	let infoLabel           = UILabel()
@@ -28,7 +39,7 @@ class NewTaskVC: UIViewController {
 	var coreData            = CoreDataMethods()
 	var segmentedItems      = ["day", "week", "month", "set time"]
 	let weekDaysArray       = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-	
+	weak var mainViewModel  : MainViewModel?
 	
 	
 	//MARK: - viewDidAppear
@@ -36,7 +47,6 @@ class NewTaskVC: UIViewController {
 	super.viewDidAppear(animated)
 		self.textField.becomeFirstResponder()
 	}
-	
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
@@ -55,7 +65,6 @@ class NewTaskVC: UIViewController {
 		infoLabelSetup()
 		setWeekDaySetup()
 	}
-	
 	
 	//MARK: - Setup
 	//textFieldSetup
@@ -88,11 +97,10 @@ class NewTaskVC: UIViewController {
 		self.setWeekDay.delegate   = self
 	}
 	
-	
 	//MARK: Set Time Picker
 	private func setTimePickerSetup() {
 		self.setTimePicker.isHidden = true
-		self.setTimePicker.datePickerMode = .time
+		self.setTimePicker.datePickerMode = .countDownTimer
 		self.setTimePicker.preferredDatePickerStyle = .wheels
 		self.setTimePicker.addTarget(self, action: #selector(setTimePicker(paramDataPicker:)), for: .valueChanged)
 	}
@@ -122,10 +130,8 @@ class NewTaskVC: UIViewController {
 				var min  = ""
 				timeH != "1" ? (hour = "hours") : (hour = "hour")
 				timeM != "1" ? (min = "minutes") : (min = "minute")
-				if timeH == "0", timeM == "0"  {
-					infoLabel.text = "no repeat"
-				} else if
-					timeM == "0" {
+		
+				if timeM == "0" {
 					infoLabel.text = "repeat every \(timeH) \(hour)"
 				} else if
 					timeH == "0" {
@@ -134,7 +140,6 @@ class NewTaskVC: UIViewController {
 					infoLabel.text = "repeat every \(timeH) \(hour) \(timeM) \(min)"
 				}
 	}
-	
 	
 	//MARK: Set Date Picker
 	private func pickerSetup() {
@@ -171,24 +176,19 @@ class NewTaskVC: UIViewController {
 	
 	private func infoLabelTextDate(paramDP: UIDatePicker, month: String) {
 		guard paramDP.isEqual(self.dataPicker) else { return }
-		if repeatSegmented.selectedSegmentIndex == 0 {
-			infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
-		} else if repeatSegmented.selectedSegmentIndex == 1{
-			infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)"
-		} else if repeatSegmented.selectedSegmentIndex == 2 {
-			infoLabel.text = "repeat every month on the\n \(taskStruct.dayOfMonth!)th at \(taskStruct.taskTime!)"
-		} else {
-			infoLabel.text = "the reminder will be set for\n \(month) \(taskStruct.taskTime!)"
-		}
+		switch repeatSegmented.selectedSegmentIndex {
+		case 0:  infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
+		case 1:  infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)"
+		case 2:  infoLabel.text = "repeat every month on the\n \(taskStruct.dayOfMonth!)th at \(taskStruct.taskTime!)"
+		default: infoLabel.text = "the reminder will be set for\n \(month) \(taskStruct.taskTime!)"
 	}
-		
+}
 	
 private func alertLabelSetup() {
 		alertLabel.image              = UIImage(systemName: "alarm")
 		alertLabel.tintColor          = .gray
 		alertLabel.contentMode        = .scaleAspectFit
 	}
-	
 	
 	private func repeatLabelSetup() {
 		repeatLabel.image             = UIImage(systemName: "repeat")
@@ -216,37 +216,35 @@ private func alertLabelSetup() {
 		switchAlert.isOn              = false
 		switchAlertRepeat.isOn        = false
 		setTimePicker.isHidden        = true
+		setWeekDay.isHidden           = true
+		infoLabel.text = "Just write you note"
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 	}
 	
 	@objc private func repeatSegmentedChange(paramRepeatSegmented: UISegmentedControl) {
 		if paramRepeatSegmented.isEqual(self.repeatSegmented){
-			let repeatFromSegmented = paramRepeatSegmented.selectedSegmentIndex
-			
-			if repeatFromSegmented == 0 {
+			switch paramRepeatSegmented.selectedSegmentIndex {
+			case 0:
 				self.dataPicker.isEnabled   = true
 				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = true
 				taskStruct.timeInterval     = "3600"
 				infoLabel.text              = "Daily reminders at set times"
-			} else if
-				repeatFromSegmented == 1 {
+			case 1:
 				self.view.endEditing(true)
 				self.dataPicker.isEnabled   = true
 				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = false
 				infoLabel.text              = "Weekly reminders at set times"
-			} else if
-				repeatFromSegmented == 2 {
+			case 2:
 				self.dataPicker.isEnabled   = true
 				self.dataPicker.isHidden    = false
 				self.setTimePicker.isHidden = true
 				self.setWeekDay.isHidden    = true
 				infoLabel.text              = "Monthly reminders at set times"
-			} else if
-				repeatFromSegmented == 3 {
+			default:
 				self.view.endEditing(true)
 				self.dataPicker.isEnabled   = false
 				self.dataPicker.isHidden    = true
@@ -285,8 +283,9 @@ private func alertLabelSetup() {
 	}
 	
 	@objc private func visibilityRepeatSegmented() {
-		taskStruct.repeatImage  = switchAlertRepeat.isOn
-		if switchAlertRepeat.isOn == false {
+		taskStruct.repeatImage = switchAlertRepeat.isOn
+		switch switchAlertRepeat.isOn {
+		case false:
 			self.repeatSegmented.isEnabled = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 			self.dataPicker.minimumDate    = Date()
@@ -296,7 +295,7 @@ private func alertLabelSetup() {
 			self.setWeekDay.isHidden       = true
 			self.infoLabel.text            = "Set the date and time of the reminder"
 			self.taskStruct.repeatImage    = false
-		}else{
+		case true:
 			self.repeatSegmented.isEnabled = true
 			self.dataPicker.isHidden       = false
 			self.dataPicker.minimumDate    = nil
@@ -318,12 +317,12 @@ private func alertLabelSetup() {
 		self.view.addSubview(navigationBar)
 	}
 	
-
 	@objc private func continueFunc() {
 		guard let textTitle = textField.text, !textTitle.isEmpty else { return }
 		guard infoLabel.text != "Set the date and time of the reminder" else { return }
 		guard infoLabel.text != "Choose a repeat rate" else { return }
 		guard infoLabel.text != "no repeat" else { return }
+		guard infoLabel.text != "Set the repeat time" else { return }
 		taskStruct.createdAt  = Date.now
 		
 		if switchAlert.isOn == false {
@@ -346,6 +345,7 @@ private func alertLabelSetup() {
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
+	
 	@objc private func cancelFunc(){
 		textField.text                = nil
 		dataPicker.isEnabled          = false
@@ -366,4 +366,8 @@ private func alertLabelSetup() {
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
 	}
+}
+
+extension NewTask: NewTaskProtocol {
+	
 }

@@ -45,4 +45,8 @@ extension UIFont {
 		return UIFont.init(name: "Futura", size: 17)
 	}
 	
+	static func futura20() -> UIFont? {
+		return UIFont.init(name: "Futura", size: 20)
+	}
+	
 }

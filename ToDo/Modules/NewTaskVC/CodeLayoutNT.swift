@@ -8,7 +8,7 @@
 import Foundation
 
 //MARK: - Extension Layout
-extension NewTaskVC {
+extension NewTask {
 	
 	func addSubviewAndConfigure(){
 		self.view.backgroundColor = .secondarySystemBackground

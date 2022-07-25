@@ -46,6 +46,7 @@ class NewTask: UIViewController {
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
 	super.viewDidAppear(animated)
+		self.setTimePicker.datePickerMode = .countDownTimer
 		self.textField.becomeFirstResponder()
 	}
 	
@@ -102,7 +103,6 @@ class NewTask: UIViewController {
 	//MARK: Set Time Picker
 	private func setTimePickerSetup() {
 		self.setTimePicker.isHidden = true
-		self.setTimePicker.datePickerMode = .countDownTimer
 		self.setTimePicker.preferredDatePickerStyle = .wheels
 		self.setTimePicker.addTarget(self, action: #selector(setTimePicker(paramDataPicker:)), for: .valueChanged)
 	}

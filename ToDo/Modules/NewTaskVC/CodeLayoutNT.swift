@@ -20,6 +20,7 @@ extension NewTask {
 		self.view.addSubview(self.repeatLabel)
 		self.view.addSubview(self.repeatSegmented)
 		self.view.addSubview(self.setTimePicker)
+		self.view.addSubview(self.setTimePicker2)
 		self.view.addSubview(self.infoLabel)
 		self.view.addSubview(self.setWeekDay)
 	}
@@ -66,6 +67,12 @@ extension NewTask {
 		self.setTimePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
 		self.setTimePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
 		self.setTimePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
+		
+		self.setTimePicker2.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.setTimePicker2.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
+		self.setTimePicker2.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
+		self.setTimePicker2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+		self.setTimePicker2.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
 		
 		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true

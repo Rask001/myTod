@@ -26,6 +26,7 @@ extension Tasks {
 	  @NSManaged public var repeatImage: Bool
     @NSManaged public var check: Bool
 	  @NSManaged public var timeInterval: String?
+  	@NSManaged public var type: String
 }
 
 extension Tasks : Identifiable {

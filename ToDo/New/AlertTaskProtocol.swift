@@ -26,7 +26,6 @@ class AlertTask: AlertTaskProtocol {
 	
 	var coreDataModel: [Tasks] = []
 	var model = TaskStruct()
-	
 	var taskTitle   : String
 	var taskTime    : String
 	var taskDate    : String

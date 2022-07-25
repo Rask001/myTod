@@ -10,8 +10,9 @@
         <attribute name="taskTime" optional="YES" attributeType="String"/>
         <attribute name="taskTitle" attributeType="String"/>
         <attribute name="timeInterval" optional="YES" attributeType="String"/>
+        <attribute name="type" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Tasks" positionX="0" positionY="0" width="128" height="164"/>
+        <element name="Tasks" positionX="0" positionY="0" width="128" height="14"/>
     </elements>
 </model>

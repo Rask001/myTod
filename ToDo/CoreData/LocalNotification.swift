@@ -40,6 +40,22 @@ class LocalNotification {
 			}
 		}
 	}
+	
+	func sendDaylyReminderNotification(_ title: String, _ body: String, _ taskDateDate: Date) {
+		self.content.title = title
+		self.content.sound = .default
+		self.content.body  = body
+		
+		let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.hour, .minute, .second], from: taskDateDate), repeats: true)
+		let request = UNNotificationRequest(identifier: "id_\(body)", content: content, trigger: trigger)
+		UNUserNotificationCenter.current().add(request) { error in
+			if error != nil {
+				print(error?.localizedDescription as Any)
+			}
+		}
+	}
+	
+	
 }
 
 //запрос у пользователя на отправку локал нотификейшн

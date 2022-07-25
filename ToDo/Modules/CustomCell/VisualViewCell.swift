@@ -22,10 +22,11 @@ class VisualViewCell {
 			cell.repeatImageView.isHidden = !items.repeatImage
 			if items.repeatImage == false {
 				cell.taskDate.text            = items.taskDate
+			} else if items.taskDateDate != nil, items.repeatImage == true {
+				cell.taskDate.text            = "every day"
 			} else {
-				cell.taskDate.text            = "every \((Int(items.timeInterval!)!)/60) min"
+		    cell.taskDate.text            = "every \((Int(items.timeInterval!)!)/60) min"
 			}
-		
 		switch items.check {
 		case false:
 			nonCheck()

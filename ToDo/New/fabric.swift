@@ -5,15 +5,15 @@
 //  Created by Антон on 12.07.2022.
 //
 
-import Foundation
-
-enum taskType {
-	case just, alert, repeated
-}
-
-class FactoryTasks {
-	static let shared = FactoryTasks()
-	
+//import Foundation
+//
+//enum taskType {
+//	case just, alert, repeated
+//}
+//
+//class FactoryTasks {
+//	static let shared = FactoryTasks()
+//	
 //	func create(type: taskType) -> MainTasksProtocol {
 //
 //		switch type {
@@ -35,7 +35,7 @@ class FactoryTasks {
 //			createRepeat()
 //		}
 //	}
-}
+//}
 
 
 

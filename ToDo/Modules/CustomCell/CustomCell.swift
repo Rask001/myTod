@@ -70,7 +70,7 @@ class CustomCell: UITableViewCell {
 	
 	
 	//MARK: - SetConstraints
-	func addSubviewAndConfigure(){
+	func addSubviewAndConfigure() {
 		self.backgroundColor = .clear
 		self.selectionStyle  = .none
 		self.addSubview(backgroundViewCell)

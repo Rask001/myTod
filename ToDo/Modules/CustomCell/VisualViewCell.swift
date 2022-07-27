@@ -19,51 +19,45 @@ class VisualViewCell {
 		cell.taskTime.isHidden        = !items.alarmImage
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage
-		if items.repeatImage == false {
-			cell.taskDate.text            = items.taskDate
-		} else if items.taskDateDate != nil, items.repeatImage == true {
-			cell.taskDate.text            = "every day"
-		} else {
-			cell.taskDate.text            = "every \((Int(items.timeInterval!)!)/60) min"
-		}
-	
+		
+		
+		//MARK: - SWITCH
 		var typeTask: String { items.type }
 		var check: Bool { items.check }
-		var isOverdue: Bool { items.taskDateDate! < Date.now }
+		var isOverdue: Bool { items.taskDateDate ?? Date.now < Date.now }
+		let strikethrough = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+		let notStrikethrough = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
+		
 		
 		switch typeTask {
-			
 		case "justType":
 			switch check {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+				cell.taskTitle.attributedText = strikethrough
 			case false:
 				button.setImage(nil, for: .normal)
 				button.backgroundColor = .backgroundColor
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
-				strikethroughStyle(cell: cell)
+				cell.taskTitle.attributedText = notStrikethrough
 			}
 			
 		case "singleAlertType":
+			cell.taskDate.text = items.taskDate
 			switch check {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+				cell.taskTitle.attributedText = strikethrough
 				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
-				if items.repeatImage == true {
-					items.repeatImage = false
-					items.alarmImage = false
-				}
 			case false:
 				switch isOverdue { //просрочено ли?
 				case true:
 					button.backgroundColor = .backgroundColor
 					button.setImage(nil, for: .normal)
 					painting(cell: cell, color: .red, colorTwo: .red)
-					strikethroughStyle(cell: cell)
+					cell.taskTitle.attributedText = notStrikethrough
 				case false:
 					standart()
 				}
@@ -71,42 +65,38 @@ class VisualViewCell {
 			}
 			
 		case "timeRepeatType":
+			guard let taskDateInt = Int(items.timeInterval!) else { return }
+			cell.taskDate.text = "every \(taskDateInt/60) min"
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
 				button.backgroundColor = .white
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+				cell.taskTitle.attributedText = strikethrough
 				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
-				if items.repeatImage == true {
-					items.repeatImage = false
-					items.alarmImage = false
-				}
 			case false:
 				standart()
+				LocalNotification.shared.sendRepeatNotification("repeat \(cell.taskDate.text!)", items.taskTitle, items.timeInterval)
 			}
 			
 		case "dayRepeatType":
+			cell.taskDate.text = "every day"
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
 				button.backgroundColor = .white
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+				cell.taskTitle.attributedText = strikethrough
 				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
-				if items.repeatImage == true {
-					items.repeatImage = false
-					items.alarmImage = false
-				}
 			case false:
 				switch isOverdue { //просрочено ли?
 				case true:
 					button.backgroundColor = .backgroundColor
 					button.setImage(nil, for: .normal)
 					painting(cell: cell, color: .red, colorTwo: .red)
-					strikethroughStyle(cell: cell)
+					cell.taskTitle.attributedText = notStrikethrough
 				case false:
 					standart()
 				}
@@ -130,11 +120,7 @@ class VisualViewCell {
 			button.backgroundColor = .backgroundColor
 			button.setImage(nil, for: .normal)
 			painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
-			strikethroughStyle(cell: cell)
-		}
-		
-		func strikethroughStyle(cell: CustomCell) {
-			cell.taskTitle.attributedText = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
+			cell.taskTitle.attributedText = notStrikethrough
 		}
 		
 		func painting(cell: CustomCell, color: UIColor, colorTwo: UIColor) {

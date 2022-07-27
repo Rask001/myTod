@@ -14,6 +14,7 @@ extension NewTask {
 		self.view.backgroundColor = .secondarySystemBackground
 		self.view.addSubview(self.textField)
 		self.view.addSubview(self.dataPicker)
+		self.view.addSubview(self.dataPickerMonth)
 		self.view.addSubview(self.switchAlert)
 		self.view.addSubview(self.switchAlertRepeat)
 		self.view.addSubview(self.alertLabel)
@@ -21,6 +22,7 @@ extension NewTask {
 		self.view.addSubview(self.repeatSegmented)
 		self.view.addSubview(self.setTimePicker)
 		self.view.addSubview(self.setTimePicker2)
+		self.view.addSubview(self.setTimePickerWeek)
 		self.view.addSubview(self.infoLabel)
 		self.view.addSubview(self.setWeekDay)
 	}
@@ -35,6 +37,10 @@ extension NewTask {
 		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
 		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
+		
+		self.dataPickerMonth.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.dataPickerMonth.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+		self.dataPickerMonth.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 40).isActive = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
 		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive         = true
@@ -74,6 +80,12 @@ extension NewTask {
 		self.setTimePicker2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
 		self.setTimePicker2.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
 		
+		self.setTimePickerWeek.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.setTimePickerWeek.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
+		self.setTimePickerWeek.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
+		self.setTimePickerWeek.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.setWeekDay.bottomAnchor, constant: 10).isActive = true
+		
 		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
 		self.setWeekDay.heightAnchor.constraint(equalToConstant: 120).isActive                                     = true
@@ -81,7 +93,7 @@ extension NewTask {
 		self.setWeekDay.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
 		
 		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                   = false
-		self.infoLabel.widthAnchor.constraint(equalToConstant: 300).isActive                                       = true
+		self.infoLabel.widthAnchor.constraint(equalToConstant: 350).isActive                                       = true
 		self.infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                       = true
 		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
 		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20).isActive           = true

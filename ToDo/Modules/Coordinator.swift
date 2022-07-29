@@ -32,7 +32,6 @@ extension Coordinator: MainOutput {
 		navigationViewController?.present(newTaskVC, animated: true, completion: nil)
 	}
 }
-DispatchQueue.global(qos: .)
 
 extension Coordinator: NewTaskOutput {
 }

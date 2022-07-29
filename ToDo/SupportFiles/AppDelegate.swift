@@ -11,11 +11,10 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+	//weak var delegate: ReloadTableViewDelegate?
 	var window: UIWindow?
 	private let assembly = Assembly()
 	private lazy var cootdinator = Coordinator(assembly: assembly)
-
 	//let notificationCenter = UNUserNotificationCenter.current()
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -79,13 +78,33 @@ lazy var persistentContainer: NSPersistentContainer = {
 
 //MARK: NOTIFICATION EXTENSION
 extension AppDelegate: UNUserNotificationCenterDelegate {
+//	func tableViewReload() {
+//		if let delegate = delegate {
+//			delegate.tableViewReload()
+//			print("lol")
+//		}
+//	}
+//
 
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 		completionHandler([.sound, .banner])
 		print("уведомление в то время как приложение открыто")
-		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
+		 
+		//deleg()
+		//		weak var view: Main?
+//		DispatchQueue.main.async {
+//			view?.viewModel.reloadTable()
+//		}
+	//NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
+		
 	}
+//	func deleg() {
+//		DispatchQueue.global(qos: .userInteractive).async {
+//			print("11")
+//			self.delegate?.tableViewReload()
+//		}
+//	}
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
@@ -93,3 +112,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 		//сделать юай алерт с кейсами: выполненно, отсрочка на...
 	}
 }
+
+//protocol ReloadTableViewDelegate: AnyObject {
+//	func tableViewReload()
+//}

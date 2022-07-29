@@ -25,7 +25,6 @@ class Main: UIViewController {
 	var tableView       = UITableView()
 	let buttonNewTask   = UIButton()
 	let viewModel: MainViewModelProtocol
-	
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -34,7 +33,8 @@ class Main: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	
+	//let updateTable = AppDelegate()
+
 	//MARK: - liveCycles
 	
 	override func viewDidLoad() {
@@ -42,12 +42,14 @@ class Main: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
+		//updateTable.delegate = self
 	}
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.coreDataFetch()
+		//updateTable.delegate = self
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -111,13 +113,17 @@ class Main: UIViewController {
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification){
-		viewModel.coreDataFetch()
-		self.tableView.reloadData()
+			self.viewModel.coreDataFetch()
+		  self.viewModel.reloadTable()
 	}
 }
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
+//	func tableViewReload() {
+//		tableView.reloadData()
+//	}
+//
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return viewModel.coreDataModel.count

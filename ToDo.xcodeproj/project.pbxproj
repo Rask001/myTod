@@ -7,12 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A32EC16287DBDFA00C2B782 /* MainTasksProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC15287DBDFA00C2B782 /* MainTasksProtocol.swift */; };
-		3A32EC18287DC0EC00C2B782 /* AlertTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC17287DC0EC00C2B782 /* AlertTaskProtocol.swift */; };
-		3A32EC1A287DC19300C2B782 /* RepeatTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC19287DC19300C2B782 /* RepeatTaskProtocol.swift */; };
-		3A32EC1C287DC1FA00C2B782 /* JustTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC1B287DC1FA00C2B782 /* JustTaskProtocol.swift */; };
-		3A32EC1F287DC8C300C2B782 /* JustTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC1E287DC8C300C2B782 /* JustTask.swift */; };
-		3A32EC21287DCB0D00C2B782 /* fabric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A32EC20287DCB0D00C2B782 /* fabric.swift */; };
 		3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F560E27EF947F00ECF06B /* AppDelegate.swift */; };
 		3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F561727EF947F00ECF06B /* ToDo.xcdatamodeld */; };
 		3A4F561B27EF948300ECF06B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561A27EF948300ECF06B /* Assets.xcassets */; };
@@ -42,12 +36,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A32EC15287DBDFA00C2B782 /* MainTasksProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksProtocol.swift; sourceTree = "<group>"; };
-		3A32EC17287DC0EC00C2B782 /* AlertTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTaskProtocol.swift; sourceTree = "<group>"; };
-		3A32EC19287DC19300C2B782 /* RepeatTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTaskProtocol.swift; sourceTree = "<group>"; };
-		3A32EC1B287DC1FA00C2B782 /* JustTaskProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustTaskProtocol.swift; sourceTree = "<group>"; };
-		3A32EC1E287DC8C300C2B782 /* JustTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JustTask.swift; sourceTree = "<group>"; };
-		3A32EC20287DCB0D00C2B782 /* fabric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fabric.swift; sourceTree = "<group>"; };
 		3A4F560B27EF947F00ECF06B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4F560E27EF947F00ECF06B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4F561827EF947F00ECF06B /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
@@ -89,27 +77,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A32EC14287DBDCE00C2B782 /* New */ = {
-			isa = PBXGroup;
-			children = (
-				3A32EC1E287DC8C300C2B782 /* JustTask.swift */,
-				3A32EC20287DCB0D00C2B782 /* fabric.swift */,
-				3A32EC1D287DC89400C2B782 /* Protocol */,
-			);
-			path = New;
-			sourceTree = "<group>";
-		};
-		3A32EC1D287DC89400C2B782 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				3A32EC15287DBDFA00C2B782 /* MainTasksProtocol.swift */,
-				3A32EC17287DC0EC00C2B782 /* AlertTaskProtocol.swift */,
-				3A32EC19287DC19300C2B782 /* RepeatTaskProtocol.swift */,
-				3A32EC1B287DC1FA00C2B782 /* JustTaskProtocol.swift */,
-			);
-			name = Protocol;
-			sourceTree = "<group>";
-		};
 		3A4F560227EF947E00ECF06B = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +102,6 @@
 				3AC8555727EFCF0700A7891D /* CoreData */,
 				3ADBF4DF2827F4F5000BA06B /* Exstension */,
 				3A4F562927EF9EAE00ECF06B /* SupportFiles */,
-				3A32EC14287DBDCE00C2B782 /* New */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -311,18 +277,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A32EC18287DC0EC00C2B782 /* AlertTaskProtocol.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
-				3A32EC1F287DC8C300C2B782 /* JustTask.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
-				3A32EC1A287DC19300C2B782 /* RepeatTaskProtocol.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
 				3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */,
-				3A32EC16287DBDFA00C2B782 /* MainTasksProtocol.swift in Sources */,
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
 				3ADB45A7288837BE00427BD8 /* NewTaskViewModel.swift in Sources */,
@@ -332,12 +294,10 @@
 				3A975B87288AC59E0049A4E1 /* tappedFeedBack.swift in Sources */,
 				3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
-				3A32EC1C287DC1FA00C2B782 /* JustTaskProtocol.swift in Sources */,
 				3A7FFA5A2865C49F00A7CC27 /* CodeLayoutNT.swift in Sources */,
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,
 				3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */,
 				3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */,
-				3A32EC21287DCB0D00C2B782 /* fabric.swift in Sources */,
 				3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */,
 				3ADB459C2888269F00427BD8 /* MainViewModel.swift in Sources */,
 				3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */,

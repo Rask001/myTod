@@ -15,12 +15,16 @@ protocol TappedSoftProtocol {
 	func tappedSoft()
 }
 
+protocol TappedHeavyProtocol {
+	func tappedHeavy()
+}
+
 class TappedFeedBack {
 	
 	
 }
 
-extension TappedFeedBack: TappedRigidProtocol, TappedSoftProtocol {
+extension TappedFeedBack: TappedRigidProtocol, TappedSoftProtocol, TappedHeavyProtocol {
 	
 	func tappedSoft() {
 		let generator = UIImpactFeedbackGenerator(style: .soft)
@@ -29,6 +33,11 @@ extension TappedFeedBack: TappedRigidProtocol, TappedSoftProtocol {
 	
 	func tappedRigid() {
 		let generator = UIImpactFeedbackGenerator(style: .rigid)
+		generator.impactOccurred()
+	}
+	
+	func tappedHeavy() {
+		let generator = UIImpactFeedbackGenerator(style: .heavy)
 		generator.impactOccurred()
 	}
 }

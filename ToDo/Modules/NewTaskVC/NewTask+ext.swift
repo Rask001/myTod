@@ -28,3 +28,9 @@ extension NewTask: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDele
 		infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime ?? "")"
 	}
 }
+
+extension NewTask: TappedHeavyProtocol {
+	func tappedHeavy() {
+		tappedFeedBack.tappedHeavy()
+	}
+}

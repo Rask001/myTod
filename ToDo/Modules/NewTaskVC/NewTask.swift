@@ -43,6 +43,7 @@ class NewTask: UIViewController {
 	var segmentedItems      = ["day", "week", "month", "set time"]
 	let weekDaysArray       = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	weak var mainViewModel  : MainViewModel?
+	let tappedFeedBack = TappedFeedBack()
 	
 	
 	//MARK: - viewDidAppear
@@ -115,8 +116,8 @@ class NewTask: UIViewController {
 	private func setTimePickerSetup2() {
 		self.setTimePicker2.isHidden = true
 		self.setTimePicker2.datePickerMode = .time
-		//self.setTimePicker2.minuteInterval = 5
-		//self.setTimePicker2.roundsToMinuteInterval = true
+		self.setTimePicker2.minuteInterval = 5
+		self.setTimePicker2.roundsToMinuteInterval = true
 		self.setTimePicker2.preferredDatePickerStyle = .wheels
 		self.setTimePicker2.addTarget(self, action: #selector(setTimePicker(paramDataPicker:)), for: .valueChanged)
 	}
@@ -370,6 +371,8 @@ class NewTask: UIViewController {
 	private func navigationBarSetup() {
 		let leftButton  = UIBarButtonItem(title: "cancel", style: .plain, target: self, action: #selector(cancelFunc))
 		let rightButton = UIBarButtonItem(title: "continue", style: .plain, target: self, action: #selector(continueFunc))
+		//self.navigationController?.
+		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.black]
 		self.navigationBar.frame              = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
 		self.navigationBar.barTintColor       = .secondarySystemBackground
 		self.navigationBar.prefersLargeTitles = true
@@ -431,6 +434,7 @@ class NewTask: UIViewController {
 	}
 	
 	private func redText() {
+		tappedHeavy()
 			self.infoLabel.textColor = UIColor.red
 			self.infoLabel.font = UIFont.futura20()
 		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {

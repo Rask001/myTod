@@ -8,6 +8,8 @@ import UIKit
 import CoreData
 
 class CoreDataMethods {
+
+	
 	var coreDataModel: [Tasks] = []
 	//var model: Tasks!
 	static let shared = CoreDataMethods()

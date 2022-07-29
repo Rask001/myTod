@@ -10,6 +10,7 @@ import Foundation
 //MARK: - MainViewModelProtocol
 
 protocol MainViewModelProtocol {
+	func reloadTable()
 	func goToNewTaskVC()
 	func tappedSoft()
 	func tappedRigid()
@@ -20,6 +21,8 @@ protocol MainViewModelProtocol {
 }
 
 
+
+
 //MARK: - MainViewModel
 
 class MainViewModel {
@@ -27,6 +30,10 @@ class MainViewModel {
 	let tappedFeedBack = TappedFeedBack()
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
+	//let updateTable = AppDelegate()
+//	init() {
+//		updateTable.delegate = self
+//	}
 	weak var view: Main?
 	init(output: MainOutput) {
 		self.output = output
@@ -34,6 +41,19 @@ class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
+	func tableViewReload() {
+		print("1")
+		DispatchQueue.main.async { [weak self] in
+			self!.reloadTable()
+		}
+		print("2")
+	}
+	
+	func reloadTable() {
+		view?.tableView.reloadData()
+		print("3")
+	}
+	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell, indexPath: indexPath)
 		let button = cell.buttonCell

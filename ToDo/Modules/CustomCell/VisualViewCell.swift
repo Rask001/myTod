@@ -36,11 +36,14 @@ class VisualViewCell {
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
+				cell.taskDate.text = ""
 			case false:
 				button.setImage(nil, for: .normal)
 				button.backgroundColor = .backgroundColor
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
 				cell.taskTitle.attributedText = notStrikethrough
+				cell.taskDate.text = ""
+
 			}
 			
 		case "singleAlertType":
@@ -91,15 +94,15 @@ class VisualViewCell {
 				cell.taskTitle.attributedText = strikethrough
 				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
 			case false:
-				switch isOverdue { //просрочено ли?
-				case true:
-					button.backgroundColor = .backgroundColor
-					button.setImage(nil, for: .normal)
-					painting(cell: cell, color: .red, colorTwo: .red)
-					cell.taskTitle.attributedText = notStrikethrough
-				case false:
+//				switch isOverdue { //просрочено ли?
+//				case true:
+//					button.backgroundColor = .backgroundColor
+//					button.setImage(nil, for: .normal)
+//					painting(cell: cell, color: .red, colorTwo: .red)
+//					cell.taskTitle.attributedText = notStrikethrough
+//				case false:
 					standart()
-				}
+//}
 			}
 			
 		case "weekRepeatType":

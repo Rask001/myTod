@@ -29,5 +29,6 @@ struct TaskStruct {
 	var timeInterval  : String? = nil
 	var weekDay       : String?
 	var dayOfMonth    : String?
+	var weekDayChoice : [String]? = []
 	var type          : TypeTask = .justType
 }

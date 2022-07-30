@@ -24,7 +24,9 @@ extension NewTask {
 		self.view.addSubview(self.setTimePicker2)
 		self.view.addSubview(self.setTimePickerWeek)
 		self.view.addSubview(self.infoLabel)
-		self.view.addSubview(self.setWeekDay)
+		//self.view.addSubview(self.setWeekDay)
+		//self.view.addSubview(self.weekDayButton)
+		self.view.addSubview(self.buttonStackView)
 	}
 	
 	func setConstraits() {
@@ -84,13 +86,19 @@ extension NewTask {
 		self.setTimePickerWeek.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
 		self.setTimePickerWeek.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
 		self.setTimePickerWeek.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
-		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.setWeekDay.bottomAnchor, constant: 10).isActive = true
+		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10).isActive = true
 		
-		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
-		self.setWeekDay.heightAnchor.constraint(equalToConstant: 120).isActive                                     = true
-		self.setWeekDay.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
-		self.setWeekDay.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
+		self.buttonStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
+		self.buttonStackView.widthAnchor.constraint(equalToConstant: 350).isActive                                      = true
+		self.buttonStackView.heightAnchor.constraint(equalToConstant: 80).isActive                                     = true
+		self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
+		self.buttonStackView.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
+		
+//		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
+//		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
+//		self.setWeekDay.heightAnchor.constraint(equalToConstant: 120).isActive                                     = true
+//		self.setWeekDay.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
+//		self.setWeekDay.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
 		
 		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                   = false
 		self.infoLabel.widthAnchor.constraint(equalToConstant: 350).isActive                                       = true

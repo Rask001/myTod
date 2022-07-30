@@ -74,6 +74,36 @@ class CoreDataMethods {
 		LocalNotification.shared.sendDaylyReminderNotification("Daily repeats", taskTitle, taskDateDate)
 	}
 	
+	func saveWeekDaysRepitionTask(taskTitle:    String,
+														    taskTime:     String,
+														    taskDateDate: Date,
+														    createdAt:    Date,
+														    alarmImage:   Bool,
+														    repeatImage:  Bool,
+														    type:         String,
+																weekDay:      [String]) {
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
+		let model = Tasks(entity: entity, insertInto: context)
+		model.taskTitle     = taskTitle
+		model.type          = type
+		model.taskTime      = taskTime
+		model.taskDate      = nil
+		model.taskDateDate  = taskDateDate
+		model.createdAt     = createdAt
+		model.alarmImage    = alarmImage
+		model.repeatImage   = repeatImage
+		model.check         = false
+		model.timeInterval  = nil
+		do{
+			try context.save()
+			coreDataModel.append(model)
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		LocalNotification.shared.sendDaylyReminderWeekDayNotification("Week day repeats", taskTitle, taskDateDate, weekDay)
+	}
+	
 	func saveRepeatTask(taskTitle:    String,
 											createdAt:    Date,
 											alarmImage:   Bool,
@@ -142,7 +172,7 @@ class CoreDataMethods {
 	
 	private func deleteFromContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(taskTitle)"])
+		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
 		coreDataModel.remove(at: indexPath.row)
 		let _ : NSError! = nil

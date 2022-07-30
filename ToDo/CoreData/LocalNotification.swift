@@ -55,6 +55,52 @@ class LocalNotification {
 		}
 	}
 	
+	func convertDate(of dayStr: String, and date: Date) -> Date {
+		let dFStrToDate = DateFormatter()
+		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+		let componentsForm = DateComponentsFormatter()
+		let componentsStr = componentsForm.string(from: components)
+		let str = "\(dayStr),\(componentsStr!)"
+		dFStrToDate.dateFormat = "E,HH:mm"
+		let result = dFStrToDate.date(from: str) ?? dFStrToDate.date(from:"\(dayStr),00:\(componentsStr!)")
+		return result!
+	}
+	
+	func sendDaylyReminderWeekDayNotification(_ title: String, _ body: String, _ taskDateDate: Date, _ weekDay: [String]) {
+		self.content.title = title
+		self.content.sound = .default
+		self.content.body  = body
+		var num = 0
+		let weekDayArray = weekDay
+		for i in weekDayArray {
+			let dateComponents = convertDate(of: i, and: taskDateDate)
+			let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.weekday, .hour, .minute], from: dateComponents), repeats: true)
+			let request = UNNotificationRequest(identifier: "id_\(body)-\(num)", content: content, trigger: trigger) //удаление нужно проработать
+			UNUserNotificationCenter.current().add(request) { error in
+				if error != nil {
+					print(error?.localizedDescription as Any)
+				}
+			}
+			num += 1
+			print(request)
+		}
+	}
+	
+	func deleteLocalNotification(_ title: String) {
+		let identifier = ["id_\(title)", "id_\(title)-0", "id_\(title)-1", "id_\(title)-2", "id_\(title)-3", "id_\(title)-4", "id_\(title)-5"]
+		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifier)
+		UNUserNotificationCenter.current().getPendingNotificationRequests { array in
+//			DispatchQueue.global(qos: .default).async {
+//				print(array)
+//			}
+		}
+	}
+	
+	func deleteAllNotification() {
+		UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+	}
+	
 	
 }
 

@@ -34,3 +34,15 @@ extension NewTask: TappedHeavyProtocol {
 		tappedFeedBack.tappedHeavy()
 	}
 }
+
+extension NewTask: TappedSoftProtocol {
+	func tappedSoft() {
+		tappedFeedBack.tappedSoft()
+	}
+}
+
+extension NewTask: UITextViewDelegate {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		self.view.endEditing(true)
+	}
+}

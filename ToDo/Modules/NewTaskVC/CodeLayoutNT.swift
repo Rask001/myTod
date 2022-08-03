@@ -27,6 +27,8 @@ extension NewTask {
 		//self.view.addSubview(self.setWeekDay)
 		//self.view.addSubview(self.weekDayButton)
 		self.view.addSubview(self.buttonStackView)
+		self.view.addSubview(self.buttonMonthVStackView)
+		
 	}
 	
 	func setConstraits() {
@@ -40,10 +42,10 @@ extension NewTask {
 		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
 		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive         = true
 		
-		self.dataPickerMonth.translatesAutoresizingMaskIntoConstraints                                               = false
-		self.dataPickerMonth.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
-		self.dataPickerMonth.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 40).isActive = true
-		
+//		self.dataPickerMonth.translatesAutoresizingMaskIntoConstraints                                               = false
+//		self.dataPickerMonth.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+//		self.dataPickerMonth.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 40).isActive = true
+//		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                 = false
 		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive         = true
 		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                 = true
@@ -86,13 +88,19 @@ extension NewTask {
 		self.setTimePickerWeek.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
 		self.setTimePickerWeek.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
 		self.setTimePickerWeek.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
-		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.buttonStackView.bottomAnchor, constant: 10).isActive = true
+		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
 		
 		self.buttonStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.buttonStackView.widthAnchor.constraint(equalToConstant: 350).isActive                                      = true
 		self.buttonStackView.heightAnchor.constraint(equalToConstant: 80).isActive                                     = true
 		self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
-		self.buttonStackView.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
+		self.buttonStackView.topAnchor.constraint(equalTo: self.setTimePickerWeek.bottomAnchor, constant: 0).isActive    = true
+
+		self.buttonMonthVStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
+		self.buttonMonthVStackView.widthAnchor.constraint(equalToConstant: 294).isActive                                      = true
+		self.buttonMonthVStackView.heightAnchor.constraint(equalToConstant: 208).isActive            = true
+		self.buttonMonthVStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
+		self.buttonMonthVStackView.topAnchor.constraint(equalTo: self.setTimePickerWeek.bottomAnchor, constant: 0).isActive    = true
 		
 //		self.setWeekDay.translatesAutoresizingMaskIntoConstraints                                                  = false
 //		self.setWeekDay.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true

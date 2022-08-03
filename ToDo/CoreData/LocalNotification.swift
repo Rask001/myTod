@@ -18,7 +18,7 @@ class LocalNotification {
 		self.content.body  = body
 		
 		let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .weekday, .day, .hour, .minute, .second], from: taskDateDate), repeats: false)
-		let request = UNNotificationRequest(identifier: "id_\(body)", content: content, trigger: trigger)
+		let request = UNNotificationRequest(identifier: "id_\(body)0", content: content, trigger: trigger)
 		UNUserNotificationCenter.current().add(request) { error in
 			if error != nil {
 				print(error?.localizedDescription as Any)
@@ -33,7 +33,7 @@ class LocalNotification {
 		
 		let timeIntStr = (timeInterval! as NSString).integerValue
 		let timeIntervalTrigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(timeIntStr), repeats: true)
-		let request2 = UNNotificationRequest(identifier: "id_\(body)", content: content, trigger: timeIntervalTrigger)
+		let request2 = UNNotificationRequest(identifier: "id_\(body)0", content: content, trigger: timeIntervalTrigger)
 		UNUserNotificationCenter.current().add(request2) { error in
 			if error != nil {
 				print(error?.localizedDescription as Any)
@@ -47,23 +47,12 @@ class LocalNotification {
 		self.content.body  = body
 		
 		let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.hour, .minute, .second], from: taskDateDate), repeats: true)
-		let request = UNNotificationRequest(identifier: "id_\(body)", content: content, trigger: trigger)
+		let request = UNNotificationRequest(identifier: "id_\(body)0", content: content, trigger: trigger)
 		UNUserNotificationCenter.current().add(request) { error in
 			if error != nil {
 				print(error?.localizedDescription as Any)
 			}
 		}
-	}
-	
-	func convertDate(of dayStr: String, and date: Date) -> Date {
-		let dFStrToDate = DateFormatter()
-		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
-		let componentsForm = DateComponentsFormatter()
-		let componentsStr = componentsForm.string(from: components)
-		let str = "\(dayStr),\(componentsStr!)"
-		dFStrToDate.dateFormat = "E,HH:mm"
-		let result = dFStrToDate.date(from: str) ?? dFStrToDate.date(from:"\(dayStr),00:\(componentsStr!)")
-		return result!
 	}
 	
 	func sendDaylyReminderWeekDayNotification(_ title: String, _ body: String, _ taskDateDate: Date, _ weekDay: [String]) {
@@ -73,9 +62,40 @@ class LocalNotification {
 		var num = 0
 		let weekDayArray = weekDay
 		for i in weekDayArray {
-			let dateComponents = convertDate(of: i, and: taskDateDate)
+			let dateComponents = convertDateWeek(of: i, and: taskDateDate)
 			let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.weekday, .hour, .minute], from: dateComponents), repeats: true)
-			let request = UNNotificationRequest(identifier: "id_\(body)-\(num)", content: content, trigger: trigger) //удаление нужно проработать
+			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger) //удаление нужно проработать
+			UNUserNotificationCenter.current().add(request) { error in
+				if error != nil {
+					print(error?.localizedDescription as Any)
+				}
+			}
+			num += 1
+			print(request)
+		}
+	}
+	
+	func sendDaylyReminderMonthNotification(_ title: String, _ body: String, _ taskDateDate: Date, _ monthDay: [String]) {
+		self.content.title = title
+		self.content.sound = .default
+		self.content.body  = body
+		let calendar = Calendar(identifier: .gregorian)
+		let monthRange = calendar.range(of: .day, in: .month, for: Date.now)!
+		let daysInMonth = monthRange.count
+		
+		var num = 0
+		let monthDayArray = monthDay
+		for i in monthDayArray {
+			var item = i
+			guard var intager = Int(item) else { return }
+			if intager >= daysInMonth {
+				intager = daysInMonth
+				item = String(intager)
+			}
+			
+			let dateComponents = convertDateMonth(of: item, and: taskDateDate)
+			let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.day, .hour, .minute], from: dateComponents), repeats: true)
+			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger)
 			UNUserNotificationCenter.current().add(request) { error in
 				if error != nil {
 					print(error?.localizedDescription as Any)
@@ -87,18 +107,49 @@ class LocalNotification {
 	}
 	
 	func deleteLocalNotification(_ title: String) {
-		let identifier = ["id_\(title)", "id_\(title)-0", "id_\(title)-1", "id_\(title)-2", "id_\(title)-3", "id_\(title)-4", "id_\(title)-5"]
-		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifier)
+		var arrayMonth:[String] = []
+		for num in 0...31 {
+			arrayMonth.append("id_\(title)\(num)")
+		}
+		//let identifier = ["id_\(title)", "id_\(title)-0", "id_\(title)-1", "id_\(title)-2", "id_\(title)-3", "id_\(title)-4", "id_\(title)-5"]
+		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: arrayMonth)
 		UNUserNotificationCenter.current().getPendingNotificationRequests { array in
+			DispatchQueue.global(qos: .default).async {
+				print(array)
+			}
+		}
+//		UNUserNotificationCenter.current().getDeliveredNotifications { array in
 //			DispatchQueue.global(qos: .default).async {
 //				print(array)
 //			}
-		}
+//		}
 	}
 	
 	func deleteAllNotification() {
 		UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+	}
+	
+	func convertDateWeek(of dayStr: String, and date: Date) -> Date {
+		let dFStrToDate = DateFormatter()
+		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+		let componentsForm = DateComponentsFormatter()
+		let componentsStr = componentsForm.string(from: components)
+		let str = "\(dayStr),\(componentsStr!)"
+		dFStrToDate.dateFormat = "E,HH:mm"
+		let result = dFStrToDate.date(from: str) ?? dFStrToDate.date(from:"\(dayStr),00:\(componentsStr!)")
+		return result!
+	}
+	
+	func convertDateMonth(of dayStr: String, and date: Date) -> Date {
+		let dFStrToDate = DateFormatter()
+		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+		let componentsForm = DateComponentsFormatter()
+		let componentsStr = componentsForm.string(from: components)
+		let str = "\(dayStr),\(componentsStr!)"
+		dFStrToDate.dateFormat = "d,HH:mm"
+		let result = dFStrToDate.date(from: str) ?? dFStrToDate.date(from:"\(dayStr),00:\(componentsStr!)")
+		return result!
 	}
 	
 	

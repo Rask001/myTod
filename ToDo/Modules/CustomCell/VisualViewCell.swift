@@ -53,7 +53,7 @@ class VisualViewCell {
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
-				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
+				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 				switch isOverdue { //просрочено ли?
 				case true:
@@ -77,7 +77,7 @@ class VisualViewCell {
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
-				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
+				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 				standart()
 				LocalNotification.shared.sendRepeatNotification("repeat \(cell.taskDate.text!)", items.taskTitle, items.timeInterval)
@@ -92,7 +92,7 @@ class VisualViewCell {
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
-				UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["id_\(items.taskTitle)"])
+				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 //				switch isOverdue { //просрочено ли?
 //				case true:
@@ -106,11 +106,49 @@ class VisualViewCell {
 			}
 			
 		case "weekRepeatType":
-			print(#function)
+			cell.taskDate.text = "every week"
+			switch check {
+			case true:
+				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
+				button.backgroundColor = .white
+				button.tintColor = .lightGray
+				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
+				cell.taskTitle.attributedText = strikethrough
+				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
+			case false:
+//				switch isOverdue { //просрочено ли?
+//				case true:
+//					button.backgroundColor = .backgroundColor
+//					button.setImage(nil, for: .normal)
+//					painting(cell: cell, color: .red, colorTwo: .red)
+//					cell.taskTitle.attributedText = notStrikethrough
+//				case false:
+					standart()
+//}
+			}
 		case "monthRepeatType":
-			print(#function)
+			cell.taskDate.text = "every month"
+			switch check {
+			case true:
+				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
+				button.backgroundColor = .white
+				button.tintColor = .lightGray
+				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
+				cell.taskTitle.attributedText = strikethrough
+				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
+			case false:
+//				switch isOverdue { //просрочено ли?
+//				case true:
+//					button.backgroundColor = .backgroundColor
+//					button.setImage(nil, for: .normal)
+//					painting(cell: cell, color: .red, colorTwo: .red)
+//					cell.taskTitle.attributedText = notStrikethrough
+//				case false:
+					standart()
+//}
+			}
 		default:
-			print(#function)
+			print("default visual")
 		}
 		
 		func checkLight() {

@@ -33,7 +33,6 @@ class NewTask: UIViewController {
 	let setTimePicker2      = UIDatePicker()
 	let setTimePickerWeek   = UIDatePicker()
 	var button              = UIButton()
-	//let buttonStackView          = UIPickerView()
 	let switchAlert         = UISwitch()
 	let switchAlertRepeat   = UISwitch()
 	let navigationBar       = UINavigationBar()
@@ -41,7 +40,15 @@ class NewTask: UIViewController {
 	let repeatLabel         = UIImageView()
 	var repeatSegmented     = UISegmentedControl()
 	let weekDayButton       = UIButton()
-	lazy var buttonStackView     = UIStackView()
+	var buttonMonth        = UIButton()
+	var buttonStackView     = UIStackView()
+	
+	var buttonMonthHStackView = UIStackView()
+	var buttonMonthHStackView2 = UIStackView()
+	var buttonMonthHStackView3 = UIStackView()
+	var buttonMonthHStackView4 = UIStackView()
+	var buttonMonthHStackView5 = UIStackView()
+	var buttonMonthVStackView = UIStackView()
 	var coreData            = CoreDataMethods()
 	var segmentedItems      = ["day", "week", "month", "set time"]
 	let weekDaysArray       = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -56,7 +63,6 @@ class NewTask: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		createButtonWeekDays()
 	}
 	
 	//MARK: - viewDidAppear
@@ -69,8 +75,10 @@ class NewTask: UIViewController {
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		createButtonWeekDays()
+		createMonthButton()
 		setStackView()
-		//addButtonToStackView()
+		setStackViewMonth()
 		dataPickerSetup()
 		dataPickerMonthSetup()
 		setupSegmented()
@@ -86,8 +94,8 @@ class NewTask: UIViewController {
 		setTimePickerSetup2()
 		setTimePickerSetup3()
 		infoLabelSetup()
-		//buttonStackViewSetup()
 	}
+	
 	
 	//MARK: - Setup
 	//textFieldSetup
@@ -107,8 +115,30 @@ class NewTask: UIViewController {
 		self.buttonStackView.alignment = .center
 		self.buttonStackView.distribution = .fillEqually
 	}
- 
+	private func setStackViewMonth() {
+		let arrStackView = [buttonMonthHStackView,
+												buttonMonthHStackView2,
+												buttonMonthHStackView3,
+												buttonMonthHStackView4,
+												buttonMonthHStackView5]
+		for stackView in arrStackView {
+			stackView.isHidden = false
+			stackView.heightAnchor.constraint(equalTo: self.buttonMonth.heightAnchor).isActive = true
+			stackView.axis = .horizontal
+			stackView.spacing = 7
+			stackView.alignment = .fill
+			stackView.distribution = .fillProportionally
+	}
+	}
 	
+	private func setButtonMonthVStackView() {
+   	//buttonMonthVStackView.backgroundColor = .gray
+		buttonMonthVStackView.isHidden = true
+		buttonMonthVStackView.axis = .vertical
+		buttonMonthVStackView.spacing = 7
+		buttonMonthVStackView.alignment = .leading
+		buttonMonthVStackView.distribution = .fillProportionally
+	}
 	private func createButtonWeekDays() {
 		let weekDaysName = ["sun", "mon", "tue", "wen", "thu", "fri", "sat"]
 		var buttonTag = 0
@@ -122,7 +152,64 @@ class NewTask: UIViewController {
 		}
 	}
 	
+	private func createMonthButton() {
+		var monthButtonArray = [Int]()
+		for num in 1...31 {
+			monthButtonArray.append(num)
+		}
+		var buttonTag = 0
+		let buttonArrStr = monthButtonArray.map{"\($0)"}
+		for i in buttonArrStr {
+			self.buttonMonth = UIButton(title: i, isShadow: true, font: UIFont.systemFont(ofSize: 15, weight: .regular), cornerRaadius: 18)
+			buttonTag += 1
+			buttonMonth.tag = buttonTag
+			buttonMonth.addTarget(self, action: #selector(touchButtonMonth(sender:)), for: .touchUpInside)
+			buttonMonth.heightAnchor.constraint(equalTo: buttonMonth.widthAnchor).isActive = true
+			addMonthButtonInStackView(buttonMonth)
+		}
+		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView)
+		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView2)
+		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView3)
+		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView4)
+		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView5)
+		setButtonMonthVStackView()
+	}
+	
+	private func addMonthButtonInStackView(_ button: UIButton) {
+			switch button.tag {
+			case 1...7: buttonMonthHStackView.addArrangedSubview(button)
+			case 8...14: buttonMonthHStackView2.addArrangedSubview(button)
+			case 15...21: buttonMonthHStackView3.addArrangedSubview(button)
+			case 22...28: buttonMonthHStackView4.addArrangedSubview(button)
+			case 29...31: buttonMonthHStackView5.addArrangedSubview(button)
+			default:
+				break
+			}
+		}
+		
+	@objc func touchButtonMonth(sender: UIButton) {
+		tappedFeedBack.tappedSoft()
+		let button = sender
+		let bools: Bool = { button.backgroundColor == .white }()
+		let monthDay = button.title(for: .normal)!
+		switch bools {
+	case true:
+			button.backgroundColor = .systemBlue
+			button.setTitleColor(.white, for: .normal)
+			button.layer.shadowColor = UIColor.white.cgColor
+			taskStruct.monthDayChoice?.append(monthDay)
+			print(taskStruct.monthDayChoice ?? "error")
+	case false:
+			button.backgroundColor = .white
+			button.setTitleColor(.lightGray, for: .normal)
+			button.layer.shadowColor = UIColor.black.cgColor
+			taskStruct.monthDayChoice?.removeAll { $0 == monthDay }
+			print(taskStruct.monthDayChoice ?? "error")
+		}
+	}
+	
 	@objc func touchButton(sender: UIButton) {
+		tappedFeedBack.tappedSoft()
 		let button = sender
 		let bools: Bool = { button.backgroundColor == .white }()
 		let weekDay = button.title(for: .normal)!
@@ -157,12 +244,6 @@ class NewTask: UIViewController {
 		infoLabel.font = UIFont.futura17()
 		infoLabel.text          = "Just write you note"
 	}
-	
-//	private func buttonStackViewSetup() {
-//		self.buttonStackView.isHidden   = true
-//		self.buttonStackView.dataSource = self
-//		self.buttonStackView.delegate   = self
-//	}
 	
 	//MARK: Set Time Picker
 	private func setTimePickerSetup() {
@@ -221,7 +302,7 @@ class NewTask: UIViewController {
 		switch repeatSegmented.selectedSegmentIndex {
 		case 0: infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
 		case 1: infoLabel.text = "repeat every selected day of the week at \(taskStruct.taskTime!)"
-		case 2: infoLabel.text = "repeat every month on the\n \(taskStruct.dayOfMonth!)th at \(taskStruct.taskTime!)"
+		case 2: infoLabel.text = "repeat every selected day of the month at \(taskStruct.taskTime!)"
 		default:
 			
 			if timeM == "0" {
@@ -280,7 +361,7 @@ class NewTask: UIViewController {
 		switch repeatSegmented.selectedSegmentIndex {
 		case 0:  infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
 		case 1:  infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)"
-		case 2:  infoLabel.text = "repeat every month on the\n \(taskStruct.dayOfMonth!)th at \(taskStruct.taskTime!)"
+		case 2:  infoLabel.text = "repeat every selected day of the month at \n \(taskStruct.taskTime!)"
 		default: infoLabel.text = "the reminder will be set for\n \(month) \(taskStruct.taskTime!)"
 		}
 	}
@@ -318,7 +399,7 @@ class NewTask: UIViewController {
 		switchAlertRepeat.isOn        = false
 		setTimePicker.isHidden        = true
 		setTimePicker2.isHidden       = true
-		buttonStackView.isHidden           = true
+		buttonStackView.isHidden      = true
 		infoLabel.text                = "Just write you note"
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 	}
@@ -327,13 +408,15 @@ class NewTask: UIViewController {
 		if paramRepeatSegmented.isEqual(self.repeatSegmented){
 			switch paramRepeatSegmented.selectedSegmentIndex {
 			case 0:
+				self.view.endEditing(true)
 				self.dataPicker.isEnabled       = true
 				self.dataPicker.isHidden        = true
 				self.dataPickerMonth.isHidden   = true
 				self.setTimePicker.isHidden     = true
 				self.setTimePicker2.isHidden    = false
 				self.setTimePickerWeek.isHidden = true
-				self.buttonStackView.isHidden        = true
+				self.buttonStackView.isHidden   = true
+				self.buttonMonthVStackView.isHidden  = true
 				self.taskStruct.type            = .dayRepeatType
 				infoLabel.text                  = "Daily reminders at set times"
 			case 1:
@@ -345,19 +428,22 @@ class NewTask: UIViewController {
 				self.setTimePicker2.isHidden    = true
 				self.setTimePickerWeek.isHidden = false
 				self.buttonStackView.isHidden   = false
+				self.buttonMonthVStackView.isHidden  = true
 				self.taskStruct.type            = .weekRepeatType
 				infoLabel.text                  = "Weekly reminders at set times"
 			case 2:
+				self.view.endEditing(true)
 				self.dataPicker.isEnabled       = true
-				self.dataPicker.isHidden        = false
-				self.dataPickerMonth.isHidden   = false
+				self.dataPicker.isHidden        = true
+				self.dataPickerMonth.isHidden   = true
 				self.setTimePicker.isHidden     = true
 				self.setTimePicker2.isHidden    = true
-				self.setTimePickerWeek.isHidden = true
-				self.buttonStackView.isHidden        = true
+				self.setTimePickerWeek.isHidden = false
+				self.buttonStackView.isHidden   = true
+				self.buttonMonthVStackView.isHidden  = false
 				self.taskStruct.type            = .monthRepeatType
 				infoLabel.text                  = "Monthly reminders at set times"
-			default:
+			case 3:
 				self.view.endEditing(true)
 				self.dataPicker.isEnabled       = false
 				self.dataPicker.isHidden        = true
@@ -365,9 +451,12 @@ class NewTask: UIViewController {
 				self.setTimePicker.isHidden     = false
 				self.setTimePicker2.isHidden    = true
 				self.setTimePickerWeek.isHidden = true
-				self.buttonStackView.isHidden        = true
+				self.buttonStackView.isHidden   = true
+				self.buttonMonthVStackView.isHidden = true
 				self.taskStruct.type            = .timeRepeatType
 				infoLabel.text                  = "Set the repeat time"
+			default:
+				break
 			}
 		}
 	}
@@ -390,7 +479,8 @@ class NewTask: UIViewController {
 			self.setTimePicker.isHidden       = true
 			self.setTimePicker2.isHidden      = true
 			self.setTimePickerWeek.isHidden   = true
-			self.buttonStackView.isHidden          = true
+			self.buttonStackView.isHidden     = true
+			self.buttonMonthVStackView.isHidden  = true
 			self.infoLabel.text               = "Create your note"
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		}
@@ -415,7 +505,8 @@ class NewTask: UIViewController {
 			self.setTimePicker.isHidden     = true
 			self.setTimePicker2.isHidden    = true
 			self.setTimePickerWeek.isHidden = true
-			self.buttonStackView.isHidden        = true
+			self.buttonStackView.isHidden   = true
+			self.buttonMonthVStackView.isHidden  = true
 			self.infoLabel.text             = "Set the date and time of the reminder"
 			self.taskStruct.repeatImage     = false
 		case true:
@@ -492,7 +583,14 @@ class NewTask: UIViewController {
 																				type: taskStruct.type.rawValue,
 																				weekDay: taskStruct.weekDayChoice!)
 		case .monthRepeatType:
-			infoLabel.text = "in developing...will be later"
+			coreData.saveDaysMonthRepitionTask(taskTitle: taskStruct.taskTitle,
+																				 taskTime: taskStruct.taskTime!,
+																				 taskDateDate: taskStruct.taskDateDate!,
+																				 createdAt: taskStruct.createdAt!,
+																				 alarmImage: taskStruct.alarmImage,
+																				 repeatImage: taskStruct.repeatImage,
+																				 type: taskStruct.type.rawValue,
+																				 monthDay: taskStruct.monthDayChoice!)
 		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
@@ -509,28 +607,29 @@ class NewTask: UIViewController {
 	}
 	
 	@objc private func cancelFunc(){
-		textField.text                = nil
-		dataPicker.isEnabled          = false
-		dataPickerMonth.isHidden      = true
-		switchAlert.isOn              = false
-		switchAlertRepeat.isOn        = false
-		setTimePicker.isHidden        = true
-		setTimePicker2.isHidden       = true
-		setTimePickerWeek.isHidden    = true
-		repeatSegmented.isEnabled     = false
-		repeatSegmented.isSelected    = false
-		switchAlertRepeat.isEnabled   = false
-		switchAlert.isEnabled         = false
-		buttonStackView.isHidden           = true
-		infoLabel.text                = "Just write you note"
-		taskStruct.taskTime           = ""
-		taskStruct.taskDate           = ""
-		taskStruct.taskDateDate       = nil
-		taskStruct.timeInterval       = nil
-		taskStruct.repeatImage        = false
-		taskStruct.alarmImage         = false
-		taskStruct.weekDayChoice      = []
-		taskStruct.type               = .justType
+		textField.text                 = nil
+		dataPicker.isEnabled           = false
+		dataPickerMonth.isHidden       = true
+		switchAlert.isOn               = false
+		switchAlertRepeat.isOn         = false
+		setTimePicker.isHidden         = true
+		setTimePicker2.isHidden        = true
+		setTimePickerWeek.isHidden     = true
+		repeatSegmented.isEnabled      = false
+		repeatSegmented.isSelected     = false
+		switchAlertRepeat.isEnabled    = false
+		switchAlert.isEnabled          = false
+		buttonStackView.isHidden       = true
+		buttonMonthVStackView.isHidden = true
+		infoLabel.text                 = "Just write you note"
+		taskStruct.taskTime            = ""
+		taskStruct.taskDate            = ""
+		taskStruct.taskDateDate        = nil
+		taskStruct.timeInterval        = nil
+		taskStruct.repeatImage         = false
+		taskStruct.alarmImage          = false
+		taskStruct.weekDayChoice       = []
+		taskStruct.type                = .justType
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
 	}

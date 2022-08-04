@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol NewTaskProtocol: AnyObject {
+	
+}
+
 protocol NewTaskViewModelProtocol {
 	func createTask()
 	func cancelTask()

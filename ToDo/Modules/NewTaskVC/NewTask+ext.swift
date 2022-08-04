@@ -46,3 +46,7 @@ extension NewTask: UITextViewDelegate {
 		self.view.endEditing(true)
 	}
 }
+
+extension NewTask: NewTaskProtocol {
+	
+}

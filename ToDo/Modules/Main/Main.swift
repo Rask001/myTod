@@ -22,8 +22,8 @@ private enum Constants {
 class Main: UIViewController {
 	
 	//MARK: - Properties
-	var tableView       = UITableView()
-	let buttonNewTask   = UIButton()
+	var tableView = UITableView()
+	let buttonNewTask = UIButton()
 	let viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
@@ -32,8 +32,6 @@ class Main: UIViewController {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-	//let updateTable = AppDelegate()
 
 	//MARK: - liveCycles
 	
@@ -42,7 +40,6 @@ class Main: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
-		//updateTable.delegate = self
 	}
 	
 	
@@ -120,10 +117,6 @@ class Main: UIViewController {
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
-//	func tableViewReload() {
-//		tableView.reloadData()
-//	}
-//
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return viewModel.coreDataModel.count

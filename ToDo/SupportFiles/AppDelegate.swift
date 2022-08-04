@@ -96,7 +96,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 //		DispatchQueue.main.async {
 //			view?.viewModel.reloadTable()
 //		}
-	//NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
+	NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
 		
 	}
 //	func deleg() {

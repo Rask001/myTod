@@ -8,12 +8,9 @@
 import Foundation
 import UIKit
 import CoreData
-protocol NewTaskProtocol: AnyObject {
-	
-}
 
 class NewTask: UIViewController {
-	var taskStruct = TaskStruct()
+  var taskStruct = TaskStruct()
 	private let viewModel: NewTaskViewModelProtocol
 	
 	init(viewModel: NewTaskViewModelProtocol) {
@@ -25,38 +22,41 @@ class NewTask: UIViewController {
 	}
 	
 	//MARK: - Properties
-	let infoLabel           = UILabel()
-	let textField           = UITextField()
-	let dataPicker          = UIDatePicker()
-	let dataPickerMonth     = UIDatePicker()
-	let setTimePicker       = UIDatePicker()
-	let setTimePicker2      = UIDatePicker()
-	let setTimePickerWeek   = UIDatePicker()
-	var button              = UIButton()
-	let switchAlert         = UISwitch()
-	let switchAlertRepeat   = UISwitch()
-	let navigationBar       = UINavigationBar()
-	let alertLabel          = UIImageView()
-	let repeatLabel         = UIImageView()
-	var repeatSegmented     = UISegmentedControl()
-	let weekDayButton       = UIButton()
-	var buttonMonth        = UIButton()
-	var buttonStackView     = UIStackView()
+	let dataPicker              = UIDatePicker()
+	let dataPickerMonth         = UIDatePicker()
+	let setTimePicker           = UIDatePicker()
+	let setTimePicker2          = UIDatePicker()
+	let setTimePickerWeek       = UIDatePicker()
 	
-	var buttonMonthHStackView = UIStackView()
-	var buttonMonthHStackView2 = UIStackView()
-	var buttonMonthHStackView3 = UIStackView()
-	var buttonMonthHStackView4 = UIStackView()
-	var buttonMonthHStackView5 = UIStackView()
-	var buttonMonthVStackView = UIStackView()
-	var coreData            = CoreDataMethods()
-	var segmentedItems      = ["day", "week", "month", "set time"]
-	let weekDaysArray       = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	let switchAlert             = UISwitch()
+	let switchAlertRepeat       = UISwitch()
+	let alertLabel              = UIImageView()
+	let repeatLabel             = UIImageView()
+	let infoLabel               = UILabel()
+	let textField               = UITextField()
+	let navigationBar           = UINavigationBar()
+	var repeatSegmented         = UISegmentedControl()
+	
+	var button                  = UIButton()
+	let weekDayButton           = UIButton()
+	var buttonMonth             = UIButton()
+	
+	var buttonStackView         = UIStackView()
+	var buttonMonthHStackView   = UIStackView()
+	var buttonMonthHStackView2  = UIStackView()
+	var buttonMonthHStackView3  = UIStackView()
+	var buttonMonthHStackView4  = UIStackView()
+	var buttonMonthHStackView5  = UIStackView()
+	var buttonMonthVStackView   = UIStackView()
+	var segmentedItems          = ["day", "week", "month", "set time"]
+	let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	var buttonArray: [UIButton] = []
-	weak var mainViewModel  : MainViewModel?
-	let tappedFeedBack = TappedFeedBack()
+	var coreData                = CoreDataMethods()
+	let tappedFeedBack          = TappedFeedBack()
+	weak var mainViewModel      : MainViewModel?
 	
 	
+	//MARK: - LiveCycles
 	override func viewWillLayoutSubviews() {
 		super.viewWillLayoutSubviews()
 	}
@@ -128,17 +128,17 @@ class NewTask: UIViewController {
 			stackView.spacing = 7
 			stackView.alignment = .fill
 			stackView.distribution = .fillProportionally
-	}
+		}
 	}
 	
 	private func setButtonMonthVStackView() {
-   	//buttonMonthVStackView.backgroundColor = .gray
 		buttonMonthVStackView.isHidden = true
 		buttonMonthVStackView.axis = .vertical
 		buttonMonthVStackView.spacing = 7
 		buttonMonthVStackView.alignment = .leading
 		buttonMonthVStackView.distribution = .fillProportionally
 	}
+	
 	private func createButtonWeekDays() {
 		let weekDaysName = ["sun", "mon", "tue", "wen", "thu", "fri", "sat"]
 		var buttonTag = 0
@@ -176,30 +176,30 @@ class NewTask: UIViewController {
 	}
 	
 	private func addMonthButtonInStackView(_ button: UIButton) {
-			switch button.tag {
-			case 1...7: buttonMonthHStackView.addArrangedSubview(button)
-			case 8...14: buttonMonthHStackView2.addArrangedSubview(button)
-			case 15...21: buttonMonthHStackView3.addArrangedSubview(button)
-			case 22...28: buttonMonthHStackView4.addArrangedSubview(button)
-			case 29...31: buttonMonthHStackView5.addArrangedSubview(button)
-			default:
-				break
-			}
+		switch button.tag {
+		case 1...7: buttonMonthHStackView.addArrangedSubview(button)
+		case 8...14: buttonMonthHStackView2.addArrangedSubview(button)
+		case 15...21: buttonMonthHStackView3.addArrangedSubview(button)
+		case 22...28: buttonMonthHStackView4.addArrangedSubview(button)
+		case 29...31: buttonMonthHStackView5.addArrangedSubview(button)
+		default:
+			break
 		}
-		
+	}
+	
 	@objc func touchButtonMonth(sender: UIButton) {
-		tappedFeedBack.tappedSoft()
+		tappedSoft()
 		let button = sender
 		let bools: Bool = { button.backgroundColor == .white }()
 		let monthDay = button.title(for: .normal)!
 		switch bools {
-	case true:
+		case true:
 			button.backgroundColor = .systemBlue
 			button.setTitleColor(.white, for: .normal)
 			button.layer.shadowColor = UIColor.white.cgColor
 			taskStruct.monthDayChoice?.append(monthDay)
 			print(taskStruct.monthDayChoice ?? "error")
-	case false:
+		case false:
 			button.backgroundColor = .white
 			button.setTitleColor(.lightGray, for: .normal)
 			button.layer.shadowColor = UIColor.black.cgColor
@@ -209,18 +209,18 @@ class NewTask: UIViewController {
 	}
 	
 	@objc func touchButton(sender: UIButton) {
-		tappedFeedBack.tappedSoft()
+		tappedSoft()
 		let button = sender
 		let bools: Bool = { button.backgroundColor == .white }()
 		let weekDay = button.title(for: .normal)!
 		switch bools {
-	case true:
+		case true:
 			button.backgroundColor = .systemBlue
 			button.setTitleColor(.white, for: .normal)
 			button.layer.shadowColor = UIColor.white.cgColor
 			taskStruct.weekDayChoice?.append(weekDay)
 			print(taskStruct.weekDayChoice ?? "error")
-	case false:
+		case false:
 			button.backgroundColor = .white
 			button.setTitleColor(.lightGray, for: .normal)
 			button.layer.shadowColor = UIColor.black.cgColor
@@ -229,7 +229,7 @@ class NewTask: UIViewController {
 		}
 	}
 	
-
+	
 	@objc private func textFieldDidChande() {
 		switchAlert.isEnabled = true
 		taskStruct.taskTitle = textField.text ?? ""
@@ -264,8 +264,8 @@ class NewTask: UIViewController {
 	private func setTimePickerSetup3() {
 		self.setTimePickerWeek.isHidden = true
 		self.setTimePickerWeek.datePickerMode = .time
-		//self.setTimePickerWeek.minuteInterval = 5
-		//self.setTimePickerWeek.roundsToMinuteInterval = true
+		self.setTimePickerWeek.minuteInterval = 5
+		self.setTimePickerWeek.roundsToMinuteInterval = true
 		self.setTimePickerWeek.preferredDatePickerStyle = .wheels
 		self.setTimePickerWeek.addTarget(self, action: #selector(setTimePicker(paramDataPicker:)), for: .valueChanged)
 	}
@@ -289,7 +289,7 @@ class NewTask: UIViewController {
 		taskStruct.taskTime             = timeHMRepeatLabel
 		taskStruct.taskDateDate         = timeFromDP
 		taskStruct.timeInterval         = String(((Int(timeHRepeatLabel) ?? 0)*3600) + ((Int(timeMRepeatLabel) ?? 0)*60) )
-		let timeHM    = (timeHRepeatLabel, timeMRepeatLabel, timeHMRepeatLabel)
+		let timeHM                      = (timeHRepeatLabel, timeMRepeatLabel, timeHMRepeatLabel)
 		return timeHM
 	}
 	
@@ -384,23 +384,25 @@ class NewTask: UIViewController {
 		repeatSegmented.addTarget(self, action: #selector(repeatSegmentedChange(paramRepeatSegmented:)), for: .valueChanged)
 	}
 	
-	private func switchAlertSetup(){
+	private func switchAlertSetup() {
 		switchAlert.isEnabled         = false
 		switchAlert.isOn              = false
 		switchAlert.addTarget(self, action: #selector(visibilityDataPickerAndSwitchAlertRepeat), for: .valueChanged)
 	}
 	
 	private func allEnabled() {
-		switchAlert.isEnabled         = false
-		switchAlertRepeat.isEnabled   = false
-		repeatSegmented.isEnabled     = false
-		dataPicker.isEnabled          = false
-		switchAlert.isOn              = false
-		switchAlertRepeat.isOn        = false
-		setTimePicker.isHidden        = true
-		setTimePicker2.isHidden       = true
-		buttonStackView.isHidden      = true
-		infoLabel.text                = "Just write you note"
+		switchAlert.isEnabled          = false
+		switchAlertRepeat.isEnabled    = false
+		repeatSegmented.isEnabled      = false
+		dataPicker.isEnabled           = false
+		switchAlert.isOn               = false
+		switchAlertRepeat.isOn         = false
+		setTimePicker.isHidden         = true
+		setTimePicker2.isHidden        = true
+		setTimePickerWeek.isHidden     = true
+		buttonStackView.isHidden       = true
+		buttonMonthVStackView.isHidden = true
+		infoLabel.text                 = "Just write you note"
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 	}
 	
@@ -464,24 +466,24 @@ class NewTask: UIViewController {
 	@objc private func visibilityDataPickerAndSwitchAlertRepeat() {
 		taskStruct.alarmImage = switchAlert.isOn
 		if switchAlert.isOn == true {
-			self.dataPicker.isEnabled         = true
-			self.dataPicker.isHidden          = false
-			self.switchAlertRepeat.isEnabled  = true
-			self.infoLabel.text               = "Set the date and time of the reminder"
+			self.dataPicker.isEnabled            = true
+			self.dataPicker.isHidden             = false
+			self.switchAlertRepeat.isEnabled     = true
+			self.infoLabel.text                  = "Set the date and time of the reminder"
 		} else {
-			self.dataPicker.isEnabled         = false
-			self.dataPicker.isHidden          = false
-			self.dataPickerMonth.isHidden     = true
-			self.dataPicker.minimumDate       = Date()
-			self.switchAlertRepeat.isEnabled  = false
-			self.switchAlertRepeat.isOn       = false
-			self.repeatSegmented.isEnabled    = false
-			self.setTimePicker.isHidden       = true
-			self.setTimePicker2.isHidden      = true
-			self.setTimePickerWeek.isHidden   = true
-			self.buttonStackView.isHidden     = true
+			self.dataPicker.isEnabled            = false
+			self.dataPicker.isHidden             = false
+			self.dataPickerMonth.isHidden        = true
+			self.dataPicker.minimumDate          = Date()
+			self.switchAlertRepeat.isEnabled     = false
+			self.switchAlertRepeat.isOn          = false
+			self.repeatSegmented.isEnabled       = false
+			self.setTimePicker.isHidden          = true
+			self.setTimePicker2.isHidden         = true
+			self.setTimePickerWeek.isHidden      = true
+			self.buttonStackView.isHidden        = true
 			self.buttonMonthVStackView.isHidden  = true
-			self.infoLabel.text               = "Create your note"
+			self.infoLabel.text                  = "Create your note"
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		}
 	}
@@ -496,24 +498,24 @@ class NewTask: UIViewController {
 		taskStruct.repeatImage = switchAlertRepeat.isOn
 		switch switchAlertRepeat.isOn {
 		case false:
-			self.repeatSegmented.isEnabled  = false
+			self.repeatSegmented.isEnabled            = false
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
-			self.dataPicker.minimumDate     = Date()
-			self.dataPicker.isEnabled       = true
-			self.dataPicker.isHidden        = false
-			self.dataPickerMonth.isHidden   = true
-			self.setTimePicker.isHidden     = true
-			self.setTimePicker2.isHidden    = true
-			self.setTimePickerWeek.isHidden = true
-			self.buttonStackView.isHidden   = true
-			self.buttonMonthVStackView.isHidden  = true
-			self.infoLabel.text             = "Set the date and time of the reminder"
-			self.taskStruct.repeatImage     = false
+			self.dataPicker.minimumDate               = Date()
+			self.dataPicker.isEnabled                 = true
+			self.dataPicker.isHidden                  = false
+			self.dataPickerMonth.isHidden             = true
+			self.setTimePicker.isHidden               = true
+			self.setTimePicker2.isHidden              = true
+			self.setTimePickerWeek.isHidden           = true
+			self.buttonStackView.isHidden             = true
+			self.buttonMonthVStackView.isHidden       = true
+			self.infoLabel.text                       = "Set the date and time of the reminder"
+			self.taskStruct.repeatImage               = false
 		case true:
-			self.repeatSegmented.isEnabled  = true
-			self.dataPicker.isHidden        = false
-			self.dataPicker.minimumDate     = nil
-			self.infoLabel.text             = "Choose a repeat rate"
+			self.repeatSegmented.isEnabled            = true
+			self.dataPicker.isHidden                  = false
+			self.dataPicker.minimumDate               = nil
+			self.infoLabel.text                       = "Choose a repeat rate"
 		}
 	}
 	
@@ -522,17 +524,18 @@ class NewTask: UIViewController {
 		let rightButton = UIBarButtonItem(title: "continue", style: .plain, target: self, action: #selector(continueFunc))
 		//self.navigationController?.
 		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.black]
-		self.navigationBar.frame              = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
-		self.navigationBar.barTintColor       = .secondarySystemBackground
-		self.navigationBar.prefersLargeTitles = true
-		self.navigationBar.shadowImage        = .none
-		let navigationItem                    = UINavigationItem(title: "Create task")
-		navigationItem.leftBarButtonItem      = leftButton
-		navigationItem.rightBarButtonItem     = rightButton
-		self.navigationBar.items              = [navigationItem]
+		self.navigationBar.frame               = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
+		self.navigationBar.barTintColor        = .secondarySystemBackground
+		self.navigationBar.prefersLargeTitles  = true
+		self.navigationBar.shadowImage         = .none
+		let navigationItem                     = UINavigationItem(title: "Create task")
+		navigationItem.leftBarButtonItem       = leftButton
+		navigationItem.rightBarButtonItem      = rightButton
+		self.navigationBar.items               = [navigationItem]
 		self.view.addSubview(navigationBar)
 	}
 	
+	//MARK: - Continue Func
 	@objc private func continueFunc() {
 		let text = infoLabel.text
 		taskStruct.createdAt  = Date.now
@@ -598,14 +601,15 @@ class NewTask: UIViewController {
 	
 	private func redText() {
 		tappedHeavy()
-			self.infoLabel.textColor = UIColor.red
-			self.infoLabel.font = UIFont.futura20()
+		self.infoLabel.textColor = UIColor.red
+		self.infoLabel.font = UIFont.futura20()
 		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(200)) {
-				self.infoLabel.textColor = UIColor.black
-				self.infoLabel.font = UIFont.futura17()
+			self.infoLabel.textColor = UIColor.black
+			self.infoLabel.font = UIFont.futura17()
 		}
 	}
 	
+	//MARK: - Cancel Func
 	@objc private func cancelFunc(){
 		textField.text                 = nil
 		dataPicker.isEnabled           = false
@@ -629,12 +633,103 @@ class NewTask: UIViewController {
 		taskStruct.repeatImage         = false
 		taskStruct.alarmImage          = false
 		taskStruct.weekDayChoice       = []
+		taskStruct.monthDayChoice      = []
 		taskStruct.type                = .justType
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		dismiss(animated: true, completion: nil)
 	}
-}
-
-extension NewTask: NewTaskProtocol {
 	
+	func addSubviewAndConfigure(){
+		self.view.backgroundColor = .secondarySystemBackground
+		self.view.addSubview(self.textField)
+		self.view.addSubview(self.dataPicker)
+		self.view.addSubview(self.dataPickerMonth)
+		self.view.addSubview(self.switchAlert)
+		self.view.addSubview(self.switchAlertRepeat)
+		self.view.addSubview(self.alertLabel)
+		self.view.addSubview(self.repeatLabel)
+		self.view.addSubview(self.repeatSegmented)
+		self.view.addSubview(self.setTimePicker)
+		self.view.addSubview(self.setTimePicker2)
+		self.view.addSubview(self.setTimePickerWeek)
+		self.view.addSubview(self.infoLabel)
+		self.view.addSubview(self.buttonStackView)
+		self.view.addSubview(self.buttonMonthVStackView)
+	}
+	
+	//MARK: - SetConstraits
+	
+	func setConstraits() {
+		self.textField.translatesAutoresizingMaskIntoConstraints                                                       = false
+		self.textField.widthAnchor.constraint(equalToConstant: 300).isActive                                           = true
+		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                           = true
+		self.textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80 ).isActive                      = true
+		self.textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
+		
+		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                      = false
+		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive           = true
+		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive             = true
+		
+		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                     = false
+		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive             = true
+		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                     = true
+		
+		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive       = true
+		self.switchAlertRepeat.topAnchor.constraint(equalTo: self.switchAlert.bottomAnchor, constant: 30).isActive     = true
+		
+		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
+		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
+		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
+		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive              = true
+		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                     = true
+		
+		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                     = false
+		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                         = true
+		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                          = true
+		self.repeatLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive             = true
+		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive              = true
+		
+		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                                 = false
+		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 240).isActive                                     = true
+		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                     = true
+		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive                = true
+		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive      = true
+		
+		self.setTimePicker.translatesAutoresizingMaskIntoConstraints                                                   = false
+		self.setTimePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                       = true
+		self.setTimePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                      = true
+		self.setTimePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                         = true
+		self.setTimePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive     = true
+		
+		self.setTimePicker2.translatesAutoresizingMaskIntoConstraints                                                  = false
+		self.setTimePicker2.widthAnchor.constraint(equalToConstant: 250).isActive                                      = true
+		self.setTimePicker2.heightAnchor.constraint(equalToConstant: 120).isActive                                     = true
+		self.setTimePicker2.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
+		self.setTimePicker2.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive    = true
+		
+		self.setTimePickerWeek.translatesAutoresizingMaskIntoConstraints                                               = false
+		self.setTimePickerWeek.widthAnchor.constraint(equalToConstant: 250).isActive                                   = true
+		self.setTimePickerWeek.heightAnchor.constraint(equalToConstant: 120).isActive                                  = true
+		self.setTimePickerWeek.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                     = true
+		self.setTimePickerWeek.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive = true
+		
+		self.buttonStackView.translatesAutoresizingMaskIntoConstraints                                                 = false
+		self.buttonStackView.widthAnchor.constraint(equalToConstant: 350).isActive                                     = true
+		self.buttonStackView.heightAnchor.constraint(equalToConstant: 80).isActive                                     = true
+		self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                       = true
+		self.buttonStackView.topAnchor.constraint(equalTo: self.setTimePickerWeek.bottomAnchor, constant: 0).isActive  = true
+		
+		self.buttonMonthVStackView.translatesAutoresizingMaskIntoConstraints                                           = false
+		self.buttonMonthVStackView.widthAnchor.constraint(equalToConstant: 294).isActive                               = true
+		self.buttonMonthVStackView.heightAnchor.constraint(equalToConstant: 208).isActive                              = true
+		self.buttonMonthVStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                 = true
+		self.buttonMonthVStackView.topAnchor.constraint(equalTo: self.setTimePickerWeek.bottomAnchor, constant: 0).isActive = true
+		
+		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
+		self.infoLabel.widthAnchor.constraint(equalToConstant: 350).isActive                                           = true
+		self.infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                           = true
+		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
+		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20).isActive               = true
+	}
 }

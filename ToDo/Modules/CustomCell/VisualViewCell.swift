@@ -9,7 +9,7 @@ import Foundation
 
 class VisualViewCell {
 	var coreData = CoreDataMethods.shared.coreDataModel
-	let tappedFeedBack = TappedFeedBack()
+	//let tappedFeedBack = TappedFeedBack()
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		let button = cell.buttonCell
@@ -94,15 +94,7 @@ class VisualViewCell {
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
-//				switch isOverdue { //просрочено ли?
-//				case true:
-//					button.backgroundColor = .backgroundColor
-//					button.setImage(nil, for: .normal)
-//					painting(cell: cell, color: .red, colorTwo: .red)
-//					cell.taskTitle.attributedText = notStrikethrough
-//				case false:
 					standart()
-//}
 			}
 			
 		case "weekRepeatType":
@@ -116,16 +108,9 @@ class VisualViewCell {
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
-//				switch isOverdue { //просрочено ли?
-//				case true:
-//					button.backgroundColor = .backgroundColor
-//					button.setImage(nil, for: .normal)
-//					painting(cell: cell, color: .red, colorTwo: .red)
-//					cell.taskTitle.attributedText = notStrikethrough
-//				case false:
 					standart()
-//}
 			}
+			
 		case "monthRepeatType":
 			cell.taskDate.text = "every month"
 			switch check {
@@ -137,16 +122,9 @@ class VisualViewCell {
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
-//				switch isOverdue { //просрочено ли?
-//				case true:
-//					button.backgroundColor = .backgroundColor
-//					button.setImage(nil, for: .normal)
-//					painting(cell: cell, color: .red, colorTwo: .red)
-//					cell.taskTitle.attributedText = notStrikethrough
-//				case false:
 					standart()
-//}
 			}
+			
 		default:
 			print("default visual")
 		}

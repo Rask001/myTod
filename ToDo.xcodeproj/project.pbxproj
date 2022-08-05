@@ -30,7 +30,7 @@
 		3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB459F28882C1F00427BD8 /* Coordinator.swift */; };
 		3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A128882C9100427BD8 /* Assembly.swift */; };
 		3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A428882D1500427BD8 /* TasksUseCase.swift */; };
-		3ADB45A7288837BE00427BD8 /* NewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */; };
+		3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */; };
 		3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A82888389500427BD8 /* NewTaskIO.swift */; };
 		3ADBF4D62827F316000BA06B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADBF4D52827F316000BA06B /* Main.swift */; };
 /* End PBXBuildFile section */
@@ -61,7 +61,7 @@
 		3ADB459F28882C1F00427BD8 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		3ADB45A128882C9100427BD8 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		3ADB45A428882D1500427BD8 /* TasksUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksUseCase.swift; sourceTree = "<group>"; };
-		3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewModel.swift; sourceTree = "<group>"; };
+		3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskPresenter.swift; sourceTree = "<group>"; };
 		3ADB45A82888389500427BD8 /* NewTaskIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskIO.swift; sourceTree = "<group>"; };
 		3ADBF4D52827F316000BA06B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,9 +151,9 @@
 			isa = PBXGroup;
 			children = (
 				3AD1FF8328284092002ECA67 /* NewTask.swift */,
-				3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */,
-				3ADB45A82888389500427BD8 /* NewTaskIO.swift */,
 				3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */,
+				3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */,
+				3ADB45A82888389500427BD8 /* NewTaskIO.swift */,
 			);
 			path = NewTaskVC;
 			sourceTree = "<group>";
@@ -288,7 +288,7 @@
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,
 				3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */,
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
-				3ADB45A7288837BE00427BD8 /* NewTaskViewModel.swift in Sources */,
+				3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */,
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,

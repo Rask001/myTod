@@ -18,9 +18,9 @@ class Assembly {
 	}
 	
 	func makeNewTaskVC(output: NewTaskOutput) -> UIViewController {
-		let viewModel = NewTaskViewModel(output: output)
-		let view = NewTask(viewModel: viewModel)
-		viewModel.view = view
+		let view = NewTask()
+		let presenter = NewTaskPresenter(view: view)
+		view.presenter = presenter
 		return view
 	}
 	

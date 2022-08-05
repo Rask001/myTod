@@ -111,7 +111,6 @@ class LocalNotification {
 		for num in 0...31 {
 			arrayMonth.append("id_\(title)\(num)")
 		}
-		//let identifier = ["id_\(title)", "id_\(title)-0", "id_\(title)-1", "id_\(title)-2", "id_\(title)-3", "id_\(title)-4", "id_\(title)-5"]
 		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: arrayMonth)
 		UNUserNotificationCenter.current().getPendingNotificationRequests { array in
 			DispatchQueue.global(qos: .default).async {

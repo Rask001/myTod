@@ -11,15 +11,7 @@ import CoreData
 
 class NewTask: UIViewController {
   var taskStruct = TaskStruct()
-	private let viewModel: NewTaskViewModelProtocol
-	
-	init(viewModel: NewTaskViewModelProtocol) {
-		self.viewModel = viewModel
-		super.init(nibName: nil, bundle: nil)
-	}
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+	var presenter: NewTaskPresenterProtocol!
 	
 	//MARK: - Properties
 	let dataPicker              = UIDatePicker()
@@ -53,7 +45,7 @@ class NewTask: UIViewController {
 	var buttonArray: [UIButton] = []
 	var coreData                = CoreDataMethods()
 	let tappedFeedBack          = TappedFeedBack()
-	weak var mainViewModel      : MainViewModel?
+	//weak var mainViewModel      : MainViewModel?
 	
 	
 	//MARK: - LiveCycles
@@ -115,6 +107,7 @@ class NewTask: UIViewController {
 		self.buttonStackView.alignment = .center
 		self.buttonStackView.distribution = .fillEqually
 	}
+	
 	private func setStackViewMonth() {
 		let arrStackView = [buttonMonthHStackView,
 												buttonMonthHStackView2,
@@ -188,6 +181,7 @@ class NewTask: UIViewController {
 	}
 	
 	@objc func touchButtonMonth(sender: UIButton) {
+//		self.presenter.touchMonthDayButton(button: sender)
 		tappedSoft()
 		let button = sender
 		let bools: Bool = { button.backgroundColor == .white }()
@@ -209,6 +203,7 @@ class NewTask: UIViewController {
 	}
 	
 	@objc func touchButton(sender: UIButton) {
+		//self.presenter.touchWeekDayButton(button: sender)
 		tappedSoft()
 		let button = sender
 		let bools: Bool = { button.backgroundColor == .white }()
@@ -229,9 +224,9 @@ class NewTask: UIViewController {
 		}
 	}
 	
-	
 	@objc private func textFieldDidChande() {
 		switchAlert.isEnabled = true
+		
 		taskStruct.taskTitle = textField.text ?? ""
 		if textField.text == ""{
 			allEnabled()
@@ -241,7 +236,7 @@ class NewTask: UIViewController {
 	private func infoLabelSetup() {
 		infoLabel.numberOfLines = 2
 		infoLabel.textAlignment = .center
-		infoLabel.font = UIFont.futura17()
+		infoLabel.font          = UIFont.futura17()
 		infoLabel.text          = "Just write you note"
 	}
 	
@@ -276,21 +271,7 @@ class NewTask: UIViewController {
 	}
 	
 	private func timeMHformatter(paramDataPicker: UIDatePicker) -> (String, String, String) {
-		let timeFromDP                  = paramDataPicker.date
-		let timeHourFormatter           = DateFormatter()
-		let timeMinFormatter            = DateFormatter()
-		let timeHourMinFormatter        = DateFormatter()
-		timeHourFormatter.dateFormat    = "H"
-		timeMinFormatter.dateFormat     = "m"
-		timeHourMinFormatter.dateFormat = "HH:mm"
-		let timeHRepeatLabel            = timeHourFormatter.string(from: timeFromDP)
-		let timeMRepeatLabel            = timeMinFormatter.string(from: timeFromDP)
-		let timeHMRepeatLabel           = timeHourMinFormatter.string(from: timeFromDP)
-		taskStruct.taskTime             = timeHMRepeatLabel
-		taskStruct.taskDateDate         = timeFromDP
-		taskStruct.timeInterval         = String(((Int(timeHRepeatLabel) ?? 0)*3600) + ((Int(timeMRepeatLabel) ?? 0)*60) )
-		let timeHM                      = (timeHRepeatLabel, timeMRepeatLabel, timeHMRepeatLabel)
-		return timeHM
+		self.presenter.tFormatter(paramDataPicker: paramDataPicker)
 	}
 	
 	private func infoLabelTextTime(timeH: String, timeM: String, timeHM: String) {
@@ -338,22 +319,7 @@ class NewTask: UIViewController {
 	}
 	
 	private func dateFormatter(dateFromDP: UIDatePicker) -> String {
-		let dateFromDP                 = dateFromDP.date
-		let timeFormatter              = DateFormatter()
-		let dateFormatter              = DateFormatter()
-		let dateFormatterMonth         = DateFormatter()
-		let dayOfMonth                 = DateFormatter()
-		timeFormatter.dateFormat       = "HH:mm"
-		dateFormatter.dateFormat       = "dd.MM"
-		dateFormatterMonth.dateFormat  = "EEEE, MMM d"
-		dayOfMonth.dateFormat          = "d"
-		taskStruct.taskTime            = timeFormatter.string(from: dateFromDP)
-		taskStruct.taskDate            = dateFormatter.string(from: dateFromDP)
-		taskStruct.dayOfMonth          = dayOfMonth.string(from: dateFromDP)
-		let monthLabel                 = dateFormatterMonth.string(from: dateFromDP)
-		taskStruct.taskDateDate        = dateFromDP
-		taskStruct.type                = .singleAlertType
-		return monthLabel
+		self.presenter.dFormatter(dateFromDP: dateFromDP)
 	}
 	
 	private func infoLabelTextDate(paramDP: UIDatePicker, month: String) {

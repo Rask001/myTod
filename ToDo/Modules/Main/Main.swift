@@ -124,7 +124,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		viewModel.tappedRigid()
+		UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
 		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self)
 	}
 	

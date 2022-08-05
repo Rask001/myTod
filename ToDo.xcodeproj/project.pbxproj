@@ -15,7 +15,6 @@
 		3A606D53287790910036635B /* TaskStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A606D52287790910036635B /* TaskStruct.swift */; };
 		3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A65658A289548970014BD04 /* UIButton + ext.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
-		3A975B87288AC59E0049A4E1 /* tappedFeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
 		3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB9C28B287234B700EB5544 /* UIColor+ext.swift */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
@@ -46,7 +45,6 @@
 		3A606D52287790910036635B /* TaskStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStruct.swift; sourceTree = "<group>"; };
 		3A65658A289548970014BD04 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
-		3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tappedFeedBack.swift; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
 		3AB9C28B287234B700EB5544 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 			isa = PBXGroup;
 			children = (
 				3ADB45A428882D1500427BD8 /* TasksUseCase.swift */,
-				3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -292,7 +289,6 @@
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,
-				3A975B87288AC59E0049A4E1 /* tappedFeedBack.swift in Sources */,
 				3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,

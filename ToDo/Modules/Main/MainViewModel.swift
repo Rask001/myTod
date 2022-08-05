@@ -12,8 +12,6 @@ import Foundation
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
-	func tappedSoft()
-	func tappedRigid()
 	var coreDataModel: [Tasks] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
 	func coreDataFetch()
@@ -27,7 +25,6 @@ protocol MainViewModelProtocol {
 
 class MainViewModel {
 	private weak var output: MainOutput?
-	let tappedFeedBack = TappedFeedBack()
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
 	//let updateTable = AppDelegate()
@@ -76,21 +73,12 @@ extension MainViewModel: MainViewModelProtocol {
 		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController)
 	}
 	
-	
-	func tappedSoft() {
-		tappedFeedBack.tappedSoft()
-	}
-	
-	func tappedRigid() {
-		tappedFeedBack.tappedRigid()
-	}
-	
 	func goToNewTaskVC() {
 		output?.goToNewTask()
 		}
 	
 		@objc private func saveCheckmark(sender: UIButton) {
-			tappedSoft()
+			UIImpactFeedbackGenerator(style: .soft).impactOccurred()
 			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 			let model = coreDataModel[sender.tag]
 			model.check.toggle()

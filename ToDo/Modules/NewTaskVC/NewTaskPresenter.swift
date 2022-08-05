@@ -15,8 +15,6 @@ protocol NewTaskProtocol: AnyObject {
 
 protocol NewTaskPresenterProtocol {
 	init(view: NewTaskProtocol)
-	func createTask()
-	func cancelTask()
 	func dFormatter(dateFromDP: UIDatePicker) -> String
 	func tFormatter(paramDataPicker: UIDatePicker) -> (String, String, String)
 }
@@ -63,13 +61,5 @@ class NewTaskPresenter: NewTaskPresenterProtocol {
 		let timeHM                      = (timeHRepeatLabel, timeMRepeatLabel, timeHMRepeatLabel)
 		self.view.getTaskTimeData(timeHMRepeatLabel, timeFromDP, timeInterval)
 		return timeHM
-	}
-
-	func createTask() {
-		print("create")
-	}
-	
-	func cancelTask() {
-		print("cancel")
 	}
 }

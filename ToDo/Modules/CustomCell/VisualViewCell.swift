@@ -9,7 +9,7 @@ import Foundation
 
 class VisualViewCell {
 	var coreData = CoreDataMethods.shared.coreDataModel
-	//let tappedFeedBack = TappedFeedBack()
+	
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		let button = cell.buttonCell

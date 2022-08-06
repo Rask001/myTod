@@ -21,7 +21,7 @@ protocol NewTaskPresenterProtocol {
 
 class NewTaskPresenter: NewTaskPresenterProtocol {
 	
-	let view: NewTaskProtocol
+	weak var view: NewTaskProtocol?
 		
 	required init(view: NewTaskProtocol) {
 		self.view = view
@@ -42,7 +42,7 @@ class NewTaskPresenter: NewTaskPresenterProtocol {
 		let dayOfMonthS                = dayOfMonth.string(from: dateFromDP)
 		let result                     = dateFormatterMonth.string(from: dateFromDP)
 	  let taskDateDate               = dateFromDP
-		self.view.getTaskDateData(taskTimeS, taskDateS, dayOfMonthS, taskDateDate)
+		self.view?.getTaskDateData(taskTimeS, taskDateS, dayOfMonthS, taskDateDate)
 		return result
 	}
 	
@@ -59,7 +59,7 @@ class NewTaskPresenter: NewTaskPresenterProtocol {
 		let timeHMRepeatLabel           = timeHourMinFormatter.string(from: timeFromDP)
 		let timeInterval                = String(((Int(timeHRepeatLabel) ?? 0)*3600) + ((Int(timeMRepeatLabel) ?? 0)*60) )
 		let timeHM                      = (timeHRepeatLabel, timeMRepeatLabel, timeHMRepeatLabel)
-		self.view.getTaskTimeData(timeHMRepeatLabel, timeFromDP, timeInterval)
+		self.view?.getTaskTimeData(timeHMRepeatLabel, timeFromDP, timeInterval)
 		return timeHM
 	}
 }

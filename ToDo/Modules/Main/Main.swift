@@ -8,7 +8,7 @@ import CoreData
 import UIKit
 //MARK: - enum Constants
 
-private enum Constants {
+fileprivate enum Constants {
 	static var mainTitle: String { "my tasks" }
 	static var buttonTitle: String { "New task" }
 	static var buttonTitleColor: String { "WhiteBlack" }
@@ -24,6 +24,7 @@ class Main: UIViewController {
 	//MARK: - Properties
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
+	let taptic = TapticFeedback()
 	let viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
@@ -124,7 +125,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+		taptic.warning
 		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self)
 	}
 	

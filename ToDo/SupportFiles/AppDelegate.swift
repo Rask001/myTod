@@ -29,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		 LocalNotificationRequest.shared.requestAuthorization(notificationCenter: notificationCenter)
 		 return true
 	 }
+	
+	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+			return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
+	}
 
 	// MARK: - Core Data stack
 
@@ -59,6 +63,7 @@ lazy var persistentContainer: NSPersistentContainer = {
 	    return container
 	}()
 
+	
 	// MARK: - Core Data Saving support
 
 	func saveContext () {
@@ -75,6 +80,7 @@ lazy var persistentContainer: NSPersistentContainer = {
 	    }
 	}
 }
+
 
 //MARK: NOTIFICATION EXTENSION
 extension AppDelegate: UNUserNotificationCenterDelegate {

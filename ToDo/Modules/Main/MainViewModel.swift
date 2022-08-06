@@ -27,10 +27,7 @@ class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
-	//let updateTable = AppDelegate()
-//	init() {
-//		updateTable.delegate = self
-//	}
+	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
 		self.output = output
@@ -78,7 +75,7 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 	
 		@objc private func saveCheckmark(sender: UIButton) {
-			UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+			taptic.soft
 			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 			let model = coreDataModel[sender.tag]
 			model.check.toggle()

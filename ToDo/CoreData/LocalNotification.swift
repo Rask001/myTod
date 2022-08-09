@@ -64,7 +64,7 @@ class LocalNotification {
 		for i in weekDayArray {
 			let dateComponents = convertDateWeek(of: i, and: taskDateDate)
 			let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.weekday, .hour, .minute], from: dateComponents), repeats: true)
-			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger) //удаление нужно проработать
+			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger)
 			UNUserNotificationCenter.current().add(request) { error in
 				if error != nil {
 					print(error?.localizedDescription as Any)

@@ -82,8 +82,8 @@ class NewTask: UIViewController {
 	private func navigationBarSetup() {
 		let leftButton  = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(cancelFunc))
 		let rightButton = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(continueFunc))
-		leftButton.image = UIImage(systemName: "xmark")
-		rightButton.image = UIImage(systemName: "checkmark")
+		leftButton.image = UIImage(named: "xmrk")
+		rightButton.image = UIImage(named: "chckmrk")
 		leftButton.tintColor = .black
 		rightButton.tintColor = .black
 		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.black]
@@ -208,7 +208,7 @@ class NewTask: UIViewController {
 	
 	//MARK: - Methods
 	private func createButtonWeekDays() {
-		let weekDaysName = ["sun", "mon", "tue", "wen", "thu", "fri", "sat"]
+		let weekDaysName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
 		var buttonTag = 0
 		for i in weekDaysName {
 			self.button = UIButton(title: "\(i)", isShadow: true, font: UIFont.systemFont(ofSize: 15, weight: .regular), cornerRaadius: 12)
@@ -491,7 +491,7 @@ class NewTask: UIViewController {
 																		 repeatImage:  taskStruct.repeatImage,
 																		 type:         taskStruct.type.rawValue)
 		case .weekRepeatType:
-			guard taskStruct.monthDayChoice != [] else { redText("set the days of the week", 1000); return }
+			guard taskStruct.weekDayChoice != [] else { redText("set the days of the week", 1000); return }
 			coreData.saveWeekDaysRepitionTask(taskTitle: taskStruct.taskTitle,
 																				taskTime: taskStruct.taskTime!,
 																				taskDateDate: taskStruct.taskDateDate!,

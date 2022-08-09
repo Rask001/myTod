@@ -26,4 +26,5 @@ extension UIColor {
 		static let textColor = UIColor.white
 		static let playerBackgroundColor = rgb(84, 77, 126)
 		static let brightPlayerBackgroundColor = rgba(101, 88, 156, 0.5)
+	  static let offWhite = rgb(255, 225, 235)
 }

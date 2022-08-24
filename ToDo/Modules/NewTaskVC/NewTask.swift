@@ -84,9 +84,9 @@ class NewTask: UIViewController {
 		let rightButton = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(continueFunc))
 		leftButton.image = UIImage(named: "xmrk")
 		rightButton.image = UIImage(named: "chckmrk")
-		leftButton.tintColor = .black
-		rightButton.tintColor = .black
-		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.black]
+		leftButton.tintColor = .blackWhite
+		rightButton.tintColor = .blackWhite
+		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite as Any]
 		self.navigationBar.frame               = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
 		self.navigationBar.barTintColor        = .secondarySystemBackground
 		self.navigationBar.prefersLargeTitles  = true
@@ -179,6 +179,7 @@ class NewTask: UIViewController {
 		infoLabel.textAlignment = .center
 		infoLabel.font          = UIFont.futura17()
 		infoLabel.text          = "create your note"
+		infoLabel.textColor     = .blackWhite
 	}
 	
 	private func timePickerSetup() {
@@ -522,7 +523,7 @@ class NewTask: UIViewController {
 		self.infoLabel.font = UIFont.futura20()
 		text != nil ? (self.infoLabel.text = text) : (self.infoLabel.text = oldValue)
 		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) {
-			self.infoLabel.textColor = UIColor.black
+			self.infoLabel.textColor = UIColor.blackWhite
 			self.infoLabel.font = UIFont.futura17()
 			self.infoLabel.text = oldValue
 		}

@@ -11,8 +11,8 @@ import UIKit
 fileprivate enum Constants {
 	static var mainTitle: String { "my tasks" }
 	static var buttonTitle: String { "New task" }
-	static var buttonTitleColor: String { "WhiteBlack" }
-	static var buttonBackgroundColor: String { "BlackWhite" }
+	static var buttonTitleColor = UIColor.whiteBalck
+	static var buttonBackgroundColor = UIColor.blackWhite
 	static var buttonCornerRadius: CGFloat { 10 }
 	static var tableViewRowHeight: CGFloat { 60 }
 }
@@ -76,11 +76,11 @@ class Main: UIViewController {
 	
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
-		self.buttonNewTask.backgroundColor    = UIColor(named: Constants.buttonBackgroundColor)
+		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
 		self.buttonNewTask.titleLabel?.font   = .NoteworthyBold20()
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		self.buttonNewTask.setTitle(Constants.buttonTitle, for: .normal)
-		self.buttonNewTask.setTitleColor(UIColor(named: Constants.buttonTitleColor), for: .normal)
+		self.buttonNewTask.setTitleColor(Constants.buttonTitleColor, for: .normal)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 	}
 	
@@ -91,6 +91,7 @@ class Main: UIViewController {
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
+		
 		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
 		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -2).isActive       = true
 		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true

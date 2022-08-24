@@ -19,12 +19,11 @@ extension UIColor {
 		}
 		
 		// MARK: Public
-		static let borderColor = rgb(254, 250, 236)
-		static let backgroundColor = rgb(172, 212, 255)
-	  static let backgroundColor2 = rgb(0, 66, 37)
-		static let scoreColor = rgb(255, 193, 45)
-		static let textColor = UIColor.white
-		static let playerBackgroundColor = rgb(84, 77, 126)
-		static let brightPlayerBackgroundColor = rgba(101, 88, 156, 0.5)
+	static let backgroundColor = UIColor(named: "BackgroundColor")
+	static let whiteBalck = UIColor(named: "WhiteBlack")
+	static let blackWhite = UIColor(named: "BlackWhite")
+	 
+	
+
 	  static let offWhite = rgb(255, 225, 235)
 }

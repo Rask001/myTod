@@ -11,8 +11,8 @@ import UIKit
 fileprivate enum Constants {
 	static var mainTitle: String { "my tasks" }
 	static var buttonTitle: String { "New task" }
-	static var buttonTitleColor = UIColor.whiteBalck
-	static var buttonBackgroundColor = UIColor.blackWhite
+	static var buttonTitleColor = UIColor.blackWhite
+	static var buttonBackgroundColor = UIColor.cellColor
 	static var buttonCornerRadius: CGFloat { 10 }
 	static var tableViewRowHeight: CGFloat { 60 }
 }

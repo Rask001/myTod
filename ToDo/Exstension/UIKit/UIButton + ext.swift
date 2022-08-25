@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 extension UIButton {
-	convenience init(backrounColor: UIColor = .white,
+	convenience init(backrounColor: UIColor = .whiteBlack ?? .white,
 									 titleColor: UIColor = .lightGray,
 									 title: String,
 									 isShadow: Bool = false,

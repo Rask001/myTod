@@ -28,6 +28,7 @@ class NewTask: UIViewController {
 	let textField               = UITextField()
 	let navigationBar           = UINavigationBar()
 	var repeatSegmented         = UISegmentedControl()
+	var repeatSegmented1         = UISegmentedControl()
 	
 	var button                  = UIButton()
 	let weekDayButton           = UIButton()
@@ -41,6 +42,7 @@ class NewTask: UIViewController {
 	var buttonMonthHStackView5  = UIStackView()
 	var buttonMonthVStackView   = UIStackView()
 	var segmentedItems          = ["day", "week", "month", "set time"]
+	var segmented1Items          = ["Alarm", "Reapeat"]
 	let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	var buttonArray: [UIButton] = []
 	var coreData                = CoreDataMethods()
@@ -64,6 +66,7 @@ class NewTask: UIViewController {
 		stackViewMonthSetup()
 		dataPickerSetup()
 		segmentedControllerSetup()
+		segmented1ControllerSetup()
 		textFieldSetup()
 		addSubviewAndConfigure()
 		navigationBarSetup()
@@ -105,7 +108,7 @@ class NewTask: UIViewController {
 		self.textField.placeholder        = "...write something here"
 		self.textField.borderStyle        = UITextField.BorderStyle.none
 		self.textField.backgroundColor    = .systemBackground
-		self.textField.font               = .futura20()
+		self.textField.font               = .NoteworthyBold20()
 		self.textField.clearButtonMode    = .always
 		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
 	}
@@ -124,11 +127,18 @@ class NewTask: UIViewController {
 	
 	private func segmentedControllerSetup() {
 		repeatSegmented               = UISegmentedControl(items: segmentedItems)
-		repeatSegmented.isEnabled     = false
+		repeatSegmented.isHidden      = true
 		repeatSegmented.addTarget(self, action: #selector(repeatSegmentedChange(paramRepeatSegmented:)), for: .valueChanged)
 	}
 	
+	private func segmented1ControllerSetup() {
+		repeatSegmented1               = UISegmentedControl(items: segmented1Items)
+		repeatSegmented1.isHidden      = true
+		//repeatSegmented1.addTarget(self, action: #selector(repeatSegmented1Change(paramRepeatSegmented:)), for: .valueChanged)
+	}
+	
 	private func switchAlertSetup() {
+		//switchAlert.isHidden          = true
 		switchAlert.isEnabled         = false
 		switchAlert.isOn              = false
 		switchAlert.onTintColor       = .backgroundColor
@@ -199,7 +209,7 @@ class NewTask: UIViewController {
 	
 	private func 		dataPickerSetup() {
 		let dateNow = Date.now
-		self.dataPicker.isEnabled    = false
+		self.dataPicker.isHidden     = true
 		self.dataPicker.date         = dateNow
 		self.dataPicker.minimumDate  = dateNow
 		self.dataPicker.timeZone     = .autoupdatingCurrent
@@ -259,17 +269,17 @@ class NewTask: UIViewController {
 	@objc func touchButtonMonth(sender: UIButton) {
 		taptic.soft
 		let button = sender
-		let bools: Bool = { button.backgroundColor == .white }()
+		let bools: Bool = { button.backgroundColor == .whiteBlack }()
 		let monthDay = button.title(for: .normal)!
 		switch bools {
 		case true:
 			button.backgroundColor = .backgroundColor
 			button.setTitleColor(.white, for: .normal)
-			button.layer.shadowColor = UIColor.white.cgColor
+			button.layer.shadowColor = nil
 			taskStruct.monthDayChoice?.append(monthDay)
 			print(taskStruct.monthDayChoice ?? "error")
 		case false:
-			button.backgroundColor = .white
+			button.backgroundColor = .whiteBlack
 			button.setTitleColor(.lightGray, for: .normal)
 			button.layer.shadowColor = UIColor.black.cgColor
 			taskStruct.monthDayChoice?.removeAll { $0 == monthDay }
@@ -280,17 +290,17 @@ class NewTask: UIViewController {
 	@objc func touchButton(sender: UIButton) {
 		taptic.soft
 		let button = sender
-		let bools: Bool = { button.backgroundColor == .white }()
+		let bools: Bool = { button.backgroundColor == .whiteBlack }()
 		let weekDay = button.title(for: .normal)!
 		switch bools {
 		case true:
 			button.backgroundColor = .backgroundColor
 			button.setTitleColor(.white, for: .normal)
-			button.layer.shadowColor = UIColor.white.cgColor
+			button.layer.shadowColor = nil
 			taskStruct.weekDayChoice?.append(weekDay)
 			print(taskStruct.weekDayChoice ?? "error")
 		case false:
-			button.backgroundColor = .white
+			button.backgroundColor = .whiteBlack
 			button.setTitleColor(.lightGray, for: .normal)
 			button.layer.shadowColor = UIColor.black.cgColor
 			taskStruct.weekDayChoice?.removeAll { $0 == weekDay }
@@ -300,6 +310,7 @@ class NewTask: UIViewController {
 	
 	@objc private func textFieldDidChande() {
 		switchAlert.isEnabled = true
+		switchAlertRepeat.isEnabled = true
 		taskStruct.taskTitle = textField.text ?? ""
 		if textField.text == ""{
 			allEnabled()
@@ -400,22 +411,56 @@ class NewTask: UIViewController {
 			}
 		}
 	}
+//
+//	@objc private func repeatSegmented1Change(paramRepeatSegmented: UISegmentedControl) {
+//		if paramRepeatSegmented.isEqual(self.repeatSegmented1){
+//			switch paramRepeatSegmented.selectedSegmentIndex {
+//			case 0:
+//				print("alarm")
+//				self.dataPicker.isHidden             = false
+//				self.switchAlertRepeat.isEnabled     = true
+//				self.infoLabel.text                  = "Set the date and time of the reminder"
+//
+//				self.repeatSegmented.isHidden            = true
+//				self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
+//				self.dataPicker.minimumDate               = Date()
+//				self.dataPicker.isEnabled                 = true
+//				self.dataPicker.isHidden                  = false
+//				self.timePicker.isHidden                  = true
+//				self.timePickerDWM.isHidden               = true
+//				self.buttonStackView.isHidden             = true
+//				self.buttonMonthVStackView.isHidden       = true
+//				self.taskStruct.type                      = .singleAlertType
+//				self.infoLabel.text                       = "Set the date and time of the reminder"
+//				self.taskStruct.repeatImage               = false
+//			case 1:
+//				print("repeat")
+//				self.repeatSegmented.isHidden            = false
+//				self.repeatSegmented.isEnabled            = true
+//				self.dataPicker.isHidden                  = true
+//				self.dataPicker.minimumDate               = nil
+//				self.infoLabel.text                       = "Choose a repeat rate"
+//
+//			default:
+//				break
+//			}
+//		}
+//	}
 	
 	@objc private func visibilityDataPickerAndSwitchAlertRepeat() {
 		taskStruct.alarmImage = switchAlert.isOn
 		switch switchAlert.isOn {
 		case true:
-			self.dataPicker.isEnabled            = true
+			//self.dataPicker.isEnabled            = true
 			self.dataPicker.isHidden             = false
-			self.switchAlertRepeat.isEnabled     = true
 			self.infoLabel.text                  = "Set the date and time of the reminder"
+			self.taskStruct.type                 = .singleAlertType
 		case false:
-			self.dataPicker.isEnabled            = false
-			self.dataPicker.isHidden             = false
+			//self.dataPicker.isEnabled            = false
+			self.dataPicker.isHidden             = true
 			self.dataPicker.minimumDate          = Date()
-			self.switchAlertRepeat.isEnabled     = false
 			self.switchAlertRepeat.isOn          = false
-			self.repeatSegmented.isEnabled       = false
+			self.repeatSegmented.isHidden       = true
 			self.timePicker.isHidden             = true
 			self.timePickerDWM.isHidden          = true
 			self.buttonStackView.isHidden        = true
@@ -427,15 +472,19 @@ class NewTask: UIViewController {
 	}
 	
 	@objc private func visibilityRepeatSegmented() {
+		taskStruct.alarmImage = true
 		taskStruct.repeatImage = switchAlertRepeat.isOn
 		switch switchAlertRepeat.isOn {
 		case true:
+			self.repeatSegmented.isHidden             = false
+			self.switchAlert.isOn                     = true
+			self.switchAlert.isEnabled                = true
 			self.repeatSegmented.isEnabled            = true
-			self.dataPicker.isHidden                  = false
+			self.dataPicker.isHidden                  = true
 			self.dataPicker.minimumDate               = nil
 			self.infoLabel.text                       = "Choose a repeat rate"
 		case false:
-			self.repeatSegmented.isEnabled            = false
+			self.repeatSegmented.isHidden            = true
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 			self.dataPicker.minimumDate               = Date()
 			self.dataPicker.isEnabled                 = true
@@ -444,9 +493,10 @@ class NewTask: UIViewController {
 			self.timePickerDWM.isHidden               = true
 			self.buttonStackView.isHidden             = true
 			self.buttonMonthVStackView.isHidden       = true
-			self.taskStruct.type                      = .justType
+			self.taskStruct.type                      = .singleAlertType
 			self.infoLabel.text                       = "Set the date and time of the reminder"
 			self.taskStruct.repeatImage               = false
+			self.taskStruct.alarmImage                = true
 		}
 	}
 	
@@ -532,8 +582,8 @@ class NewTask: UIViewController {
 	private func allEnabled() {
 		switchAlert.isEnabled          = false
 		switchAlertRepeat.isEnabled    = false
-		repeatSegmented.isEnabled      = false
-		dataPicker.isEnabled           = false
+		repeatSegmented.isHidden       = true
+		dataPicker.isHidden            = true
 		switchAlert.isOn               = false
 		switchAlertRepeat.isOn         = false
 		timePicker.isHidden            = true
@@ -549,12 +599,11 @@ class NewTask: UIViewController {
 	//MARK: - Cancel Func
 	@objc private func cancelFunc(){
 		textField.text                 = nil
-		dataPicker.isEnabled           = false
 		switchAlert.isOn               = false
 		switchAlertRepeat.isOn         = false
 		timePicker.isHidden            = true
 		timePickerDWM.isHidden         = true
-		repeatSegmented.isEnabled      = false
+		repeatSegmented.isHidden       = true
 		repeatSegmented.isSelected     = false
 		switchAlertRepeat.isEnabled    = false
 		switchAlert.isEnabled          = false
@@ -585,6 +634,7 @@ class NewTask: UIViewController {
 		self.view.addSubview(self.alertLabel)
 		self.view.addSubview(self.repeatLabel)
 		self.view.addSubview(self.repeatSegmented)
+		self.view.addSubview(self.repeatSegmented1)
 		self.view.addSubview(self.timePicker)
 		self.view.addSubview(self.timePickerDWM)
 		self.view.addSubview(self.infoLabel)
@@ -597,39 +647,50 @@ class NewTask: UIViewController {
 	func setConstraits() {
 		self.textField.translatesAutoresizingMaskIntoConstraints                                                        = false
 		self.textField.widthAnchor.constraint(equalToConstant: 300).isActive                                            = true
-		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true //31
+		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true
 		self.textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive                        = true
 		self.textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
 		
 		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                       = false
-		self.dataPicker.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive            = true
-		self.dataPicker.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive              = true
+		self.dataPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
+		self.dataPicker.centerYAnchor.constraint(equalTo: self.repeatSegmented.centerYAnchor).isActive                  = true
 		
 		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                      = false
-		self.switchAlert.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive              = true
-		self.switchAlert.centerYAnchor.constraint(equalTo: self.dataPicker.centerYAnchor).isActive                      = true
+		self.switchAlert.leadingAnchor.constraint(equalTo: self.alertLabel.trailingAnchor, constant: 10).isActive       = true
+		self.switchAlert.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive             = true
 		
 		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                                = false
-		self.switchAlertRepeat.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive        = true
-		self.switchAlertRepeat.topAnchor.constraint(equalTo: self.switchAlert.bottomAnchor, constant: 20).isActive      = true
+		self.switchAlertRepeat.trailingAnchor.constraint(equalTo: self.repeatLabel.leadingAnchor, constant: -10).isActive = true
+		self.switchAlertRepeat.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
 		
 		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
 		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                           = true
 		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                            = true
-		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive               = true
+		//self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive               = true
+		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70).isActive = true
 		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                      = true
 		
 		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
 		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
 		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
-		self.repeatLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 15).isActive              = true
+		//self.repeatLabel.trailingAnchor.constraint(equalTo: self.switchAlertRepeat.leadingAnchor, constant: -8).isActive              = true
+		self.repeatLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -70).isActive = true
 		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive               = true
 		
 		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                                  = false
 		self.repeatSegmented.widthAnchor.constraint(equalToConstant: 240).isActive                                      = true
 		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
-		self.repeatSegmented.centerYAnchor.constraint(equalTo: self.repeatLabel.centerYAnchor).isActive                 = true
 		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
+		self.repeatSegmented.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive          = true
+		self.repeatSegmented.topAnchor.constraint(equalTo: self.alertLabel.bottomAnchor, constant: 40).isActive         = true
+		
+		self.repeatSegmented1.translatesAutoresizingMaskIntoConstraints                                                  = false
+		self.repeatSegmented1.widthAnchor.constraint(equalToConstant: 240).isActive                                      = true
+		self.repeatSegmented1.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
+		self.repeatSegmented1.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -60).isActive       = true
+		self.repeatSegmented1.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 60).isActive          = true
+		self.repeatSegmented1.topAnchor.constraint(equalTo: self.alertLabel.bottomAnchor, constant: 40).isActive         = true
+		self.repeatSegmented1.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
 		
 		self.timePicker.translatesAutoresizingMaskIntoConstraints                                                       = false
 		self.timePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                           = true

@@ -40,7 +40,7 @@ class VisualViewCell {
 			case false:
 				button.setImage(nil, for: .normal)
 				button.backgroundColor = .backgroundColor
-				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
+				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .blackWhite!)
 				cell.taskTitle.attributedText = notStrikethrough
 				cell.taskDate.text = ""
 
@@ -73,7 +73,7 @@ class VisualViewCell {
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .white
+				button.backgroundColor = .cellColor
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
@@ -88,7 +88,7 @@ class VisualViewCell {
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .white
+				button.backgroundColor = .cellColor
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
@@ -102,7 +102,7 @@ class VisualViewCell {
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .white
+				button.backgroundColor = .cellColor
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
@@ -116,7 +116,7 @@ class VisualViewCell {
 			switch check {
 			case true:
 				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .white
+				button.backgroundColor = .cellColor
 				button.tintColor = .lightGray
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
@@ -131,14 +131,14 @@ class VisualViewCell {
 		
 		func checkLight() {
 			button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-			button.backgroundColor = .white
+			button.backgroundColor = .cellColor
 			button.tintColor = .lightGray
 		}
 		
 		func standart() {
 			button.backgroundColor = .backgroundColor
 			button.setImage(nil, for: .normal)
-			painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .black)
+			painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .blackWhite!)
 			cell.taskTitle.attributedText = notStrikethrough
 		}
 		

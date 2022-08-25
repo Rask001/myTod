@@ -11,6 +11,7 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+
 	//weak var delegate: ReloadTableViewDelegate?
 	var window: UIWindow?
 	private let assembly = Assembly()
@@ -84,33 +85,17 @@ lazy var persistentContainer: NSPersistentContainer = {
 
 //MARK: NOTIFICATION EXTENSION
 extension AppDelegate: UNUserNotificationCenterDelegate {
-//	func tableViewReload() {
-//		if let delegate = delegate {
-//			delegate.tableViewReload()
-//			print("lol")
-//		}
-//	}
-//
 
-	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-		completionHandler([.sound, .banner])
-		print("уведомление в то время как приложение открыто")
-		 
-		//deleg()
-		//		weak var view: Main?
-//		DispatchQueue.main.async {
-//			view?.viewModel.reloadTable()
-//		}
-	NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
 		
+			completionHandler([.sound, .banner])
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
+//	print("уведомление в то время как приложение открыто")
+		}
 	}
-//	func deleg() {
-//		DispatchQueue.global(qos: .userInteractive).async {
-//			print("11")
-//			self.delegate?.tableViewReload()
-//		}
-//	}
+	
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh

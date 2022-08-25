@@ -71,7 +71,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderNotification("Daily repeats", taskTitle, taskDateDate)
+		LocalNotification.shared.sendDaylyReminderNotification("daily reminders", taskTitle, taskDateDate)
 	}
 	
 	func saveWeekDaysRepitionTask(taskTitle:    String,
@@ -101,7 +101,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderWeekDayNotification("Week day repeats", taskTitle, taskDateDate, weekDay)
+		LocalNotification.shared.sendDaylyReminderWeekDayNotification("weekly reminders", taskTitle, taskDateDate, weekDay)
 	}
 	
 	func saveDaysMonthRepitionTask(taskTitle:   String,
@@ -131,7 +131,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderMonthNotification("Week day repeats", taskTitle, taskDateDate, monthDay)
+		LocalNotification.shared.sendDaylyReminderMonthNotification("monthly reminders", taskTitle, taskDateDate, monthDay)
 	}
 	
 	func saveRepeatTask(taskTitle:    String,

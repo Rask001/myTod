@@ -23,7 +23,7 @@ extension UIColor {
 	static let whiteBlack = UIColor(named: "WhiteBlack")
 	static let blackWhite = UIColor(named: "BlackWhite")
 	static let cellColor = UIColor(named: "CellColor")
-	 
+	static let newTaskButtonColor = UIColor(named: "NewTaskButtonColor")
 	
 
 	  static let offWhite = rgb(255, 225, 235)

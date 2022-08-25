@@ -12,7 +12,7 @@ fileprivate enum Constants {
 	static var mainTitle: String { "my tasks" }
 	static var buttonTitle: String { "New task" }
 	static var buttonTitleColor = UIColor.blackWhite
-	static var buttonBackgroundColor = UIColor.cellColor
+	static var buttonBackgroundColor = UIColor.newTaskButtonColor
 	static var buttonCornerRadius: CGFloat { 10 }
 	static var tableViewRowHeight: CGFloat { 60 }
 }
@@ -114,6 +114,7 @@ class Main: UIViewController {
 	@objc func tableViewReloadData(notification: NSNotification){
 			self.viewModel.coreDataFetch()
 		  self.viewModel.reloadTable()
+		print("tableViewReloadData")
 	}
 }
 

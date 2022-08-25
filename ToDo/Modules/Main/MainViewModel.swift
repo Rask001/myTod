@@ -36,16 +36,13 @@ class MainViewModel {
 
 extension MainViewModel: MainViewModelProtocol {
 	func tableViewReload() {
-		print("1")
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
 		}
-		print("2")
 	}
 	
 	func reloadTable() {
 		view?.tableView.reloadData()
-		print("3")
 	}
 	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {

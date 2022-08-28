@@ -13,6 +13,7 @@ protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
 	var coreDataModel: [Tasks] { get }
+	var todayTasksArray: [Tasks] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
 	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
@@ -54,6 +55,12 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	func coreDataFetch() {
 		coreDataMethods.fetchRequest()
+	}
+	
+	var todayTasksArray: [Tasks] {
+		get {
+			coreDataMethods.todayTasksArray
+		}
 	}
 	
 	var coreDataModel: [Tasks] {

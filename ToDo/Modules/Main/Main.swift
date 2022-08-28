@@ -21,9 +21,12 @@ fileprivate enum Constants {
 //MARK: - Main
 class Main: UIViewController {
 	
+	
 	//MARK: - Properties
+	
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
+	//let navigationBar = UINavigationBar()
 	let taptic = TapticFeedback()
 	let viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
@@ -41,6 +44,7 @@ class Main: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
+		navigationControllerSetup()
 	}
 	
 	
@@ -59,9 +63,10 @@ class Main: UIViewController {
 	//MARK: - Configure
 	
 	private func confugureTableView() {
-		self.title = Constants.mainTitle
-		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
+	//	self.title = "lollololol"
+//		self.navigationBar.tintColor = .systemBlue
+	//	self.navigationController?.navigationBar.barTintColor = .backgroundColor
+//		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
 		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
@@ -74,6 +79,23 @@ class Main: UIViewController {
 		self.tableView.dataSource       = self
 	}
 	
+	private func navigationControllerSetup() {
+		navigationItem.title = "my tasks"
+		let textAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
+		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
+		self.navigationController?.navigationBar.barTintColor = .backgroundColor
+		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
+		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
+		backButtonItem.tintColor = UIColor.blackWhite
+		navigationItem.leftBarButtonItems = [backButtonItem]
+	}
+	
+	@objc func cancelFunc(){
+		
+	}
+	@objc func continueFunc(){
+		
+	}
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
@@ -93,9 +115,9 @@ class Main: UIViewController {
 	private func setConstraits() {
 		
 		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -2).isActive       = true
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive       = true
 		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 5).isActive              = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive              = true
 		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false

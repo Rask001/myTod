@@ -12,18 +12,15 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-	//weak var delegate: ReloadTableViewDelegate?
 	var window: UIWindow?
 	private let assembly = Assembly()
 	private lazy var cootdinator = Coordinator(assembly: assembly)
-	//let notificationCenter = UNUserNotificationCenter.current()
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
-//		 window?.rootViewController = Main()
-//		 window?.makeKeyAndVisible()
+
 		 //запрос у пользователя на отправку локал нотификейшн
 		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self

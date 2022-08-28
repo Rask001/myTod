@@ -117,6 +117,7 @@ class LocalNotification {
 				print(array)
 			}
 		}
+	
 //		UNUserNotificationCenter.current().getDeliveredNotifications { array in
 //			DispatchQueue.global(qos: .default).async {
 //				print(array)

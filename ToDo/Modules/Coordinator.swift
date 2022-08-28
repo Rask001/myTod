@@ -12,16 +12,24 @@ class Coordinator {
 	
 	
 	private let assembly: Assembly
-	private var navigationViewController: UINavigationController?
-	
+
 	init(assembly: Assembly) {
 		self.assembly = assembly
 	}
 	
+	var mainView = UIViewController()
+	var seconvVC = UIViewController()
+	var settingVC = UIViewController()
+  var tabBarVC = UITabBarController()
+
+	
+
 	func start(window: UIWindow) {
-		let mainView = assembly.makeMain(output: self)
-		navigationViewController = UINavigationController(rootViewController: mainView)
-		window.rootViewController = navigationViewController
+		mainView = assembly.makeMain(output: self)
+		seconvVC = assembly.makeSecondVC(output: self)
+		settingVC = assembly.makeSettingVC(output: self)
+		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
+		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
 	}
 }
@@ -29,9 +37,9 @@ class Coordinator {
 extension Coordinator: MainOutput {
 	func goToNewTask() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
-		navigationViewController?.present(newTaskVC, animated: true, completion: nil)
+		mainView.present(newTaskVC, animated: true, completion: nil)
 	}
 }
 
-extension Coordinator: NewTaskOutput {
+extension Coordinator: NewTaskOutput, TabBarOutput, SecondVCOutput, SettingOutput {
 }

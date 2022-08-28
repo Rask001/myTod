@@ -11,24 +11,26 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-	//weak var delegate: ReloadTableViewDelegate?
+
 	var window: UIWindow?
 	private let assembly = Assembly()
 	private lazy var cootdinator = Coordinator(assembly: assembly)
-	//let notificationCenter = UNUserNotificationCenter.current()
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
-//		 window?.rootViewController = Main()
-//		 window?.makeKeyAndVisible()
+
 		 //запрос у пользователя на отправку локал нотификейшн
 		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self
 		 LocalNotificationRequest.shared.requestAuthorization(notificationCenter: notificationCenter)
 		 return true
 	 }
+	
+	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+			return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
+	}
 
 	// MARK: - Core Data stack
 
@@ -59,6 +61,7 @@ lazy var persistentContainer: NSPersistentContainer = {
 	    return container
 	}()
 
+	
 	// MARK: - Core Data Saving support
 
 	func saveContext () {
@@ -76,35 +79,20 @@ lazy var persistentContainer: NSPersistentContainer = {
 	}
 }
 
+
 //MARK: NOTIFICATION EXTENSION
 extension AppDelegate: UNUserNotificationCenterDelegate {
-//	func tableViewReload() {
-//		if let delegate = delegate {
-//			delegate.tableViewReload()
-//			print("lol")
-//		}
-//	}
-//
 
-	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-		completionHandler([.sound, .banner])
-		print("уведомление в то время как приложение открыто")
-		 
-		//deleg()
-		//		weak var view: Main?
-//		DispatchQueue.main.async {
-//			view?.viewModel.reloadTable()
-//		}
-	NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
 		
+			completionHandler([.sound, .banner])
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh
+//	print("уведомление в то время как приложение открыто")
+		}
 	}
-//	func deleg() {
-//		DispatchQueue.global(qos: .userInteractive).async {
-//			print("11")
-//			self.delegate?.tableViewReload()
-//		}
-//	}
+	
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none) //real time table refresh

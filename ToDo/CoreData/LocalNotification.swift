@@ -64,7 +64,7 @@ class LocalNotification {
 		for i in weekDayArray {
 			let dateComponents = convertDateWeek(of: i, and: taskDateDate)
 			let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.weekday, .hour, .minute], from: dateComponents), repeats: true)
-			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger) //удаление нужно проработать
+			let request = UNNotificationRequest(identifier: "id_\(body)\(num)", content: content, trigger: trigger)
 			UNUserNotificationCenter.current().add(request) { error in
 				if error != nil {
 					print(error?.localizedDescription as Any)
@@ -111,13 +111,13 @@ class LocalNotification {
 		for num in 0...31 {
 			arrayMonth.append("id_\(title)\(num)")
 		}
-		//let identifier = ["id_\(title)", "id_\(title)-0", "id_\(title)-1", "id_\(title)-2", "id_\(title)-3", "id_\(title)-4", "id_\(title)-5"]
 		UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: arrayMonth)
 		UNUserNotificationCenter.current().getPendingNotificationRequests { array in
 			DispatchQueue.global(qos: .default).async {
 				print(array)
 			}
 		}
+	
 //		UNUserNotificationCenter.current().getDeliveredNotifications { array in
 //			DispatchQueue.global(qos: .default).async {
 //				print(array)

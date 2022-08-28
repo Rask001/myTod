@@ -25,7 +25,7 @@ struct TaskStruct {
 	var alarmImage    : Bool = false
 	var repeatImage   : Bool = false
 	var check         : Bool = false
-	var createdAt     : Date?
+	var createdAt     : Date = Date.now
 	var timeInterval  : String? = nil
 	var weekDay       : String?
 	var dayOfMonth    : String?

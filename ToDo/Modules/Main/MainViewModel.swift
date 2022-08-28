@@ -12,9 +12,8 @@ import Foundation
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
-	func tappedSoft()
-	func tappedRigid()
 	var coreDataModel: [Tasks] { get }
+	var todayTasksArray: [Tasks] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
 	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
@@ -27,13 +26,9 @@ protocol MainViewModelProtocol {
 
 class MainViewModel {
 	private weak var output: MainOutput?
-	let tappedFeedBack = TappedFeedBack()
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
-	//let updateTable = AppDelegate()
-//	init() {
-//		updateTable.delegate = self
-//	}
+	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
 		self.output = output
@@ -42,16 +37,13 @@ class MainViewModel {
 
 extension MainViewModel: MainViewModelProtocol {
 	func tableViewReload() {
-		print("1")
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
 		}
-		print("2")
 	}
 	
 	func reloadTable() {
 		view?.tableView.reloadData()
-		print("3")
 	}
 	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
@@ -65,6 +57,12 @@ extension MainViewModel: MainViewModelProtocol {
 		coreDataMethods.fetchRequest()
 	}
 	
+	var todayTasksArray: [Tasks] {
+		get {
+			coreDataMethods.todayTasksArray
+		}
+	}
+	
 	var coreDataModel: [Tasks] {
 		get {
 			coreDataMethods.coreDataModel
@@ -76,21 +74,12 @@ extension MainViewModel: MainViewModelProtocol {
 		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController)
 	}
 	
-	
-	func tappedSoft() {
-		tappedFeedBack.tappedSoft()
-	}
-	
-	func tappedRigid() {
-		tappedFeedBack.tappedRigid()
-	}
-	
 	func goToNewTaskVC() {
 		output?.goToNewTask()
 		}
 	
 		@objc private func saveCheckmark(sender: UIButton) {
-			tappedSoft()
+			taptic.soft
 			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 			let model = coreDataModel[sender.tag]
 			model.check.toggle()

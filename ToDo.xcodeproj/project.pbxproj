@@ -15,8 +15,9 @@
 		3A606D53287790910036635B /* TaskStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A606D52287790910036635B /* TaskStruct.swift */; };
 		3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A65658A289548970014BD04 /* UIButton + ext.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
-		3A975B87288AC59E0049A4E1 /* tappedFeedBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
+		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
+		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
 		3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB9C28B287234B700EB5544 /* UIColor+ext.swift */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
 		3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */; };
@@ -30,9 +31,15 @@
 		3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB459F28882C1F00427BD8 /* Coordinator.swift */; };
 		3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A128882C9100427BD8 /* Assembly.swift */; };
 		3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A428882D1500427BD8 /* TasksUseCase.swift */; };
-		3ADB45A7288837BE00427BD8 /* NewTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */; };
+		3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */; };
 		3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A82888389500427BD8 /* NewTaskIO.swift */; };
 		3ADBF4D62827F316000BA06B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADBF4D52827F316000BA06B /* Main.swift */; };
+		3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F428BB5181002C0C52 /* SecondVC.swift */; };
+		3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F728BB5297002C0C52 /* SecondIO.swift */; };
+		3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */; };
+		3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FC28BB835B002C0C52 /* SettingVC.swift */; };
+		3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FD28BB835B002C0C52 /* SettingIO.swift */; };
+		3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,8 +53,9 @@
 		3A606D52287790910036635B /* TaskStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStruct.swift; sourceTree = "<group>"; };
 		3A65658A289548970014BD04 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
-		3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tappedFeedBack.swift; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
+		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
+		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		3AB9C28B287234B700EB5544 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -61,9 +69,15 @@
 		3ADB459F28882C1F00427BD8 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		3ADB45A128882C9100427BD8 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		3ADB45A428882D1500427BD8 /* TasksUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksUseCase.swift; sourceTree = "<group>"; };
-		3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewModel.swift; sourceTree = "<group>"; };
+		3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskPresenter.swift; sourceTree = "<group>"; };
 		3ADB45A82888389500427BD8 /* NewTaskIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskIO.swift; sourceTree = "<group>"; };
 		3ADBF4D52827F316000BA06B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		3AFC09F428BB5181002C0C52 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
+		3AFC09F728BB5297002C0C52 /* SecondIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondIO.swift; sourceTree = "<group>"; };
+		3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewModel.swift; sourceTree = "<group>"; };
+		3AFC09FC28BB835B002C0C52 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
+		3AFC09FD28BB835B002C0C52 /* SettingIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingIO.swift; sourceTree = "<group>"; };
+		3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +133,8 @@
 			children = (
 				3ADB459F28882C1F00427BD8 /* Coordinator.swift */,
 				3ADB45A128882C9100427BD8 /* Assembly.swift */,
+				3AFC09FB28BB835B002C0C52 /* SettingVC */,
+				3AFC09F628BB5257002C0C52 /* SecondVC */,
 				3A7FFA5B2865CCD000A7CC27 /* Main */,
 				3A7FFA5C2865CCF900A7CC27 /* NewTaskVC */,
 				3A7FFA5F2867874500A7CC27 /* CustomCell */,
@@ -141,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADBF4D52827F316000BA06B /* Main.swift */,
+				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
 				3ADB459B2888269F00427BD8 /* MainViewModel.swift */,
 				3ADB459D288827FF00427BD8 /* MainIO.swift */,
 			);
@@ -151,9 +168,9 @@
 			isa = PBXGroup;
 			children = (
 				3AD1FF8328284092002ECA67 /* NewTask.swift */,
-				3ADB45A6288837BE00427BD8 /* NewTaskViewModel.swift */,
-				3ADB45A82888389500427BD8 /* NewTaskIO.swift */,
 				3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */,
+				3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */,
+				3ADB45A82888389500427BD8 /* NewTaskIO.swift */,
 			);
 			path = NewTaskVC;
 			sourceTree = "<group>";
@@ -194,7 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADB45A428882D1500427BD8 /* TasksUseCase.swift */,
-				3A975B86288AC59E0049A4E1 /* tappedFeedBack.swift */,
+				3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -206,6 +223,27 @@
 			);
 			path = Exstension;
 			sourceTree = "<group>";
+		};
+		3AFC09F628BB5257002C0C52 /* SecondVC */ = {
+			isa = PBXGroup;
+			children = (
+				3AFC09F428BB5181002C0C52 /* SecondVC.swift */,
+				3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */,
+				3AFC09F728BB5297002C0C52 /* SecondIO.swift */,
+			);
+			path = SecondVC;
+			sourceTree = "<group>";
+		};
+		3AFC09FB28BB835B002C0C52 /* SettingVC */ = {
+			isa = PBXGroup;
+			children = (
+				3AFC09FC28BB835B002C0C52 /* SettingVC.swift */,
+				3AFC09FD28BB835B002C0C52 /* SettingIO.swift */,
+				3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */,
+			);
+			name = SettingVC;
+			path = ToDo/Modules/SettingVC;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -277,27 +315,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
+				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
+				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
+				3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */,
+				3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */,
 				3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */,
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,
 				3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */,
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
-				3ADB45A7288837BE00427BD8 /* NewTaskViewModel.swift in Sources */,
+				3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */,
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,
-				3A975B87288AC59E0049A4E1 /* tappedFeedBack.swift in Sources */,
 				3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
+				3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */,
+				3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */,
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,
 				3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */,
 				3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */,
+				3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */,
 				3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */,
 				3ADB459C2888269F00427BD8 /* MainViewModel.swift in Sources */,
 				3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */,
@@ -369,7 +414,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -424,7 +469,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

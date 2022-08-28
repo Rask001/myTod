@@ -29,18 +29,6 @@ extension NewTask: UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDele
 	}
 }
 
-extension NewTask: TappedHeavyProtocol {
-	func tappedHeavy() {
-		tappedFeedBack.tappedHeavy()
-	}
-}
-
-extension NewTask: TappedSoftProtocol {
-	func tappedSoft() {
-		tappedFeedBack.tappedSoft()
-	}
-}
-
 extension NewTask: UITextViewDelegate {
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		self.view.endEditing(true)
@@ -48,5 +36,17 @@ extension NewTask: UITextViewDelegate {
 }
 
 extension NewTask: NewTaskProtocol {
+	func getTaskTimeData(_ taskTimeS: String, _ taskDateDate: Date, _ timeInterval: String) {
+		taskStruct.taskTime = taskTimeS
+		taskStruct.taskDateDate = taskDateDate
+		taskStruct.timeInterval = timeInterval
+	}
 	
+	func getTaskDateData(_ taskTimeS: String, _ taskDateS: String, _ dayOfMonthS: String, _ taskDateDate: Date) {
+		taskStruct.taskTime = taskTimeS
+		taskStruct.taskDate = taskDateS
+		taskStruct.dayOfMonth = dayOfMonthS
+		taskStruct.taskDateDate = taskDateDate
+		taskStruct.type = .singleAlertType
+	}
 }

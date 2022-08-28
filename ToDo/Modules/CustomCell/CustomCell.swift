@@ -19,7 +19,7 @@ class CustomCell: UITableViewCell {
 	
 	var backgroundViewCell: UIView        = {
 		let view                            = UIView()
-		view.backgroundColor                = .white
+		view.backgroundColor                = .cellColor
 		view.layer.cornerRadius             = 10
 		return view
 	}()

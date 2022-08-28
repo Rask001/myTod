@@ -11,6 +11,7 @@ class CoreDataMethods {
 
 	
 	var coreDataModel: [Tasks] = []
+	var todayTasksArray: [Tasks] = []
 	//var model: Tasks!
 	static let shared = CoreDataMethods()
 	
@@ -42,6 +43,9 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
+		fetchRequest()
+		appendTodayTask(coreDataModel: coreDataModel)
+		print(todayTasksArray)
 		LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate)
 	}
 	
@@ -71,7 +75,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderNotification("Daily repeats", taskTitle, taskDateDate)
+		LocalNotification.shared.sendDaylyReminderNotification("daily reminders", taskTitle, taskDateDate)
 	}
 	
 	func saveWeekDaysRepitionTask(taskTitle:    String,
@@ -101,7 +105,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderWeekDayNotification("Week day repeats", taskTitle, taskDateDate, weekDay)
+		LocalNotification.shared.sendDaylyReminderWeekDayNotification("weekly reminders", taskTitle, taskDateDate, weekDay)
 	}
 	
 	func saveDaysMonthRepitionTask(taskTitle:   String,
@@ -131,7 +135,7 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		LocalNotification.shared.sendDaylyReminderMonthNotification("Week day repeats", taskTitle, taskDateDate, monthDay)
+		LocalNotification.shared.sendDaylyReminderMonthNotification("monthly reminders", taskTitle, taskDateDate, monthDay)
 	}
 	
 	func saveRepeatTask(taskTitle:    String,
@@ -213,6 +217,34 @@ class CoreDataMethods {
 			print("error : \(error)")
 		}
 	}
+	
+	func appendTodayTask(coreDataModel array: [Tasks]) {
+		for item in array {
+			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+			let today = Calendar.current.dateComponents([.day], from: Date.now)
+			if todayItem == today {
+				todayTasksArray.append(item)
+			}
+		}
+	}
+	
+	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
+		var index = 0
+		for item in array {
+			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+			let today = Calendar.current.dateComponents([.day], from: Date.now)
+			if todayItem != today {
+				todayTasksArray.remove(at: index)
+				index -= 1
+			}
+			index += 1
+		}
+	}
+	
+//	private func removeFromTodayTask(todayTasksArray array: [Tasks]) {
+//
+//	}
+	
 	
 	//MARK: - Fetch Request
 	public func fetchRequest() {

@@ -43,9 +43,8 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
+		
 		fetchRequest()
-		appendTodayTask(coreDataModel: coreDataModel)
-		print(todayTasksArray)
 		LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate)
 	}
 	
@@ -218,14 +217,18 @@ class CoreDataMethods {
 		}
 	}
 	
-	func appendTodayTask(coreDataModel array: [Tasks]) {
+	func appendTodayTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
 		for item in array {
-			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
-			let today = Calendar.current.dateComponents([.day], from: Date.now)
-			if todayItem == today {
-				todayTasksArray.append(item)
+			if item.taskDateDate != nil {
+				let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+				let today = Calendar.current.dateComponents([.day], from: Date.now)
+				if todayItem == today, item.taskDateDate! > Date.now {
+					arrayResult.append(item)
+				}
 			}
 		}
+		return arrayResult
 	}
 	
 	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
@@ -241,17 +244,13 @@ class CoreDataMethods {
 		}
 	}
 	
-//	private func removeFromTodayTask(todayTasksArray array: [Tasks]) {
-//
-//	}
-	
-	
 	//MARK: - Fetch Request
 	public func fetchRequest() {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
-		do{
+		do {
 			coreDataModel = try context.fetch(fetchRequest)
+			todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}

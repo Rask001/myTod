@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol SecondVCOutput: AnyObject { }
+protocol SecondVCOutput: AnyObject {
+	func goToNewTask()
+}
 
 protocol SecondVCInput: AnyObject { }

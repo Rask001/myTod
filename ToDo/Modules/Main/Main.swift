@@ -113,11 +113,10 @@ class Main: UIViewController {
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		
 		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive       = true
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
 		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive              = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
 		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false

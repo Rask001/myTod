@@ -40,6 +40,7 @@
 		3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FC28BB835B002C0C52 /* SettingVC.swift */; };
 		3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FD28BB835B002C0C52 /* SettingIO.swift */; };
 		3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */; };
+		3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC0A0228BD34AD002C0C52 /* SectionStruct.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		3AFC09FC28BB835B002C0C52 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		3AFC09FD28BB835B002C0C52 /* SettingIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingIO.swift; sourceTree = "<group>"; };
 		3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		3AFC0A0228BD34AD002C0C52 /* SectionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionStruct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				3A606D52287790910036635B /* TaskStruct.swift */,
+				3AFC0A0228BD34AD002C0C52 /* SectionStruct.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
+				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
 				3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */,

@@ -39,7 +39,7 @@ protocol SecondViewModelProtocol {
 	func goToNewTaskVC()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
 	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
@@ -96,8 +96,8 @@ extension SecondViewModel: SecondViewModelProtocol {
 	}
 	
 	
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
-		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController)
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
+		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
 	func goToNewTaskVC() {

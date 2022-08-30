@@ -14,7 +14,11 @@ protocol MainViewModelProtocol {
 	func goToNewTaskVC()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
+	var overdueArray: [Tasks] { get }
+	var currentArray: [Tasks] { get }
+	//var sectionIndex: Int { get }
+	var selectionStructArray: [SectionStruct] { get }
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
 	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
@@ -25,6 +29,7 @@ protocol MainViewModelProtocol {
 //MARK: - MainViewModel
 
 class MainViewModel {
+	var sectionIndex: Int?
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
@@ -36,6 +41,15 @@ class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
+	
+//	{
+//		get {
+//			0
+//		} set {
+//
+//		}
+//	}
+	
 	func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
@@ -49,6 +63,7 @@ extension MainViewModel: MainViewModelProtocol {
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell, indexPath: indexPath)
 		let button = cell.buttonCell
+		sectionIndex = indexPath.section
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
@@ -63,25 +78,51 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 	}
 	
+	var overdueArray: [Tasks] {
+		get {
+			coreDataMethods.overdueArray
+		}
+	}
+	
+	var currentArray: [Tasks] {
+		get {
+			coreDataMethods.currentArray
+		}
+	}
+	
 	var coreDataModel: [Tasks] {
 		get {
 			coreDataMethods.coreDataModel
 		}
 	}
 	
+	var selectionStructArray: [SectionStruct] {
+		get {
+			coreDataMethods.selectionStructArray
+		}
+	}
 	
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
-		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController)
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
+		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
 	func goToNewTaskVC() {
 		output?.goToNewTask()
 		}
 	
-		@objc private func saveCheckmark(sender: UIButton) {
+	@objc private func saveCheckmark(sender: UIButton) {
 			taptic.soft
 			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-			let model = coreDataModel[sender.tag]
+		let model: Tasks
+		guard currentArray.count >= sender.tag else { return }
+		guard overdueArray.count >= sender.tag else { return }
+		switch sectionIndex {
+		case 0: model = currentArray[sender.tag]
+		case 1: model = overdueArray[sender.tag]
+		default: model = coreDataModel[sender.tag]
+		}
+		print(sectionIndex ?? "nil")
+//			let model = coreDataModel[sender.tag]
 			model.check.toggle()
 			do {
 				try context.save()

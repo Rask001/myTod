@@ -181,7 +181,7 @@ extension SecondVC: UITableViewDelegate, UITableViewDataSource {
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		taptic.warning
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self)
+		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.todayTasksArray)
 	}
 	
 	//MARK: CellForRowAt

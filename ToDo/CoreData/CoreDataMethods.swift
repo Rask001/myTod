@@ -12,7 +12,13 @@ class CoreDataMethods {
 	
 	var coreDataModel: [Tasks] = []
 	var todayTasksArray: [Tasks] = []
-	//var model: Tasks!
+	var overdueArray: [Tasks] = []
+	var currentArray: [Tasks] = []
+	var sectionStructCur = SectionStruct(header: "current tasks", row: [])
+	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
+	var selectionStructArray: [SectionStruct] = []
+	
+	
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
@@ -189,9 +195,9 @@ class CoreDataMethods {
 	}
 	
 	//MARK: - Delete Cell
-	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) { 
-		//tappedRigid()
-		let task             = coreDataModel[indexPath.row]
+	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {
+
+		let task             = tasksModel[indexPath.row]
 		let taskTitle        = task.taskTitle
 		let areYouSureAllert = UIAlertController(title: "Delete \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
@@ -220,12 +226,36 @@ class CoreDataMethods {
 	func appendTodayTask(coreDataModel array: [Tasks]) -> [Tasks] {
 		var arrayResult: [Tasks] = []
 		for item in array {
-			if item.taskDateDate != nil {
-				let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+			if let notNil = item.taskDateDate {
+				let todayItem = Calendar.current.dateComponents([.day], from: notNil)
 				let today = Calendar.current.dateComponents([.day], from: Date.now)
-				if todayItem == today, item.taskDateDate! > Date.now {
+				if todayItem == today, notNil > Date.now {
 					arrayResult.append(item)
 				}
+			}
+		}
+		return arrayResult
+	}
+	
+	func appendOverdueTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
+		for item in array {
+			if let notNil = item.taskDateDate {
+				let todayItem = Calendar.current.dateComponents([.day], from: notNil)
+				let today = Calendar.current.dateComponents([.day], from: Date.now)
+				if todayItem == today, notNil < Date.now {
+					arrayResult.append(item)
+				}
+			}
+		}
+		return arrayResult
+	}
+	
+	func appendCurrentTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
+		for item in array {
+			if item.taskDateDate == nil || item.taskDateDate ?? Date.now > Date.now {
+				arrayResult.append(item)
 			}
 		}
 		return arrayResult
@@ -251,8 +281,15 @@ class CoreDataMethods {
 		do {
 			coreDataModel = try context.fetch(fetchRequest)
 			todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
+			overdueArray = appendOverdueTask(coreDataModel: coreDataModel)
+			currentArray = appendCurrentTask(coreDataModel: coreDataModel)
+			var sel: [SectionStruct] = [sectionStructCur, sectionStructOver]
+			sel[0].row = currentArray
+			sel[1].row = overdueArray
+			selectionStructArray = sel
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
 	}
+
 }

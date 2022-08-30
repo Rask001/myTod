@@ -22,6 +22,7 @@ fileprivate enum Constants {
 class Main: UIViewController {
 	
 	
+	
 	//MARK: - Properties
 	
 	var tableView = UITableView()
@@ -46,7 +47,7 @@ class Main: UIViewController {
 		notification()
 		navigationControllerSetup()
 	}
-	
+
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -63,10 +64,6 @@ class Main: UIViewController {
 	//MARK: - Configure
 	
 	private func confugureTableView() {
-	//	self.title = "lollololol"
-//		self.navigationBar.tintColor = .systemBlue
-	//	self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
 		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
@@ -143,19 +140,39 @@ class Main: UIViewController {
 extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.coreDataModel.count
+		viewModel.selectionStructArray[section].row.count
+	}
+	
+	func numberOfSections(in tableView: UITableView) -> Int {
+		viewModel.selectionStructArray.count
+	}
+	
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		viewModel.selectionStructArray[section].header
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 44
 	}
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		taptic.warning
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self)
+		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-		let items = viewModel.coreDataModel[indexPath.row]
+		let key = indexPath.section
+		let items: Tasks
+		
+		switch key {
+		case 0: items = viewModel.currentArray[indexPath.row]
+		case 1: items = viewModel.overdueArray[indexPath.row]
+		default: items = viewModel.coreDataModel[indexPath.row]
+		}
+
 		viewModel.visualViewCell(items: items, cell: cell, indexPath: indexPath)
 		return cell
 	}

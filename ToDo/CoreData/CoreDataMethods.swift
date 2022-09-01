@@ -14,6 +14,7 @@ class CoreDataMethods {
 	var todayTasksArray: [Tasks] = []
 	var overdueArray: [Tasks] = []
 	var currentArray: [Tasks] = []
+	var sectionIndex: Int?
 	var sectionStructCur = SectionStruct(header: "current tasks", row: [])
 	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
 	var selectionStructArray: [SectionStruct] = []
@@ -33,6 +34,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -50,7 +52,7 @@ class CoreDataMethods {
 			print(error.localizedDescription)
 		}
 		
-		fetchRequest()
+		//fetchRequest()
 		LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate)
 	}
 	
@@ -64,6 +66,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -94,6 +97,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -124,6 +128,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -152,6 +157,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.alarmImage    = alarmImage
@@ -176,6 +182,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.createdAt     = createdAt
 		model.type          = type
@@ -213,7 +220,13 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
-		coreDataModel.remove(at: indexPath.row)
+		switch indexPath.section {
+		case 0: currentArray.remove(at: indexPath.row)
+		case 1: overdueArray.remove(at: indexPath.row)
+		default:
+			coreDataModel.remove(at: indexPath.row)
+		}
+		//coreDataModel.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
 			try context.save()

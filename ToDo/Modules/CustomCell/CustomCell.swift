@@ -16,6 +16,7 @@ class CustomCell: UITableViewCell {
 	}
 	
 	var taskDateDate: Date? = nil
+	var id: String = ""
 	
 	var backgroundViewCell: UIView        = {
 		let view                            = UIView()

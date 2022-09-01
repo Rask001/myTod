@@ -29,7 +29,7 @@ class Main: UIViewController {
 	let buttonNewTask = UIButton()
 	//let navigationBar = UINavigationBar()
 	let taptic = TapticFeedback()
-	let viewModel: MainViewModelProtocol
+	var viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -52,7 +52,6 @@ class Main: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.coreDataFetch()
-		//updateTable.delegate = self
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -158,13 +157,20 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		taptic.warning
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
+		if indexPath.section == 0 {
+		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.currentArray)
+		} else if indexPath.section == 1{
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.overdueArray)
+		} else {
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
+		}
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
+			//viewModel.sectionIndex = key
 		let items: Tasks
 		
 		switch key {

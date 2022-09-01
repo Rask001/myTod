@@ -27,6 +27,7 @@ extension Tasks {
     @NSManaged public var check: Bool
 	  @NSManaged public var timeInterval: String?
   	@NSManaged public var type: String
+	  @NSManaged public var id: String
 }
 
 extension Tasks : Identifiable {

@@ -16,7 +16,7 @@ protocol MainViewModelProtocol {
 	var todayTasksArray: [Tasks] { get }
 	var overdueArray: [Tasks] { get }
 	var currentArray: [Tasks] { get }
-	//var sectionIndex: Int { get }
+	var sectionIndex: Int { get set }
 	var selectionStructArray: [SectionStruct] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
 	func coreDataFetch()
@@ -29,7 +29,6 @@ protocol MainViewModelProtocol {
 //MARK: - MainViewModel
 
 class MainViewModel {
-	var sectionIndex: Int?
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
@@ -42,13 +41,13 @@ class MainViewModel {
 
 extension MainViewModel: MainViewModelProtocol {
 	
-//	{
-//		get {
-//			0
-//		} set {
-//
-//		}
-//	}
+	var sectionIndex: Int {
+		get {
+			coreDataMethods.sectionIndex ?? 0
+		} set {
+			coreDataMethods.sectionIndex = newValue
+		}
+	}
 	
 	func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
@@ -60,11 +59,31 @@ extension MainViewModel: MainViewModelProtocol {
 		view?.tableView.reloadData()
 	}
 	
+	func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
+		var resultInt = 0
+		var resultString = ""
+		for num in itemsId {
+			if resultString.count < 7 {
+				if let chr = Int(String(num)) {
+					resultString += String(chr)
+				}
+			}
+		}
+		resultInt = Int(resultString) ?? 777
+		return resultInt
+	}
+	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
-		visualViewCell.visualViewCell(items: items, cell: cell, indexPath: indexPath)
+		visualViewCell.visualViewCell(items: items, cell: cell)
+		
 		let button = cell.buttonCell
-		sectionIndex = indexPath.section
-		button.tag = indexPath.row
+	
+		
+		button.tag = createShortIntWithoutStrChar(fromItemsId: items.id)
+		
+		print("button tag = \(button.tag)")
+		sectionIndex = button.tag
+		
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
 	
@@ -111,24 +130,22 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 	
 	@objc private func saveCheckmark(sender: UIButton) {
-			taptic.soft
-			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let model: Tasks
-		guard currentArray.count >= sender.tag else { return }
-		guard overdueArray.count >= sender.tag else { return }
-		switch sectionIndex {
-		case 0: model = currentArray[sender.tag]
-		case 1: model = overdueArray[sender.tag]
-		default: model = coreDataModel[sender.tag]
-		}
-		print(sectionIndex ?? "nil")
-//			let model = coreDataModel[sender.tag]
-			model.check.toggle()
-			do {
-				try context.save()
-			} catch let error as NSError {
-				print(error.localizedDescription)
+		taptic.soft
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		
+		let model = coreDataModel
+		for items in model {
+			let itemsId = createShortIntWithoutStrChar(fromItemsId: items.id)
+			if sender.tag == itemsId {
+				items.check.toggle()
 			}
-			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		}
+		do {
+			try context.save()
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		print(sender.tag)
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
+}

@@ -4,30 +4,6 @@
 //
 //  Created by Антон on 28.08.2022.
 //
-//
-//import Foundation
-//
-//
-////MARK: - SecondViewModelProtocol
-//
-//protocol SecondViewModelProtocol {
-//
-//}
-//
-////MARK: - SecondViewModel
-//
-//class SecondViewModel {
-//	private weak var output: SecondVCOutput?
-//	weak var view: SecondVC?
-//	init(output: SecondVCOutput) {
-//		self.output = output
-//	}
-//}
-//
-//extension SecondViewModel: SecondViewModelProtocol {
-//
-//}
-
 
 import UIKit
 import Foundation
@@ -73,7 +49,7 @@ extension SecondViewModel: SecondViewModelProtocol {
 	}
 	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
-		visualViewCell.visualViewCell(items: items, cell: cell, indexPath: indexPath)
+		visualViewCell.visualViewCell(items: items, cell: cell)
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)

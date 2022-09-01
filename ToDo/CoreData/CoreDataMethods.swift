@@ -14,9 +14,11 @@ final class CoreDataMethods {
 	var todayTasksArray: [Tasks] = []
 	var overdueArray: [Tasks] = []
 	var currentArray: [Tasks] = []
+	var completedArray: [Tasks] = []
 	var sectionIndex: Int?
 	var sectionStructCur = SectionStruct(header: "current tasks", row: [])
 	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
+	var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
 	var selectionStructArray: [SectionStruct] = []
 	
 	
@@ -274,18 +276,47 @@ final class CoreDataMethods {
 		return arrayResult
 	}
 	
-	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
-		var index = 0
-		for item in array {
-			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
-			let today = Calendar.current.dateComponents([.day], from: Date.now)
-			if todayItem != today {
-				todayTasksArray.remove(at: index)
-				index -= 1
+	func appendCompletedTask(currentTask: inout [Tasks], todayTask: inout [Tasks], overdueTask: inout [Tasks], coreDataModel: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
+		for item in coreDataModel {
+			if item.check == true {
+				arrayResult.append(item)
 			}
-			index += 1
 		}
+		
+		for item in overdueTask {
+			if item.check == true {
+				overdueTask.removeAll{ $0.check == true }
+			}
+		}
+		
+		for item in currentTask {
+			if item.check == true {
+				currentTask.removeAll{ $0.check == true }
+			}
+		}
+		
+		for item in currentTask {
+			if item.check == true {
+				todayTask.removeAll{ $0.check == true }
+			}
 	}
+		return arrayResult
+	}
+	
+	
+//	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
+//		var index = 0
+//		for item in array {
+//			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+//			let today = Calendar.current.dateComponents([.day], from: Date.now)
+//			if todayItem != today {
+//				todayTasksArray.remove(at: index)
+//				index -= 1
+//			}
+//			index += 1
+//		}
+//	}
 	
 	//MARK: - Fetch Request
 	public func fetchRequest() {
@@ -296,9 +327,11 @@ final class CoreDataMethods {
 			todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
 			overdueArray = appendOverdueTask(coreDataModel: coreDataModel)
 			currentArray = appendCurrentTask(coreDataModel: coreDataModel)
-			var sel: [SectionStruct] = [sectionStructCur, sectionStructOver]
+			completedArray = appendCompletedTask(currentTask: &currentArray, todayTask: &todayTasksArray, overdueTask: &overdueArray, coreDataModel: coreDataModel)
+			var sel: [SectionStruct] = [sectionStructCur, sectionStructOver, sectionStructCompleted]
 			sel[0].row = currentArray
 			sel[1].row = overdueArray
+			sel[2].row = completedArray
 			selectionStructArray = sel
 		} catch let error as NSError {
 			print(error.localizedDescription)

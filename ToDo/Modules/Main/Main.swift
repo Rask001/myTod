@@ -72,13 +72,7 @@ final class Main: UIViewController {
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 	}
-	
-	@objc func cancelFunc(){
-		
-	}
-	@objc func continueFunc(){
-		
-	}
+
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
@@ -125,12 +119,24 @@ final class Main: UIViewController {
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
 	
+	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		viewModel.selectionStructArray[section].row.count
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		viewModel.selectionStructArray.count
+		let currentIsEmpty = viewModel.selectionStructArray[0].row.isEmpty
+		let overdueIsEmpty = viewModel.selectionStructArray[1].row.isEmpty
+		let completedIsEmpty = viewModel.selectionStructArray[2].row.isEmpty
+		
+		
+		if currentIsEmpty, overdueIsEmpty, completedIsEmpty == true {
+			return 0
+		} else if overdueIsEmpty, completedIsEmpty == true {
+			return 1
+		} else {
+			return viewModel.selectionStructArray.count
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -146,8 +152,10 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		taptic.warning
 		if indexPath.section == 0 {
 		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.currentArray)
-		} else if indexPath.section == 1{
+		} else if indexPath.section == 1 {
 			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.overdueArray)
+		} else if indexPath.section == 2 {
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.completedArray)
 		} else {
 			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
 		}
@@ -162,6 +170,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		switch key {
 		case 0: items = viewModel.currentArray[indexPath.row]
 		case 1: items = viewModel.overdueArray[indexPath.row]
+		case 2: items = viewModel.completedArray[indexPath.row]
 		default: items = viewModel.coreDataModel[indexPath.row]
 		}
 

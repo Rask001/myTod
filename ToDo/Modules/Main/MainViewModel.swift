@@ -17,6 +17,7 @@ protocol MainViewModelProtocol {
 	var todayTasksArray: [Tasks] { get }
 	var overdueArray: [Tasks] { get }
 	var currentArray: [Tasks] { get }
+	var completedArray: [Tasks] { get }
 	var sectionIndex: Int { get set }
 	var selectionStructArray: [SectionStruct] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
@@ -42,9 +43,9 @@ final class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
-	
+		
 	func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "menu", rightItemText: "in dev", itemColor: .blackWhite!)
+		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "side menu", rightItemText: "in dev", itemColor: .blackWhite!)
 	}
 	
 	
@@ -108,6 +109,10 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	var currentArray: [Tasks] {
 		coreDataMethods.currentArray
+	}
+	
+	var completedArray: [Tasks] {
+		coreDataMethods.completedArray
 	}
 	
 	var coreDataModel: [Tasks] {

@@ -25,7 +25,7 @@ protocol SecondViewModelProtocol {
 
 //MARK: - MainViewModel
 
-class SecondViewModel {
+final class SecondViewModel {
 	private weak var output: SecondVCOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()

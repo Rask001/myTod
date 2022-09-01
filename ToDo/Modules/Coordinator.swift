@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class Coordinator {
+final class Coordinator {
 	
 	
 	private let assembly: Assembly

@@ -19,7 +19,7 @@ protocol NewTaskPresenterProtocol {
 	func tFormatter(paramDataPicker: UIDatePicker) -> (String, String, String)
 }
 
-class NewTaskPresenter: NewTaskPresenterProtocol {
+final class NewTaskPresenter: NewTaskPresenterProtocol {
 	
 	weak var view: NewTaskProtocol?
 		

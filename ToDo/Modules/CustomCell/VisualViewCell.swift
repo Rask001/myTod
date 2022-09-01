@@ -7,7 +7,7 @@
 import UIKit
 import Foundation
 
-class VisualViewCell {
+final class VisualViewCell {
 	var coreData = CoreDataMethods.shared.coreDataModel
 	
 	//визуальное отоброжение ячеек в зависимости от статуса задачи

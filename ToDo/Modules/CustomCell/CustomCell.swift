@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class CustomCell: UITableViewCell {
+final class CustomCell: UITableViewCell {
 	static let shared = CustomCell()
 	static let identifier = "CustomCell"
 	

@@ -18,16 +18,14 @@ fileprivate enum Constants {
 }
 
 
+
 //MARK: - Main
-class Main: UIViewController {
-	
-	
+final class Main: UIViewController {
 	
 	//MARK: - Properties
 	
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
-	//let navigationBar = UINavigationBar()
 	let taptic = TapticFeedback()
 	var viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
@@ -45,7 +43,7 @@ class Main: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
-		navigationControllerSetup()
+		viewModel.createNavController()
 	}
 
 	
@@ -73,17 +71,6 @@ class Main: UIViewController {
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-	}
-	
-	private func navigationControllerSetup() {
-		navigationItem.title = "my tasks"
-		let textAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
-		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
-		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
-		backButtonItem.tintColor = UIColor.blackWhite
-		navigationItem.leftBarButtonItems = [backButtonItem]
 	}
 	
 	@objc func cancelFunc(){
@@ -128,12 +115,12 @@ class Main: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	
-	@objc func tableViewReloadData(notification: NSNotification){
+	@objc func tableViewReloadData(notification: NSNotification) {
 			self.viewModel.coreDataFetch()
 		  self.viewModel.reloadTable()
-		print("tableViewReloadData")
 	}
 }
+
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
@@ -170,7 +157,6 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
-			//viewModel.sectionIndex = key
 		let items: Tasks
 		
 		switch key {

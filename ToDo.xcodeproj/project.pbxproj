@@ -19,6 +19,7 @@
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
 		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
 		3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB9C28B287234B700EB5544 /* UIColor+ext.swift */; };
+		3AC261A828C1323B000A0285 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC261A728C1323B000A0285 /* NavigationController.swift */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
 		3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */; };
 		3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */; };
@@ -58,6 +59,7 @@
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
 		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		3AB9C28B287234B700EB5544 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
+		3AC261A728C1323B000A0285 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -160,7 +162,6 @@
 			isa = PBXGroup;
 			children = (
 				3ADBF4D52827F316000BA06B /* Main.swift */,
-				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
 				3ADB459B2888269F00427BD8 /* MainViewModel.swift */,
 				3ADB459D288827FF00427BD8 /* MainIO.swift */,
 			);
@@ -215,6 +216,8 @@
 			children = (
 				3ADB45A428882D1500427BD8 /* TasksUseCase.swift */,
 				3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */,
+				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
+				3AC261A728C1323B000A0285 /* NavigationController.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -340,6 +343,7 @@
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,
 				3ADB45A528882D1500427BD8 /* TasksUseCase.swift in Sources */,
+				3AC261A828C1323B000A0285 /* NavigationController.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
 				3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */,
 				3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */,

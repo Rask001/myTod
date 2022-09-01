@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class NewTask: UIViewController {
+final class NewTask: UIViewController {
 	var taskStruct = TaskStruct()
 	var presenter: NewTaskPresenterProtocol!
   var taptic = TapticFeedback()

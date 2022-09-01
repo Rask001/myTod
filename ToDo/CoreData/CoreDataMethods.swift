@@ -7,7 +7,7 @@
 import UIKit
 import CoreData
 
-class CoreDataMethods {
+final class CoreDataMethods {
 
 	
 	var coreDataModel: [Tasks] = []

@@ -8,7 +8,7 @@
 import UserNotifications
 import Foundation
 
-class LocalNotification {
+final class LocalNotification {
 	static var shared = LocalNotification()
 	let content = UNMutableNotificationContent()
 	
@@ -156,7 +156,7 @@ class LocalNotification {
 }
 
 //запрос у пользователя на отправку локал нотификейшн
-class LocalNotificationRequest {
+final class LocalNotificationRequest {
 	static var shared = LocalNotificationRequest()
 	func requestAuthorization(notificationCenter: UNUserNotificationCenter) {
 		notificationCenter.requestAuthorization(options: [.alert, .badge, .sound]) { success, error in

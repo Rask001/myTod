@@ -12,6 +12,7 @@ import Foundation
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
+	func createNavController()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
 	var overdueArray: [Tasks] { get }
@@ -28,10 +29,11 @@ protocol MainViewModelProtocol {
 
 //MARK: - MainViewModel
 
-class MainViewModel {
+final class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
+	let NavController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
@@ -40,6 +42,11 @@ class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
+	
+	func createNavController() {
+		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "menu", rightItemText: "in dev", itemColor: .blackWhite!)
+	}
+	
 	
 	var sectionIndex: Int {
 		get {
@@ -59,7 +66,7 @@ extension MainViewModel: MainViewModelProtocol {
 		view?.tableView.reloadData()
 	}
 	
-	func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
+	private func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
 		var resultInt = 0
 		var resultString = ""
 		for num in itemsId {
@@ -77,7 +84,7 @@ extension MainViewModel: MainViewModelProtocol {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		
 		let button = cell.buttonCell
-	
+		
 		
 		button.tag = createShortIntWithoutStrChar(fromItemsId: items.id)
 		
@@ -92,33 +99,23 @@ extension MainViewModel: MainViewModelProtocol {
 	}
 	
 	var todayTasksArray: [Tasks] {
-		get {
-			coreDataMethods.todayTasksArray
-		}
+		coreDataMethods.todayTasksArray
 	}
 	
 	var overdueArray: [Tasks] {
-		get {
-			coreDataMethods.overdueArray
-		}
+		coreDataMethods.overdueArray
 	}
 	
 	var currentArray: [Tasks] {
-		get {
-			coreDataMethods.currentArray
-		}
+		coreDataMethods.currentArray
 	}
 	
 	var coreDataModel: [Tasks] {
-		get {
-			coreDataMethods.coreDataModel
-		}
+		coreDataMethods.coreDataModel
 	}
 	
 	var selectionStructArray: [SectionStruct] {
-		get {
-			coreDataMethods.selectionStructArray
-		}
+		coreDataMethods.selectionStructArray
 	}
 	
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
@@ -127,7 +124,7 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	func goToNewTaskVC() {
 		output?.goToNewTask()
-		}
+	}
 	
 	@objc private func saveCheckmark(sender: UIButton) {
 		taptic.soft

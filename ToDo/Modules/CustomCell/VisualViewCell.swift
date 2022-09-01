@@ -7,12 +7,13 @@
 import UIKit
 import Foundation
 
-class VisualViewCell {
+final class VisualViewCell {
 	var coreData = CoreDataMethods.shared.coreDataModel
 	
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
-	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
+	func visualViewCell(items: Tasks, cell: CustomCell) {
 		let button = cell.buttonCell
+		cell.id                       = items.id
 		cell.taskDateDate             = items.taskDateDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle

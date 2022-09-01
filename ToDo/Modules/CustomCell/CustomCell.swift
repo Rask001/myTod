@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class CustomCell: UITableViewCell {
+final class CustomCell: UITableViewCell {
 	static let shared = CustomCell()
 	static let identifier = "CustomCell"
 	
@@ -16,6 +16,7 @@ class CustomCell: UITableViewCell {
 	}
 	
 	var taskDateDate: Date? = nil
+	var id: String = ""
 	
 	var backgroundViewCell: UIView        = {
 		let view                            = UIView()

@@ -7,12 +7,21 @@
 import UIKit
 import CoreData
 
-class CoreDataMethods {
+final class CoreDataMethods {
 
 	
 	var coreDataModel: [Tasks] = []
 	var todayTasksArray: [Tasks] = []
-	//var model: Tasks!
+	var overdueArray: [Tasks] = []
+	var currentArray: [Tasks] = []
+	var completedArray: [Tasks] = []
+	var sectionIndex: Int?
+	var sectionStructCur = SectionStruct(header: "current tasks", row: [])
+	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
+	var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
+	var selectionStructArray: [SectionStruct] = []
+	
+	
 	static let shared = CoreDataMethods()
 	
 	//MARK: - SAVE TASK
@@ -27,6 +36,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -43,9 +53,8 @@ class CoreDataMethods {
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
-		fetchRequest()
-		appendTodayTask(coreDataModel: coreDataModel)
-		print(todayTasksArray)
+		
+		//fetchRequest()
 		LocalNotification.shared.sendReminderNotification("reminder \(taskTime)", taskTitle, taskDateDate)
 	}
 	
@@ -59,6 +68,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -89,6 +99,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -119,6 +130,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.taskTime      = taskTime
@@ -147,6 +159,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.type          = type
 		model.alarmImage    = alarmImage
@@ -171,6 +184,7 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
+		model.id            = UUID().uuidString
 		model.taskTitle     = taskTitle
 		model.createdAt     = createdAt
 		model.type          = type
@@ -190,9 +204,9 @@ class CoreDataMethods {
 	}
 	
 	//MARK: - Delete Cell
-	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController) { 
-		//tappedRigid()
-		let task             = coreDataModel[indexPath.row]
+	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {
+
+		let task             = tasksModel[indexPath.row]
 		let taskTitle        = task.taskTitle
 		let areYouSureAllert = UIAlertController(title: "Delete \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
@@ -208,7 +222,13 @@ class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
-		coreDataModel.remove(at: indexPath.row)
+		switch indexPath.section {
+		case 0: currentArray.remove(at: indexPath.row)
+		case 1: overdueArray.remove(at: indexPath.row)
+		default:
+			coreDataModel.remove(at: indexPath.row)
+		}
+		//coreDataModel.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
 			try context.save()
@@ -218,42 +238,104 @@ class CoreDataMethods {
 		}
 	}
 	
-	func appendTodayTask(coreDataModel array: [Tasks]) {
+	func appendTodayTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
 		for item in array {
-			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
-			let today = Calendar.current.dateComponents([.day], from: Date.now)
-			if todayItem == today {
-				todayTasksArray.append(item)
+			if let notNil = item.taskDateDate {
+				let todayItem = Calendar.current.dateComponents([.day], from: notNil)
+				let today = Calendar.current.dateComponents([.day], from: Date.now)
+				if todayItem == today, notNil > Date.now {
+					arrayResult.append(item)
+				}
 			}
 		}
+		return arrayResult
 	}
 	
-	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
-		var index = 0
+	func appendOverdueTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
 		for item in array {
-			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
-			let today = Calendar.current.dateComponents([.day], from: Date.now)
-			if todayItem != today {
-				todayTasksArray.remove(at: index)
-				index -= 1
+			if let notNil = item.taskDateDate {
+				let todayItem = Calendar.current.dateComponents([.day], from: notNil)
+				let today = Calendar.current.dateComponents([.day], from: Date.now)
+				if todayItem == today, notNil < Date.now {
+					arrayResult.append(item)
+				}
 			}
-			index += 1
 		}
+		return arrayResult
 	}
 	
-//	private func removeFromTodayTask(todayTasksArray array: [Tasks]) {
-//
+	func appendCurrentTask(coreDataModel array: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
+		for item in array {
+			if item.taskDateDate == nil || item.taskDateDate ?? Date.now > Date.now {
+				arrayResult.append(item)
+			}
+		}
+		return arrayResult
+	}
+	
+	func appendCompletedTask(currentTask: inout [Tasks], todayTask: inout [Tasks], overdueTask: inout [Tasks], coreDataModel: [Tasks]) -> [Tasks] {
+		var arrayResult: [Tasks] = []
+		for item in coreDataModel {
+			if item.check == true {
+				arrayResult.append(item)
+			}
+		}
+		
+		for item in overdueTask {
+			if item.check == true {
+				overdueTask.removeAll{ $0.check == true }
+			}
+		}
+		
+		for item in currentTask {
+			if item.check == true {
+				currentTask.removeAll{ $0.check == true }
+			}
+		}
+		
+		for item in currentTask {
+			if item.check == true {
+				todayTask.removeAll{ $0.check == true }
+			}
+	}
+		return arrayResult
+	}
+	
+	
+//	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
+//		var index = 0
+//		for item in array {
+//			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
+//			let today = Calendar.current.dateComponents([.day], from: Date.now)
+//			if todayItem != today {
+//				todayTasksArray.remove(at: index)
+//				index -= 1
+//			}
+//			index += 1
+//		}
 //	}
-	
 	
 	//MARK: - Fetch Request
 	public func fetchRequest() {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
-		do{
+		do {
 			coreDataModel = try context.fetch(fetchRequest)
+			todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
+			overdueArray = appendOverdueTask(coreDataModel: coreDataModel)
+			currentArray = appendCurrentTask(coreDataModel: coreDataModel)
+			completedArray = appendCompletedTask(currentTask: &currentArray, todayTask: &todayTasksArray, overdueTask: &overdueArray, coreDataModel: coreDataModel)
+			var sel: [SectionStruct] = [sectionStructCur, sectionStructOver, sectionStructCompleted]
+			sel[0].row = currentArray
+			sel[1].row = overdueArray
+			sel[2].row = completedArray
+			selectionStructArray = sel
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
 	}
+
 }

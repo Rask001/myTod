@@ -11,6 +11,6 @@ protocol TasksUseCase {
 	func getAllTasks() -> [Tasks]
 }
 
-class TasksUseCaseImpl {
+final class TasksUseCaseImpl {
 	
 }

@@ -18,6 +18,7 @@ struct TaskStruct {
 		case monthRepeatType = "monthRepeatType"
 	}
 	
+	var id            : String = UUID().uuidString
 	var taskTitle     : String = ""
 	var taskTime      : String?
 	var taskDate      : String?

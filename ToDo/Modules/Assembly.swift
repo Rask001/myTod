@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class Assembly {
+final class Assembly {
 	
 	func makeMain(output: MainOutput) -> UIViewController {
 		let viewModel = MainViewModel(output: output)

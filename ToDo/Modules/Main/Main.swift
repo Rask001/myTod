@@ -18,17 +18,16 @@ fileprivate enum Constants {
 }
 
 
+
 //MARK: - Main
-class Main: UIViewController {
-	
+final class Main: UIViewController {
 	
 	//MARK: - Properties
 	
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
-	//let navigationBar = UINavigationBar()
 	let taptic = TapticFeedback()
-	let viewModel: MainViewModelProtocol
+	var viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -44,14 +43,13 @@ class Main: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
-		navigationControllerSetup()
+		viewModel.createNavController()
 	}
-	
+
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.coreDataFetch()
-		//updateTable.delegate = self
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -63,10 +61,6 @@ class Main: UIViewController {
 	//MARK: - Configure
 	
 	private func confugureTableView() {
-	//	self.title = "lollololol"
-//		self.navigationBar.tintColor = .systemBlue
-	//	self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
 		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
@@ -78,24 +72,7 @@ class Main: UIViewController {
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 	}
-	
-	private func navigationControllerSetup() {
-		navigationItem.title = "my tasks"
-		let textAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
-		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
-		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
-		backButtonItem.tintColor = UIColor.blackWhite
-		navigationItem.leftBarButtonItems = [backButtonItem]
-	}
-	
-	@objc func cancelFunc(){
-		
-	}
-	@objc func continueFunc(){
-		
-	}
+
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
@@ -113,11 +90,10 @@ class Main: UIViewController {
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		
 		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive       = true
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
 		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive              = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
 		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
@@ -133,30 +109,71 @@ class Main: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	
-	@objc func tableViewReloadData(notification: NSNotification){
+	@objc func tableViewReloadData(notification: NSNotification) {
 			self.viewModel.coreDataFetch()
 		  self.viewModel.reloadTable()
-		print("tableViewReloadData")
 	}
 }
+
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
 	
+	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return viewModel.coreDataModel.count
+		viewModel.selectionStructArray[section].row.count
+	}
+	
+	func numberOfSections(in tableView: UITableView) -> Int {
+		let currentIsEmpty = viewModel.selectionStructArray[0].row.isEmpty
+		let overdueIsEmpty = viewModel.selectionStructArray[1].row.isEmpty
+		let completedIsEmpty = viewModel.selectionStructArray[2].row.isEmpty
+		
+		
+		if currentIsEmpty, overdueIsEmpty, completedIsEmpty == true {
+			return 0
+		} else if overdueIsEmpty, completedIsEmpty == true {
+			return 1
+		} else {
+			return viewModel.selectionStructArray.count
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		viewModel.selectionStructArray[section].header
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 44
 	}
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		taptic.warning
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self)
+		if indexPath.section == 0 {
+		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.currentArray)
+		} else if indexPath.section == 1 {
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.overdueArray)
+		} else if indexPath.section == 2 {
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.completedArray)
+		} else {
+			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
+		}
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
-		let items = viewModel.coreDataModel[indexPath.row]
+		let key = indexPath.section
+		let items: Tasks
+		
+		switch key {
+		case 0: items = viewModel.currentArray[indexPath.row]
+		case 1: items = viewModel.overdueArray[indexPath.row]
+		case 2: items = viewModel.completedArray[indexPath.row]
+		default: items = viewModel.coreDataModel[indexPath.row]
+		}
+
 		viewModel.visualViewCell(items: items, cell: cell, indexPath: indexPath)
 		return cell
 	}

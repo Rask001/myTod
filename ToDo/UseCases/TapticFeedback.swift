@@ -7,7 +7,7 @@
 import UIKit
 import Foundation
 
- class TapticFeedback {
+ final class TapticFeedback {
 	 static var shared = TapticFeedback()
 	  var soft: Void { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
 	  var light: Void { UIImpactFeedbackGenerator(style: .light).impactOccurred() }

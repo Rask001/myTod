@@ -12,9 +12,15 @@ import Foundation
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
+	func createNavController()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController)
+	var overdueArray: [Tasks] { get }
+	var currentArray: [Tasks] { get }
+	var completedArray: [Tasks] { get }
+	var sectionIndex: Int { get set }
+	var selectionStructArray: [SectionStruct] { get }
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
 	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
@@ -24,10 +30,11 @@ protocol MainViewModelProtocol {
 
 //MARK: - MainViewModel
 
-class MainViewModel {
+final class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
+	let NavController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
@@ -36,6 +43,20 @@ class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
+		
+	func createNavController() {
+		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "side menu", rightItemText: "in dev", itemColor: .blackWhite!)
+	}
+	
+	
+	var sectionIndex: Int {
+		get {
+			coreDataMethods.sectionIndex ?? 0
+		} set {
+			coreDataMethods.sectionIndex = newValue
+		}
+	}
+	
 	func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
@@ -46,10 +67,31 @@ extension MainViewModel: MainViewModelProtocol {
 		view?.tableView.reloadData()
 	}
 	
+	private func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
+		var resultInt = 0
+		var resultString = ""
+		for num in itemsId {
+			if resultString.count < 7 {
+				if let chr = Int(String(num)) {
+					resultString += String(chr)
+				}
+			}
+		}
+		resultInt = Int(resultString) ?? 777
+		return resultInt
+	}
+	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
-		visualViewCell.visualViewCell(items: items, cell: cell, indexPath: indexPath)
+		visualViewCell.visualViewCell(items: items, cell: cell)
+		
 		let button = cell.buttonCell
-		button.tag = indexPath.row
+		
+		
+		button.tag = createShortIntWithoutStrChar(fromItemsId: items.id)
+		
+		print("button tag = \(button.tag)")
+		sectionIndex = button.tag
+		
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
 	
@@ -58,36 +100,54 @@ extension MainViewModel: MainViewModelProtocol {
 	}
 	
 	var todayTasksArray: [Tasks] {
-		get {
-			coreDataMethods.todayTasksArray
-		}
+		coreDataMethods.todayTasksArray
+	}
+	
+	var overdueArray: [Tasks] {
+		coreDataMethods.overdueArray
+	}
+	
+	var currentArray: [Tasks] {
+		coreDataMethods.currentArray
+	}
+	
+	var completedArray: [Tasks] {
+		coreDataMethods.completedArray
 	}
 	
 	var coreDataModel: [Tasks] {
-		get {
-			coreDataMethods.coreDataModel
-		}
+		coreDataMethods.coreDataModel
 	}
 	
+	var selectionStructArray: [SectionStruct] {
+		coreDataMethods.selectionStructArray
+	}
 	
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController) {
-		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController)
+	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
+		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
 	func goToNewTaskVC() {
 		output?.goToNewTask()
-		}
-	
-		@objc private func saveCheckmark(sender: UIButton) {
-			taptic.soft
-			let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-			let model = coreDataModel[sender.tag]
-			model.check.toggle()
-			do {
-				try context.save()
-			} catch let error as NSError {
-				print(error.localizedDescription)
-			}
-			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
-		}
 	}
+	
+	@objc private func saveCheckmark(sender: UIButton) {
+		taptic.soft
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		
+		let model = coreDataModel
+		for items in model {
+			let itemsId = createShortIntWithoutStrChar(fromItemsId: items.id)
+			if sender.tag == itemsId {
+				items.check.toggle()
+			}
+		}
+		do {
+			try context.save()
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		print(sender.tag)
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+	}
+}

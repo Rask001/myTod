@@ -50,8 +50,8 @@ final class SecondVC: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.coreDataFetch()
-		//updateTable.delegate = self
+		viewModel.coreDataMethods.fetchRequest()
+		//viewModel.coreDataFetch()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -133,7 +133,8 @@ final class SecondVC: UIViewController {
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification){
-			self.viewModel.coreDataFetch()
+		self.viewModel.coreDataMethods.fetchRequest()
+			//self.viewModel.coreDataFetch()
 			self.viewModel.reloadTable()
 	}
 }

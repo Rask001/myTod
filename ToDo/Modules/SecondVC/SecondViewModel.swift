@@ -15,8 +15,8 @@ protocol SecondViewModelProtocol {
 	func goToNewTaskVC()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
+	var coreDataMethods: CoreDataMethods { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
-	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
 
@@ -37,7 +37,8 @@ final class SecondViewModel {
 }
 
 extension SecondViewModel: SecondViewModelProtocol {
-	 
+	
+	
 	func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
@@ -53,10 +54,6 @@ extension SecondViewModel: SecondViewModelProtocol {
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
-	}
-	
-	func coreDataFetch() {
-		coreDataMethods.fetchRequest()
 	}
 	
 	var todayTasksArray: [Tasks] {

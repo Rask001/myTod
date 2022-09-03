@@ -35,7 +35,7 @@ final class Main: UIViewController {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
+	
 	//MARK: - liveCycles
 	
 	override func viewDidLoad() {
@@ -45,11 +45,11 @@ final class Main: UIViewController {
 		notification()
 		viewModel.createNavController()
 	}
-
+	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.coreDataFetch()
+		viewModel.coreDataMethods.fetchRequest()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -64,6 +64,7 @@ final class Main: UIViewController {
 		self.view.addSubview(tableView)
 		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
+		self.tableView.register(CustomHeader.self, forCellReuseIdentifier: CustomHeader.identifier)
 		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
@@ -72,7 +73,7 @@ final class Main: UIViewController {
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 	}
-
+	
 	func setupButton(){
 		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
@@ -110,8 +111,8 @@ final class Main: UIViewController {
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification) {
-			self.viewModel.coreDataFetch()
-		  self.viewModel.reloadTable()
+		self.viewModel.coreDataMethods.fetchRequest()
+		self.viewModel.reloadTable()
 	}
 }
 
@@ -119,25 +120,22 @@ final class Main: UIViewController {
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
 	
+	//	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	//		let model = viewModel.selectionStructArray[section]
+	//		let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeader.identifier) as! CustomHeader
+	//		cell.setup(model: model)
+	//		return cell.contentView
+	//	}
+	
 	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		viewModel.selectionStructArray[section].row.count
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		let currentIsEmpty = viewModel.selectionStructArray[0].row.isEmpty
-		let overdueIsEmpty = viewModel.selectionStructArray[1].row.isEmpty
-		let completedIsEmpty = viewModel.selectionStructArray[2].row.isEmpty
-		
-		
-		if currentIsEmpty, overdueIsEmpty, completedIsEmpty == true {
-			return 0
-		} else if overdueIsEmpty, completedIsEmpty == true {
-			return 1
-		} else {
-			return viewModel.selectionStructArray.count
-		}
+		return viewModel.selectionStructArray.count
 	}
+	
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		viewModel.selectionStructArray[section].header
@@ -147,34 +145,19 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		return 44
 	}
 	
+	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		taptic.warning
-		if indexPath.section == 0 {
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.currentArray)
-		} else if indexPath.section == 1 {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.overdueArray)
-		} else if indexPath.section == 2 {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.completedArray)
-		} else {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
-		}
+		viewModel.editingStyleBody(indexPath: indexPath)
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
-		let items: Tasks
-		
-		switch key {
-		case 0: items = viewModel.currentArray[indexPath.row]
-		case 1: items = viewModel.overdueArray[indexPath.row]
-		case 2: items = viewModel.completedArray[indexPath.row]
-		default: items = viewModel.coreDataModel[indexPath.row]
-		}
-
-		viewModel.visualViewCell(items: items, cell: cell, indexPath: indexPath)
+		let items: Tasks = viewModel.coreDataModel[indexPath.row]
+		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
+		viewModel.visualViewCell(items: itemsResult, cell: cell, indexPath: indexPath)
 		return cell
 	}
 }

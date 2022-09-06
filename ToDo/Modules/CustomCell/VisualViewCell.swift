@@ -60,7 +60,7 @@ final class VisualViewCell {
 				case true:
 					button.backgroundColor = .backgroundColor
 					button.setImage(nil, for: .normal)
-					painting(cell: cell, color: .red, colorTwo: .red)
+					painting(cell: cell, color: UIColor(named: "SoftRed")!, colorTwo: UIColor(named: "SoftRed")!)
 					cell.taskTitle.attributedText = notStrikethrough
 				case false:
 					standart()

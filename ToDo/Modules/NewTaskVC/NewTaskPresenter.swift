@@ -11,6 +11,7 @@ import UIKit
 protocol NewTaskProtocol: AnyObject {
 	func getTaskDateData(_ taskTimeS: String, _ taskDateS: String, _ dayOfMonthS: String, _ taskDateDate: Date)
 	func getTaskTimeData(_ taskTimeS: String, _ taskDateDate: Date, _ timeInterval: String)
+	
 }
 
 protocol NewTaskPresenterProtocol {

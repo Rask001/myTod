@@ -1,6 +1,12 @@
 import Foundation
 import UIKit
 
+fileprivate enum Constants {
+	static var cellFont: UIFont { UIFont(name: "Helvetica Neue", size: 20)!}
+	static var cellDistance: CGFloat { 0 }
+}
+
+
 final class CustomCell: UITableViewCell {
 	static let shared = CustomCell()
 	static let identifier = "CustomCell"
@@ -22,11 +28,17 @@ final class CustomCell: UITableViewCell {
 		let view                            = UIView()
 		view.backgroundColor                = .cellColor
 		view.layer.cornerRadius             = 10
+		view.layer.shadowColor = UIColor.black.cgColor
+		view.layer.shadowRadius = 4
+		view.layer.shadowOpacity = 0.2
+		view.layer.shadowOffset = CGSize(width: 0, height: 4 )
 		return view
 	}()
 	
+	
+	
 	var taskTitle: UILabel                = {
-		let taskTitle                       = UILabel(font: .NoteworthyBold20()!, textColor: .black)
+		let taskTitle                       = UILabel(font: Constants.cellFont, textColor: .black)
 		taskTitle.textAlignment             = .left
 		taskTitle.adjustsFontSizeToFitWidth = true
 		return taskTitle
@@ -46,12 +58,36 @@ final class CustomCell: UITableViewCell {
 		return taskDate
 	}()
 	
+//	var darkShadow: CALayer = {
+//		let darkShadow = CALayer()
+//		darkShadow.shadowColor = UIColor.darkGray.cgColor
+//		darkShadow.shadowOpacity = 1
+//		darkShadow.shadowRadius = 3
+//		darkShadow.shadowOffset = CGSize(width: 1, height: 1)
+//		darkShadow.cornerRadius = 5
+//		return darkShadow
+//	}()
+
+	
+	
 	var buttonCell: UIButton              = {
-		let buttonCell                      = UIButton(type: .system)
-		buttonCell.layer.cornerRadius       = 10
+		let buttonCell                      = UIButton(type: .custom)
+		buttonCell.layer.cornerRadius       = 17.5
 		buttonCell.backgroundColor          = UIColor.backgroundColor
 		return buttonCell
 	}()
+	
+//	override func layoutSubviews() {
+//		super.layoutSubviews()
+//		darkShadow.backgroundColor = UIColor.red.cgColor
+//		darkShadow.frame = self.bounds
+//
+//		let path = UIBezierPath(roundedRect: bounds.insetBy(dx: -3, dy: -3), cornerRadius: 5)
+//		let cutout = UIBezierPath(roundedRect: bounds, cornerRadius: 5).reversing()
+//		path.append(cutout)
+//
+//		darkShadow.shadowPath = CGPath
+//	}
 	
 	var alarmImageView: UIImageView       = {
 		let alarmImageView                  = UIImageView()
@@ -68,7 +104,6 @@ final class CustomCell: UITableViewCell {
 		repeatImageView.contentMode         = .scaleAspectFit
 		return repeatImageView
 	}()
-	
 	
 	//MARK: - SetConstraints
 	func addSubviewAndConfigure() {
@@ -107,7 +142,7 @@ final class CustomCell: UITableViewCell {
 		taskDate.widthAnchor.constraint(equalToConstant: self.frame.width/5).isActive                                = true
 		  
 		backgroundViewCell.translatesAutoresizingMaskIntoConstraints                                                 = false
-		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive                = true
+		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: Constants.cellDistance).isActive = true
 		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive            = true
 		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive                       = true
 		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive               = true

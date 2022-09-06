@@ -7,6 +7,10 @@
 import Foundation
 import UIKit
 
+fileprivate enum Constants {
+	static var taskTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+}
+
 class CustomHeader: UITableViewCell {
 	static let shared = CustomHeader()
 	static let identifier = "CustomHeader"
@@ -29,7 +33,7 @@ class CustomHeader: UITableViewCell {
 	}()
 
 	var taskTitle: UILabel                = {
-		let taskTitle                       = UILabel(font: .NoteworthyBold20()!, textColor: .black)
+		let taskTitle                       = UILabel(font: Constants.taskTitleFont, textColor: .black)
 		taskTitle.textAlignment             = .left
 		taskTitle.adjustsFontSizeToFitWidth = true
 		return taskTitle

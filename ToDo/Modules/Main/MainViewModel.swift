@@ -7,6 +7,10 @@
 import UIKit
 import Foundation
 
+fileprivate enum Constants {
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+}
+
 //MARK: - MainViewModelProtocol
 
 protocol MainViewModelProtocol {
@@ -36,7 +40,7 @@ final class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
-	let NavController = NavigationController()
+	let navController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
@@ -44,11 +48,10 @@ final class MainViewModel {
 	}
 }
 
-extension MainViewModel: MainViewModelProtocol
-{
+extension MainViewModel: MainViewModelProtocol {
 	
 	func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "side menu", rightItemText: "in dev", itemColor: .blackWhite!)
+		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	

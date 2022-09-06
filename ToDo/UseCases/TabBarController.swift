@@ -15,22 +15,26 @@ final class TabBarController: UITabBarController {
 	func createTabBarController(rootVC1: UIViewController, rootVC2: UIViewController, rootVC3: UIViewController) -> UITabBarController {
 		let tabBarVC = UITabBarController()
 		let firstPic = UIImage(systemName: "list.bullet.rectangle.fill")
+		
+		
 		let todayPic = UIImage(systemName: calendarDate())
 		let settingPic = UIImage(systemName: "gear")
 		
-		tabBarVC.setViewControllers([generationNavigationController(rootVC: rootVC1, title: "all tasks", image: firstPic!, tag: 0),
+		tabBarVC.viewControllers = [generationNavigationController(rootVC: rootVC1, title: "all tasks", image: firstPic!, tag: 0),
 																generationNavigationController(rootVC: rootVC2, title: "today", image: todayPic!, tag: 1),
-																 generationNavigationController(rootVC: rootVC3, title: "settings", image: settingPic!, tag: 2)], animated: true)
+																 generationNavigationController(rootVC: rootVC3, title: "settings", image: settingPic!, tag: 2)]
+		
 		
 		func generationNavigationController(rootVC: UIViewController, title: String, image: UIImage, tag: Int) -> UINavigationController {
 			let navigationVC = UINavigationController(rootViewController: rootVC)
 			let item = UITabBarItem(title: title, image: image, tag: tag)
 			navigationVC.tabBarItem = item
+			navigationVC.navigationBar.setValue(true, forKey: "hidesShadow")
 			return navigationVC
 		}
-		rootVC1.loadViewIfNeeded()  //подгружает значек таб бара при запуске
-		rootVC2.loadViewIfNeeded()  //подгружает значек таб бара при запуске
-		rootVC3.loadViewIfNeeded()  //подгружает значек таб бара при запуске
+//		rootVC1.loadViewIfNeeded()  //подгружает значек таб бара при запуске
+//		rootVC2.loadViewIfNeeded()  //подгружает значек таб бара при запуске
+//		rootVC3.loadViewIfNeeded()  //подгружает значек таб бара при запуске
 		return tabBarVC
 	}
 	

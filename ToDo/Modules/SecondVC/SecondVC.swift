@@ -10,12 +10,14 @@ import UIKit
 //MARK: - enum Constants
 
 fileprivate enum Constants {
-	static var mainTitle: String { "my tasks" }
-	static var buttonTitle: String { "New task" }
+	static var mainTitle: String { "today" }
+	static var buttonTitle: String { "+" }
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
-	static var buttonCornerRadius: CGFloat { 10 }
+	static var buttonCornerRadius: CGFloat { 35 }
 	static var tableViewRowHeight: CGFloat { 60 }
+  static var textButtonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
 }
 
 
@@ -44,19 +46,20 @@ final class SecondVC: UIViewController {
 		setupButton()
 		confugureTableView()
 		notification()
-		navigationControllerSetup()
+		setConstraits()
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
+		//viewModel.createNavController()
 	}
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.coreDataMethods.fetchRequest()
-		//viewModel.coreDataFetch()
 	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewWillLayoutSubviews()
-		setConstraits()
+	
 	}
 	
 	
@@ -65,7 +68,7 @@ final class SecondVC: UIViewController {
 	private func confugureTableView() {
 	//	self.title = "lollololol"
 //		self.navigationBar.tintColor = .systemBlue
-	//	self.navigationController?.navigationBar.barTintColor = .backgroundColor
+	//  self.navigationController?.navigationBar.barTintColor = .backgroundColor
 //		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
 		self.view.backgroundColor = .backgroundColor
@@ -77,18 +80,19 @@ final class SecondVC: UIViewController {
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
+		self.tableView.contentInset.top = 20
 	}
 	
-	private func navigationControllerSetup() {
-		navigationItem.title = "today"
-		let textAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
-		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
-//		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
-//		backButtonItem.tintColor = UIColor.blackWhite
-//		navigationItem.leftBarButtonItems = [backButtonItem]
-	}
+//	private func navigationControllerSetup() {
+//		navigationItem.title = "today"
+//		let textAttributes = [NSAttributedString.Key.font: Constants.navigationTitleFont, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
+//		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
+//		self.navigationController?.navigationBar.barTintColor = .backgroundColor
+//		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
+////		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
+////		backButtonItem.tintColor = UIColor.blackWhite
+////		navigationItem.leftBarButtonItems = [backButtonItem]
+//	}
 	
 	@objc func cancelFunc(){
 		
@@ -97,13 +101,23 @@ final class SecondVC: UIViewController {
 		
 	}
 	func setupButton(){
-		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
-		self.buttonNewTask.titleLabel?.font   = .NoteworthyBold20()
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
-		self.buttonNewTask.setTitle(Constants.buttonTitle, for: .normal)
-		self.buttonNewTask.setTitleColor(Constants.buttonTitleColor, for: .normal)
+		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
+		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
+		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
+		self.buttonNewTask.layer.shadowRadius = 3
+		self.buttonNewTask.layer.shadowOpacity = 0.2
+		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		self.tableView.addSubview(buttonNewTask)
+	}
+	
+	@objc private func touchDown() {
+		self.buttonNewTask.layer.shadowRadius = 3
+		self.buttonNewTask.layer.shadowOpacity = 0.2
+		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
 	}
 	
 	@objc private func goToNewTaskVC() {
@@ -116,14 +130,14 @@ final class SecondVC: UIViewController {
 		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
 		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
 		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 34).isActive                           = true
 		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
 		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
 		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 120).isActive                             = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 50).isActive                             = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
 	}
 	
 	

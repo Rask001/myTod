@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class Coordinator {
+final class Coordinator: NewTaskOutput {
 	
 	
 	private let assembly: Assembly
@@ -17,6 +17,7 @@ final class Coordinator {
 		self.assembly = assembly
 	}
 	
+	var newTaskView = UIViewController()
 	var mainView = UIViewController()
 	var seconvVC = UIViewController()
 	var settingVC = UIViewController()
@@ -41,5 +42,7 @@ extension Coordinator: MainOutput {
 	}
 }
 
-extension Coordinator: NewTaskOutput, TabBarOutput, SecondVCOutput, SettingOutput {
+extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput {
+
+	
 }

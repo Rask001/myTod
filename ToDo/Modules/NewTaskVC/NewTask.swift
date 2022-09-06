@@ -9,6 +9,20 @@ import Foundation
 import UIKit
 import CoreData
 
+fileprivate enum Constants {
+	static var textFiledFont: UIFont { UIFont(name: "Helvetica Neue", size: 20)!}
+	static var navigationItemTitle: String { "new task" }
+	static var textFiledPlaceholder: String { "...write something here" }
+	static var leftButtonImage: UIImage { UIImage(named: "xmrk")! }
+	static var rightButtonImage: UIImage { UIImage(named: "chckmrk")! }
+	static var alertLabelImage: UIImage { UIImage(systemName: "alarm")! }
+	static var repeatLabelImage: UIImage { UIImage(systemName: "repeat")! }
+	static var infoLabelFont: UIFont { UIFont(name: "Futura", size: 17)!}
+	static var infoLabelFont20: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var backgroundColorView: UIColor { .systemBackground }
+}
+
 final class NewTask: UIViewController {
 	var taskStruct = TaskStruct()
 	var presenter: NewTaskPresenterProtocol!
@@ -83,42 +97,41 @@ final class NewTask: UIViewController {
 	private func navigationBarSetup() {
 		let leftButton  = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(cancelFunc))
 		let rightButton = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(continueFunc))
-		leftButton.image = UIImage(named: "xmrk")
-		rightButton.image = UIImage(named: "chckmrk")
+		leftButton.image = Constants.leftButtonImage
+		rightButton.image = Constants.rightButtonImage
 		leftButton.tintColor = .blackWhite
 		rightButton.tintColor = .blackWhite
-		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.blackWhite as Any]
+		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: Constants.navigationTitleFont, NSAttributedString.Key.foregroundColor: UIColor.blackWhite as Any]
 		self.navigationBar.frame               = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
-		self.navigationBar.barTintColor        = .secondarySystemBackground
-		self.navigationBar.prefersLargeTitles  = true
-		UINavigationBar.appearance().shadowImage = UIImage()
-		UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-		let navigationItem                     = UINavigationItem(title: "new task")
+		let navigationItem                     = UINavigationItem(title: Constants.navigationItemTitle)
 		navigationItem.leftBarButtonItem       = leftButton
 		navigationItem.rightBarButtonItem      = rightButton
 		self.navigationBar.items               = [navigationItem]
+		self.navigationBar.setValue(true, forKey: "hidesShadow")
+		self.navigationBar.barTintColor = Constants.backgroundColorView
+		self.navigationBar.backgroundColor = Constants.backgroundColorView
 		self.view.addSubview(navigationBar)
 	}
 	
 	private func textFieldSetup() {
 		self.textField.delegate           = self
 		self.textField.layer.cornerRadius = 5
-		self.textField.placeholder        = "...write something here"
+		self.textField.placeholder        = Constants.textFiledPlaceholder
 		self.textField.borderStyle        = UITextField.BorderStyle.none
 		self.textField.backgroundColor    = .systemBackground
-		self.textField.font               = .NoteworthyBold20()
+		self.textField.font               = Constants.textFiledFont
 		self.textField.clearButtonMode    = .always
 		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
 	}
 	
 	private func alertLabelSetup() {
-		alertLabel.image              = UIImage(systemName: "alarm")
+		alertLabel.image              = Constants.alertLabelImage
 		alertLabel.tintColor          = .gray
 		alertLabel.contentMode        = .scaleAspectFit
 	}
 	
 	private func repeatLabelSetup() {
-		repeatLabel.image             = UIImage(systemName: "repeat")
+		repeatLabel.image             = Constants.repeatLabelImage
 		repeatLabel.tintColor         = .gray
 		repeatLabel.contentMode       = .scaleAspectFit
 	}
@@ -179,7 +192,7 @@ final class NewTask: UIViewController {
 	private func infoLabelSetup() {
 		infoLabel.numberOfLines = 2
 		infoLabel.textAlignment = .center
-		infoLabel.font          = UIFont.futura17()
+		infoLabel.font          = Constants.infoLabelFont
 		infoLabel.text          = "create your note"
 		infoLabel.textColor     = .blackWhite
 	}
@@ -304,7 +317,7 @@ final class NewTask: UIViewController {
 		switchAlert.isEnabled = true
 		switchAlertRepeat.isEnabled = true
 		taskStruct.taskTitle = textField.text ?? ""
-		if textField.text == ""{
+		if textField.text == "" {
 			allEnabled()
 		}
 	}
@@ -527,11 +540,11 @@ final class NewTask: UIViewController {
 		taptic.error
 		let oldValue = self.infoLabel.text
 		self.infoLabel.textColor = UIColor.red
-		self.infoLabel.font = UIFont.futura20()
+		self.infoLabel.font = Constants.infoLabelFont20
 		text != nil ? (self.infoLabel.text = text) : (self.infoLabel.text = oldValue)
 		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) {
 			self.infoLabel.textColor = UIColor.blackWhite
-			self.infoLabel.font = UIFont.futura17()
+			self.infoLabel.font = Constants.infoLabelFont
 			self.infoLabel.text = oldValue
 		}
 	}
@@ -583,7 +596,7 @@ final class NewTask: UIViewController {
 	
 	//MARK: - addSubviewAndConfigure
 	func addSubviewAndConfigure(){
-		self.view.backgroundColor = .systemBackground
+		self.view.backgroundColor = Constants.backgroundColorView
 		self.view.addSubview(self.textField)
 		self.view.addSubview(self.dataPicker)
 		self.view.addSubview(self.switchAlert)

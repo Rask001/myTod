@@ -222,12 +222,42 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
-		switch indexPath.section {
-		case 0: currentArray.remove(at: indexPath.row)
-		case 1: overdueArray.remove(at: indexPath.row)
-		default:
-			coreDataModel.remove(at: indexPath.row)
+		
+		var index = 0
+		for item in currentArray {
+			if item.id == task.id {
+				currentArray.remove(at: index)
+				index += 1
+			}
 		}
+		index = 0
+		for item in overdueArray {
+			if item.id == task.id {
+				overdueArray.remove(at: index)
+				index += 1
+			}
+		}
+		index = 0
+		for item in completedArray {
+			if item.id == task.id {
+				completedArray.remove(at: index)
+				index += 1
+			}
+		}
+		index = 0
+		for item in todayTasksArray {
+			if item.id == task.id {
+				todayTasksArray.remove(at: index)
+				index += 1
+			}
+		}
+		
+//		switch indexPath.section {
+//		case 0: currentArray.remove(at: indexPath.row)
+//		case 1: overdueArray.remove(at: indexPath.row)
+//		default:
+//			coreDataModel.remove(at: indexPath.row)
+//		}
 		//coreDataModel.remove(at: indexPath.row)
 		let _ : NSError! = nil
 		do {
@@ -324,18 +354,60 @@ final class CoreDataMethods {
 		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
 		do {
 			coreDataModel = try context.fetch(fetchRequest)
-			todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
-			overdueArray = appendOverdueTask(coreDataModel: coreDataModel)
-			currentArray = appendCurrentTask(coreDataModel: coreDataModel)
-			completedArray = appendCompletedTask(currentTask: &currentArray, todayTask: &todayTasksArray, overdueTask: &overdueArray, coreDataModel: coreDataModel)
-			var sel: [SectionStruct] = [sectionStructCur, sectionStructOver, sectionStructCompleted]
-			sel[0].row = currentArray
-			sel[1].row = overdueArray
-			sel[2].row = completedArray
-			selectionStructArray = sel
+			fetchRequestBody(coreDataModel) //вынес чуть ниже чтобы не засорять код
 		} catch let error as NSError {
 			print(error.localizedDescription)
 		}
 	}
-
+	
+	private func fetchRequestBody(_ coreDataModel: [Tasks]) {
+		todayTasksArray = appendTodayTask(coreDataModel: coreDataModel)
+		overdueArray = appendOverdueTask(coreDataModel: coreDataModel)
+		currentArray = appendCurrentTask(coreDataModel: coreDataModel)
+		completedArray = appendCompletedTask(currentTask: &currentArray, todayTask: &todayTasksArray, overdueTask: &overdueArray, coreDataModel: coreDataModel)
+		
+		var sel: [SectionStruct] = []
+		
+		let currentEmpty = { self.currentArray.isEmpty }
+		let overEmpty = { self.overdueArray.isEmpty }
+		let completedEmpty = { self.completedArray.isEmpty }
+		
+		if currentEmpty(), overEmpty(), completedEmpty() {
+			sel = []
+			
+		} else if currentEmpty(), overEmpty(), !completedEmpty() {
+			sel = [sectionStructCompleted]
+			sel[0].row = completedArray
+			
+		} else if currentEmpty(), !overEmpty(), completedEmpty() {
+			sel = [sectionStructOver]
+			sel[0].row = overdueArray
+			
+		} else if !currentEmpty(), overEmpty(), completedEmpty() {
+			sel = [sectionStructCur]
+			sel[0].row = currentArray
+			
+		} else if currentEmpty(), !overEmpty(), !completedEmpty() {
+			sel = [sectionStructOver, sectionStructCompleted]
+			sel[0].row = overdueArray
+			sel[1].row = completedArray
+			
+		} else if !currentEmpty(), !overEmpty(), completedEmpty() {
+			sel = [sectionStructCur, sectionStructOver]
+			sel[0].row = currentArray
+			sel[1].row = overdueArray
+			
+		} else if !currentEmpty(), overEmpty(), !completedEmpty() {
+			sel = [sectionStructCur, sectionStructCompleted]
+			sel[0].row = currentArray
+			sel[1].row = completedArray
+			
+		} else if !currentEmpty(), !overEmpty(), !completedEmpty() {
+			sel = [sectionStructCur, sectionStructOver, sectionStructCompleted]
+			sel[0].row = currentArray
+			sel[1].row = overdueArray
+			sel[2].row = completedArray
+		}
+		selectionStructArray = sel
+	}
 }

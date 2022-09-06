@@ -10,11 +10,14 @@ import UIKit
 
 fileprivate enum Constants {
 	static var mainTitle: String { "my tasks" }
-	static var buttonTitle: String { "New task" }
+	static var buttonTitle: String { "+" }
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
-	static var buttonCornerRadius: CGFloat { 10 }
+	static var buttonCornerRadius: CGFloat { 35 }
 	static var tableViewRowHeight: CGFloat { 60 }
+	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
+	static var backgroundColorView: UIColor { .backgroundColor! }
+
 }
 
 
@@ -26,6 +29,7 @@ final class Main: UIViewController {
 	
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
+	let navController = UINavigationController()
 	let taptic = TapticFeedback()
 	var viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
@@ -35,55 +39,83 @@ final class Main: UIViewController {
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-
+	
 	//MARK: - liveCycles
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		setupButton()
 		confugureTableView()
 		notification()
+		setupButton()
+		setConstraits()
 		viewModel.createNavController()
 	}
-
+	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.coreDataFetch()
+		viewModel.coreDataMethods.fetchRequest()
+		//self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+
 	}
 	
-	override func viewDidLayoutSubviews() {
-		super.viewWillLayoutSubviews()
-		setConstraits()
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 	}
+		
+//	override func viewWillLayoutSubviews() {
+//		super.viewWillLayoutSubviews()
+//	}
+	
+//	override func viewDidLayoutSubviews() {
+//		super.viewDidLayoutSubviews()
+//	}
 	
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
 		self.view.addSubview(tableView)
-		self.view.backgroundColor = .backgroundColor
+		self.view.backgroundColor = Constants.backgroundColorView
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
-		self.tableView.backgroundColor  = .clear
+		self.tableView.register(CustomHeader.self, forCellReuseIdentifier: CustomHeader.identifier)
+		self.tableView.backgroundColor  = .backgroundColor //.clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
+		//self.tableView.contentInset.top = 20
 	}
-
+	
+	
 	func setupButton(){
-		self.tableView.addSubview(buttonNewTask)
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
-		self.buttonNewTask.titleLabel?.font   = .NoteworthyBold20()
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
-		self.buttonNewTask.setTitle(Constants.buttonTitle, for: .normal)
-		self.buttonNewTask.setTitleColor(Constants.buttonTitleColor, for: .normal)
+		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
+		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
+		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
+		self.buttonNewTask.layer.shadowRadius = 3
+		self.buttonNewTask.layer.shadowOpacity = 0.2
+		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		//self.buttonNewTask.draw(CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 10, height: 10)))
+		
+		self.tableView.addSubview(buttonNewTask)
+	}
+	
+	@objc private func touchDown() {
+		self.buttonNewTask.layer.shadowRadius = 3
+		self.buttonNewTask.layer.shadowOpacity = 0.2
+		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
 	}
 	
 	@objc private func goToNewTaskVC() {
+		self.buttonNewTask.layer.shadowRadius = 4
+		self.buttonNewTask.layer.shadowOpacity = 0.2
+		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
 		viewModel.goToNewTaskVC()
 	}
 	
@@ -99,8 +131,8 @@ final class Main: UIViewController {
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
 		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
 		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 120).isActive                             = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 50).isActive                             = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
 	}
 	
 	
@@ -110,8 +142,8 @@ final class Main: UIViewController {
 	}
 	
 	@objc func tableViewReloadData(notification: NSNotification) {
-			self.viewModel.coreDataFetch()
-		  self.viewModel.reloadTable()
+		self.viewModel.coreDataMethods.fetchRequest()
+		self.viewModel.reloadTable()
 	}
 }
 
@@ -119,62 +151,50 @@ final class Main: UIViewController {
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
 	
+//		func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//			let model = viewModel.selectionStructArray[section]
+//			let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeader.identifier) as! CustomHeader
+//			cell.setup(model: model)
+//			return cell.contentView
+//		}
+	
+//	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//		let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 35))
+//		headerView.layer.cornerRadius = 5
+//		headerView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
+//		return headerView
+//	}
+	
 	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		viewModel.selectionStructArray[section].row.count
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		let currentIsEmpty = viewModel.selectionStructArray[0].row.isEmpty
-		let overdueIsEmpty = viewModel.selectionStructArray[1].row.isEmpty
-		let completedIsEmpty = viewModel.selectionStructArray[2].row.isEmpty
-		
-		
-		if currentIsEmpty, overdueIsEmpty, completedIsEmpty == true {
-			return 0
-		} else if overdueIsEmpty, completedIsEmpty == true {
-			return 1
-		} else {
-			return viewModel.selectionStructArray.count
-		}
+		return viewModel.selectionStructArray.count
 	}
+	
 	
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		viewModel.selectionStructArray[section].header
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 44
+		return 30
 	}
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		taptic.warning
-		if indexPath.section == 0 {
-		viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.currentArray)
-		} else if indexPath.section == 1 {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.overdueArray)
-		} else if indexPath.section == 2 {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.completedArray)
-		} else {
-			viewModel.coreDataDeleteCell(indexPath: indexPath, presentedViewController: self, taskModel: viewModel.coreDataModel)
-		}
+		viewModel.editingStyleBody(indexPath: indexPath)
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
-		let items: Tasks
-		
-		switch key {
-		case 0: items = viewModel.currentArray[indexPath.row]
-		case 1: items = viewModel.overdueArray[indexPath.row]
-		case 2: items = viewModel.completedArray[indexPath.row]
-		default: items = viewModel.coreDataModel[indexPath.row]
-		}
-
-		viewModel.visualViewCell(items: items, cell: cell, indexPath: indexPath)
+		let items: Tasks = viewModel.coreDataModel[indexPath.row]
+		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
+		viewModel.visualViewCell(items: itemsResult, cell: cell, indexPath: indexPath)
 		return cell
 	}
 }

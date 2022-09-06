@@ -7,12 +7,17 @@
 import UIKit
 import Foundation
 
+fileprivate enum Constants {
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+}
+
 //MARK: - MainViewModelProtocol
 
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
 	func createNavController()
+	var coreDataMethods: CoreDataMethods { get }
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
 	var overdueArray: [Tasks] { get }
@@ -21,8 +26,9 @@ protocol MainViewModelProtocol {
 	var sectionIndex: Int { get set }
 	var selectionStructArray: [SectionStruct] { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
-	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
+	func editingStyleBody(indexPath: IndexPath)
+	func cellForRowAtBody(items: Tasks, key: Int, indexPath: IndexPath) -> Tasks
 }
 
 
@@ -34,7 +40,7 @@ final class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods = CoreDataMethods()
 	let visualViewCell = VisualViewCell()
-	let NavController = NavigationController()
+	let navController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
@@ -43,9 +49,9 @@ final class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
-		
+	
 	func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: "my tasks", font: .futura20()!, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "side menu", rightItemText: "in dev", itemColor: .blackWhite!)
+		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	
@@ -93,10 +99,6 @@ extension MainViewModel: MainViewModelProtocol {
 		sectionIndex = button.tag
 		
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
-	}
-	
-	func coreDataFetch() {
-		coreDataMethods.fetchRequest()
 	}
 	
 	var todayTasksArray: [Tasks] {
@@ -150,4 +152,89 @@ extension MainViewModel: MainViewModelProtocol {
 		print(sender.tag)
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
+	
+	func editingStyleBody(indexPath: IndexPath) {
+		taptic.warning
+		coreDataMethods.fetchRequest()
+		switch indexPath.section {
+		case 0:
+			if  coreDataMethods.selectionStructArray[0].header == "current tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+			} else if coreDataMethods.selectionStructArray[0].header == "overdue tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+			} else if coreDataMethods.selectionStructArray[0].header == "completed tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+			}
+		case 1:
+			if coreDataMethods.selectionStructArray[1].header == "current tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+			} else if coreDataMethods.selectionStructArray[1].header == "overdue tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+			} else if coreDataMethods.selectionStructArray[1].header == "completed tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+			}
+		case 2:
+			if coreDataMethods.selectionStructArray[2].header == "current tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+			} else if coreDataMethods.selectionStructArray[2].header == "overdue tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+			} else if coreDataMethods.selectionStructArray[2].header == "completed tasks" {
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+			}
+		default:
+			break
+		}
+	}
+	
+	func cellForRowAtBody(items: Tasks, key: Int, indexPath: IndexPath) -> Tasks{
+		var items: Tasks = coreDataModel[indexPath.row]
+		let currentEmpty = { self.currentArray.isEmpty }
+		let overEmpty = { self.overdueArray.isEmpty }
+		let completedEmpty = { self.completedArray.isEmpty }
+		
+		if currentEmpty(), overEmpty(), completedEmpty() {
+			items = coreDataModel[indexPath.row]
+			
+		} else if currentEmpty(), overEmpty(), !completedEmpty() {
+			items = completedArray[indexPath.row]
+			
+		} else if currentEmpty(), !overEmpty(), completedEmpty() {
+			items = overdueArray[indexPath.row]
+			
+		} else if !currentEmpty(), overEmpty(), completedEmpty() {
+			items = currentArray[indexPath.row]
+			
+		} else if currentEmpty(), !overEmpty(), !completedEmpty() {
+			switch key {
+			case 0: items = overdueArray[indexPath.row]
+			case 1: items = completedArray[indexPath.row]
+			default: items = coreDataModel[indexPath.row]
+			}
+			
+		} else if !currentEmpty(), !overEmpty(), completedEmpty() {
+			switch key {
+			case 0: items = currentArray[indexPath.row]
+			case 1: items = overdueArray[indexPath.row]
+			default: items = coreDataModel[indexPath.row]
+			}
+			
+		} else if !currentEmpty(), overEmpty(), !completedEmpty() {
+			switch key {
+			case 0: items = currentArray[indexPath.row]
+			case 1: items = completedArray[indexPath.row]
+			default: items = coreDataModel[indexPath.row]
+			}
+			
+		} else if !currentEmpty(), !overEmpty(), !completedEmpty() {
+			switch key {
+			case 0: items = currentArray[indexPath.row]
+			case 1: items = overdueArray[indexPath.row]
+			case 2: items = completedArray[indexPath.row]
+			default: items = coreDataModel[indexPath.row]
+			}
+		}
+		return items
+	}
+	
+	
 }

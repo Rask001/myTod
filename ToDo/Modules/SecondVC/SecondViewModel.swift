@@ -8,15 +8,20 @@
 import UIKit
 import Foundation
 
+fileprivate enum Constants {
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+}
+
 //MARK: - SecondViewModelProtocol
 
 protocol SecondViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
+	func createNavController()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
+	var coreDataMethods: CoreDataMethods { get }
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
-	func coreDataFetch()
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
 
@@ -28,6 +33,7 @@ protocol SecondViewModelProtocol {
 final class SecondViewModel {
 	private weak var output: SecondVCOutput?
 	let coreDataMethods = CoreDataMethods()
+	let NavController = NavigationController()
 	let visualViewCell = VisualViewCell()
 	let taptic = TapticFeedback()
 	weak var view: SecondVC?
@@ -37,7 +43,13 @@ final class SecondViewModel {
 }
 
 extension SecondViewModel: SecondViewModelProtocol {
-	 
+	
+	func createNavController() {
+		NavController.createNavigationController(viewController: view!, title: "today44", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "indev", rightItemText: "indev", itemColor: .blackWhite!)
+	}
+	
+	
+	
 	func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
@@ -53,10 +65,6 @@ extension SecondViewModel: SecondViewModelProtocol {
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
-	}
-	
-	func coreDataFetch() {
-		coreDataMethods.fetchRequest()
 	}
 	
 	var todayTasksArray: [Tasks] {

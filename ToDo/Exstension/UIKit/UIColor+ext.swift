@@ -20,6 +20,7 @@ extension UIColor {
 		
 		// MARK: Public
 	static let backgroundColor = UIColor(named: "BackgroundColor")
+	static let backgroundColorClear = UIColor(named: "BackgroundColorClear")
 	static let whiteBlack = UIColor(named: "WhiteBlack")
 	static let blackWhite = UIColor(named: "BlackWhite")
 	static let cellColor = UIColor(named: "CellColor")

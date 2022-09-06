@@ -14,6 +14,7 @@
 		3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A576E6A282D9B2F004F108B /* LocalNotification.swift */; };
 		3A606D53287790910036635B /* TaskStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A606D52287790910036635B /* TaskStruct.swift */; };
 		3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A65658A289548970014BD04 /* UIButton + ext.swift */; };
+		3A6A9EA228C6972600A60E2F /* holeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6A9EA128C6972600A60E2F /* holeViews.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
@@ -35,6 +36,8 @@
 		3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */; };
 		3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A82888389500427BD8 /* NewTaskIO.swift */; };
 		3ADBF4D62827F316000BA06B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADBF4D52827F316000BA06B /* Main.swift */; };
+		3AF3FBF028C213770002063B /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3FBEF28C213770002063B /* CustomHeader.swift */; };
+		3AF3FBF228C24AA60002063B /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF3FBF128C24AA50002063B /* Header.swift */; };
 		3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F428BB5181002C0C52 /* SecondVC.swift */; };
 		3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F728BB5297002C0C52 /* SecondIO.swift */; };
 		3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */; };
@@ -54,6 +57,7 @@
 		3A576E6A282D9B2F004F108B /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		3A606D52287790910036635B /* TaskStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStruct.swift; sourceTree = "<group>"; };
 		3A65658A289548970014BD04 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
+		3A6A9EA128C6972600A60E2F /* holeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = holeViews.swift; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 		3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskPresenter.swift; sourceTree = "<group>"; };
 		3ADB45A82888389500427BD8 /* NewTaskIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskIO.swift; sourceTree = "<group>"; };
 		3ADBF4D52827F316000BA06B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
+		3AF3FBEF28C213770002063B /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
+		3AF3FBF128C24AA50002063B /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		3AFC09F428BB5181002C0C52 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
 		3AFC09F728BB5297002C0C52 /* SecondIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondIO.swift; sourceTree = "<group>"; };
 		3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewModel.swift; sourceTree = "<group>"; };
@@ -183,6 +189,9 @@
 			isa = PBXGroup;
 			children = (
 				3AC8554627EFBBA700A7891D /* CustomCell.swift */,
+				3A6A9EA128C6972600A60E2F /* holeViews.swift */,
+				3AF3FBF128C24AA50002063B /* Header.swift */,
+				3AF3FBEF28C213770002063B /* CustomHeader.swift */,
 				3A975B88288B01D90049A4E1 /* VisualViewCell.swift */,
 			);
 			path = CustomCell;
@@ -324,12 +333,15 @@
 				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
 				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
+				3AF3FBF028C213770002063B /* CustomHeader.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
+				3A6A9EA228C6972600A60E2F /* holeViews.swift in Sources */,
+				3AF3FBF228C24AA60002063B /* Header.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
 				3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */,

@@ -3,7 +3,7 @@ import UIKit
 
 fileprivate enum Constants {
 	static var cellFont: UIFont { UIFont(name: "Helvetica Neue", size: 20)!}
-	static var cellDistance: CGFloat { 0 }
+	static var cellDistance: CGFloat { -3 }
 }
 
 
@@ -21,20 +21,32 @@ final class CustomCell: UITableViewCell {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	
 	var taskDateDate: Date? = nil
 	var id: String = ""
 	
 	var backgroundViewCell: UIView        = {
 		let view                            = UIView()
 		view.backgroundColor                = .cellColor
+		//view.backgroundColor = .clear
+		//view.
 		view.layer.cornerRadius             = 10
 		view.layer.shadowColor = UIColor.black.cgColor
 		view.layer.shadowRadius = 4
 		view.layer.shadowOpacity = 0.2
-		view.layer.shadowOffset = CGSize(width: 0, height: 4 )
+		view.layer.shadowOffset = CGSize(width: 0, height: 3 )
 		return view
 	}()
 	
+//	override func viewDidLayoutSubviews() {
+//		super.viewWillLayoutSubviews()
+//		self.view.applyGradients(cornerRadius: Constants.buttonCornerRadius)
+//	}
+	
+//	override func layoutSubviews() {
+//		super.layoutSubviews()
+//		self.backgroundViewCell.applyGradientsCell(cornerRadius: 10)
+//	}
 	
 	
 	var taskTitle: UILabel                = {

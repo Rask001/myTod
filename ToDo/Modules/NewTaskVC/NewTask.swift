@@ -54,7 +54,7 @@ final class NewTask: UIViewController {
 	var buttonMonthHStackView4  = UIStackView()
 	var buttonMonthHStackView5  = UIStackView()
 	var buttonMonthVStackView   = UIStackView()
-	var segmentedItems          = ["day", "week", "month", "set time"]
+	let segmentedItems          = ["day", "week", "month", "set time"]
 	var segmented1Items          = ["Alarm", "Reapeat"]
 	let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	var buttonArray: [UIButton] = []

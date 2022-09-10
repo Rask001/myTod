@@ -30,7 +30,9 @@ final class SecondVC: UIViewController {
 	var tableView = UITableView()
 	let buttonNewTask = UIButton()
 	let taptic = TapticFeedback()
+	let theme = Theme()
 	let viewModel: SecondViewModelProtocol
+	let gradient = CAGradientLayer()
 	init(viewModel: SecondViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -47,33 +49,37 @@ final class SecondVC: UIViewController {
 		confugureTableView()
 		notification()
 		setConstraits()
-		self.navigationController?.setNavigationBarHidden(true, animated: false)
-		//viewModel.createNavController()
+		//self.navigationController?.setNavigationBarHidden(true, animated: false)
+		viewModel.createNavController()
+		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		//view.backgroundColor = .backgroundColor
 	}
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+		super.viewWillAppear(false)
 		viewModel.coreDataMethods.fetchRequest()
-	}
+		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+
+			}
+	
+//	override func viewDidAppear(_ animated: Bool) {
+//		super.viewWillAppear(false)
+//		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+//	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewWillLayoutSubviews()
-	
+		self.tableView.backgroundColor = .clear
+		//self.view.applyGradientsLightBackgound(cornerRadius: 0)
 	}
 	
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
-	//	self.title = "lollololol"
-//		self.navigationBar.tintColor = .systemBlue
-	//  self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
-		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
-		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
@@ -83,16 +89,6 @@ final class SecondVC: UIViewController {
 		self.tableView.contentInset.top = 20
 	}
 	
-//	private func navigationControllerSetup() {
-//		navigationItem.title = "today"
-//		let textAttributes = [NSAttributedString.Key.font: Constants.navigationTitleFont, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
-//		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-//		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
-////		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
-////		backButtonItem.tintColor = UIColor.blackWhite
-////		navigationItem.leftBarButtonItems = [backButtonItem]
-//	}
 	
 	@objc func cancelFunc(){
 		
@@ -127,17 +123,17 @@ final class SecondVC: UIViewController {
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
-		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 34).isActive                           = true
-		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
-		
-		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
-		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
+		tableView.translatesAutoresizingMaskIntoConstraints                                                = false
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                        = true
+		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive      = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive                = true //34
+		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive         = true
+		   
+		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                            = false
+		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive    = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                                 = true
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                                = true
 	}
 	
 	

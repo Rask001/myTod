@@ -32,6 +32,7 @@ final class Coordinator: NewTaskOutput {
 		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
 		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
+		window.overrideUserInterfaceStyle = MTUserDefaults.shared.theme.getUserIntefaceStyle() //определение пользовательской темы
 	}
 }
 

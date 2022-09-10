@@ -45,7 +45,7 @@ final class SecondViewModel {
 extension SecondViewModel: SecondViewModelProtocol {
 	
 	func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: "today44", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "indev", rightItemText: "indev", itemColor: .blackWhite!)
+		NavController.createNavigationController(viewController: view!, title: "today", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	

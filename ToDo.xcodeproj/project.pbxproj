@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A3E17BE28CB491B00C025D2 /* ThemeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17BD28CB491B00C025D2 /* ThemeEnum.swift */; };
+		3A3E17C028CB6A9000C025D2 /* LightTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17BF28CB6A9000C025D2 /* LightTheme.swift */; };
+		3A3E17C428CBBC0100C025D2 /* MTUserDefolts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17C328CBBC0100C025D2 /* MTUserDefolts.swift */; };
 		3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F560E27EF947F00ECF06B /* AppDelegate.swift */; };
 		3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F561727EF947F00ECF06B /* ToDo.xcdatamodeld */; };
 		3A4F561B27EF948300ECF06B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561A27EF948300ECF06B /* Assets.xcassets */; };
 		3A4F561E27EF948300ECF06B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561C27EF948300ECF06B /* LaunchScreen.storyboard */; };
 		3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A576E6A282D9B2F004F108B /* LocalNotification.swift */; };
+		3A5B2D4328CB3EB30041C4AB /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5B2D4228CB3EB30041C4AB /* Theme.swift */; };
 		3A606D53287790910036635B /* TaskStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A606D52287790910036635B /* TaskStruct.swift */; };
 		3A65658B289548970014BD04 /* UIButton + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A65658A289548970014BD04 /* UIButton + ext.swift */; };
 		3A6A9EA228C6972600A60E2F /* holeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6A9EA128C6972600A60E2F /* holeViews.swift */; };
+		3A6A9EA628C80A7F00A60E2F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6A9EA528C80A7F00A60E2F /* GradientView.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
@@ -48,6 +53,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A3E17BD28CB491B00C025D2 /* ThemeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeEnum.swift; sourceTree = "<group>"; };
+		3A3E17BF28CB6A9000C025D2 /* LightTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightTheme.swift; sourceTree = "<group>"; };
+		3A3E17C328CBBC0100C025D2 /* MTUserDefolts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTUserDefolts.swift; sourceTree = "<group>"; };
 		3A4F560B27EF947F00ECF06B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4F560E27EF947F00ECF06B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4F561827EF947F00ECF06B /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
@@ -55,9 +63,11 @@
 		3A4F561D27EF948300ECF06B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A4F561F27EF948300ECF06B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3A576E6A282D9B2F004F108B /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
+		3A5B2D4228CB3EB30041C4AB /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		3A606D52287790910036635B /* TaskStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStruct.swift; sourceTree = "<group>"; };
 		3A65658A289548970014BD04 /* UIButton + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton + ext.swift"; sourceTree = "<group>"; };
 		3A6A9EA128C6972600A60E2F /* holeViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = holeViews.swift; sourceTree = "<group>"; };
+		3A6A9EA528C80A7F00A60E2F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
@@ -120,6 +130,7 @@
 		3A4F560D27EF947F00ECF06B /* ToDo */ = {
 			isa = PBXGroup;
 			children = (
+				3A5B2D4128CB3E970041C4AB /* Theme */,
 				3A4F562527EF965E00ECF06B /* Model */,
 				3ADB45A328882CEF00427BD8 /* UseCases */,
 				3A4F562627EF966C00ECF06B /* Modules */,
@@ -162,6 +173,17 @@
 				3A4F561F27EF948300ECF06B /* Info.plist */,
 			);
 			path = SupportFiles;
+			sourceTree = "<group>";
+		};
+		3A5B2D4128CB3E970041C4AB /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				3A5B2D4228CB3EB30041C4AB /* Theme.swift */,
+				3A3E17BD28CB491B00C025D2 /* ThemeEnum.swift */,
+				3A3E17C328CBBC0100C025D2 /* MTUserDefolts.swift */,
+				3A3E17BF28CB6A9000C025D2 /* LightTheme.swift */,
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		3A7FFA5B2865CCD000A7CC27 /* Main */ = {
@@ -235,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				3AD1FF7C2827FD9B002ECA67 /* UIKit */,
+				3A6A9EA528C80A7F00A60E2F /* GradientView.swift */,
 			);
 			path = Exstension;
 			sourceTree = "<group>";
@@ -333,18 +356,23 @@
 				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
 				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
+				3A5B2D4328CB3EB30041C4AB /* Theme.swift in Sources */,
 				3AF3FBF028C213770002063B /* CustomHeader.swift in Sources */,
+				3A3E17C428CBBC0100C025D2 /* MTUserDefolts.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
+				3A3E17BE28CB491B00C025D2 /* ThemeEnum.swift in Sources */,
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
 				3A6A9EA228C6972600A60E2F /* holeViews.swift in Sources */,
 				3AF3FBF228C24AA60002063B /* Header.swift in Sources */,
+				3A3E17C028CB6A9000C025D2 /* LightTheme.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
 				3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */,
+				3A6A9EA628C80A7F00A60E2F /* GradientView.swift in Sources */,
 				3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */,
 				3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */,
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,

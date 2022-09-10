@@ -22,7 +22,7 @@ import UIKit
 				navBarAppearance.configureWithOpaqueBackground()
 				navBarAppearance.largeTitleTextAttributes = [.foregroundColor: textColor]
 				navBarAppearance.titleTextAttributes = textAttributes
-			navBarAppearance.backgroundColor = backgroundColor
+			  navBarAppearance.backgroundColor = backgroundColor
 			  navBarAppearance.shadowColor = backgroundColor
 			//navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
 

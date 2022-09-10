@@ -21,7 +21,6 @@ fileprivate enum Constants {
 }
 
 
-
 //MARK: - Main
 final class Main: UIViewController {
 	
@@ -31,6 +30,8 @@ final class Main: UIViewController {
 	let buttonNewTask = UIButton()
 	let navController = UINavigationController()
 	let taptic = TapticFeedback()
+	let theme = Theme()
+	let gradient = CAGradientLayer()
 	var viewModel: MainViewModelProtocol
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
@@ -49,18 +50,17 @@ final class Main: UIViewController {
 		setupButton()
 		setConstraits()
 		viewModel.createNavController()
+		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		//view.backgroundColor = .backgroundColor
+		//self.view.applyGradientsLightBackgound(cornerRadius: 0)
 	}
+	
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+		super.viewWillAppear(false)
 		viewModel.coreDataMethods.fetchRequest()
-		//self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
-
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
+		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 		
 //	override func viewWillLayoutSubviews() {
@@ -70,28 +70,51 @@ final class Main: UIViewController {
 //	override func viewDidLayoutSubviews() {
 //		super.viewDidLayoutSubviews()
 //	}
-	
+	//scrollView.contentInsetAdjustmentBehavior = .automatic
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
 		self.view.addSubview(tableView)
-		self.view.backgroundColor = Constants.backgroundColorView
+		//self.view.backgroundColor = Theme.current.backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 		self.tableView.register(CustomHeader.self, forCellReuseIdentifier: CustomHeader.identifier)
-		self.tableView.backgroundColor  = .backgroundColor //.clear
+		//self.tableView.backgroundColor  = .backgroundColor //.clear
+		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-		//self.tableView.contentInset.top = 20
+		//self.tableView.contentInsetAdjustmentBehavior = .always
 	}
+
+	override func viewWillLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+//		if UserDefaults.standard.object(forKey: "LightTheme") != nil {
+//			self.view.applyGradientsLightBackgound(cornerRadius: 0)
+//		} else {
+//			self.view.applyGradientsDarkBackgound(cornerRadius: 0)
+//		}
+	}
+//		if self.traitCollection.userInterfaceStyle == .dark {
+//			self.view.applyGradientsDarkBackgound(cornerRadius: 0)
+//		} else {
+//			self.view.applyGradientsLightBackgound(cornerRadius: 0)
+//		}
+//	}
 	
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		 }
+
+		 override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+			 }
 	
 	func setupButton(){
-		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
+		//self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
@@ -101,7 +124,10 @@ final class Main: UIViewController {
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
 		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		self.buttonNewTask.backgroundColor = Constants.buttonBackgroundColor
+		//self.buttonNewTask.applyGradients(cornerRadius: Constants.buttonCornerRadius)
 		//self.buttonNewTask.draw(CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 10, height: 10)))
+		//let gradientView = GradientView(from: .top, to: .bottom, startColor: .systemBlue, endColor: .systemYellow)
 		
 		self.tableView.addSubview(buttonNewTask)
 	}
@@ -130,7 +156,7 @@ final class Main: UIViewController {
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
 		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive               = true
 		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
 		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
 	}
@@ -180,6 +206,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		
 		return 30
 	}
 	

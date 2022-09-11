@@ -11,10 +11,9 @@ fileprivate enum Constants {
 final class CustomCell: UITableViewCell {
 	static let shared = CustomCell()
 	static let identifier = "CustomCell"
-	let helper = Helper()
+	let coreData = CoreDataMethods()
 	var taskDateDate: Date? = nil
 	var id: String = ""
-	
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,9 +34,6 @@ final class CustomCell: UITableViewCell {
 		textFieldLabel.addTarget(self, action: #selector(textFieldDidChange), for: .editingDidEndOnExit)
 	}
 	
-
-	
-	
 	@objc func longPress(gestureRecognizer: UILongPressGestureRecognizer) {
 		TapticFeedback.shared.medium
 		textFieldLabel.isHidden = false
@@ -46,28 +42,10 @@ final class CustomCell: UITableViewCell {
 	}
 	
 	@objc func textFieldDidChange() {
-		
 		self.endEditing(true)
 		self.textFieldLabel.isHidden = true
 		self.buttonCell.isEnabled = true
-		
-		CoreDataMethods.shared.fetchRequest()
-		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		let model = CoreDataMethods.shared.coreDataModel
-    let cellTag = buttonCell.tag
-		for items in model {
-			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
-			if cellTag == itemsId {
-				items.taskTitle = textFieldLabel.text ?? "error Custon Cell"
-			}
-		}
-		do {
-			try context.save()
-			print("save editing")
-		} catch let error as NSError {
-			print(error.localizedDescription)
-		}
-		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+		coreData.editingCell(cellTag: buttonCell.tag, newText: textFieldLabel.text ?? "error CustomCell")
 	}
 	
 	var backgroundViewCell: UIView        = {

@@ -20,7 +20,7 @@ final class CoreDataMethods {
 	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
 	var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
 	var selectionStructArray: [SectionStruct] = []
-	
+	let helper = Helper()
 	
 	static let shared = CoreDataMethods()
 	
@@ -202,6 +202,25 @@ final class CoreDataMethods {
 			print(error.localizedDescription)
 		}
 	}
+	
+		public func editingCell(cellTag: Int, newText: String) {
+		CoreDataMethods.shared.fetchRequest()
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				items.taskTitle = newText
+			}
+		}
+		do {
+			try context.save()
+			print("save editing")
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+		}
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {

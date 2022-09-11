@@ -17,6 +17,7 @@ final class VisualViewCell {
 		cell.taskDateDate             = items.taskDateDate
 		cell.taskTime.text            = items.taskTime
 		cell.taskTitle.text           = items.taskTitle
+		cell.textFieldLabel.text      = items.taskTitle ////
 		cell.taskTime.isHidden        = !items.alarmImage
 		cell.alarmImageView.isHidden  = !items.alarmImage
 		cell.repeatImageView.isHidden = !items.repeatImage

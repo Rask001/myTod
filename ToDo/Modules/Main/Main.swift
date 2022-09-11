@@ -90,28 +90,6 @@ final class Main: UIViewController {
 		//self.tableView.contentInsetAdjustmentBehavior = .always
 	}
 
-	override func viewWillLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-//		if UserDefaults.standard.object(forKey: "LightTheme") != nil {
-//			self.view.applyGradientsLightBackgound(cornerRadius: 0)
-//		} else {
-//			self.view.applyGradientsDarkBackgound(cornerRadius: 0)
-//		}
-	}
-//		if self.traitCollection.userInterfaceStyle == .dark {
-//			self.view.applyGradientsDarkBackgound(cornerRadius: 0)
-//		} else {
-//			self.view.applyGradientsLightBackgound(cornerRadius: 0)
-//		}
-//	}
-	
-	
-	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-		 }
-
-		 override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-			 }
 	
 	func setupButton(){
 		//self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
@@ -225,5 +203,3 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		return cell
 	}
 }
-
-

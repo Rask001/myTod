@@ -205,7 +205,6 @@ final class CoreDataMethods {
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {
-
 		let task             = tasksModel[indexPath.row]
 		let taskTitle        = task.taskTitle
 		let areYouSureAllert = UIAlertController(title: "Delete \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
@@ -217,6 +216,11 @@ final class CoreDataMethods {
 		areYouSureAllert.addAction(yesAction)
 		presentedViewController.present(areYouSureAllert, animated: true)
 	}
+	
+//	private func editingContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
+//		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//		
+//	}
 	
 	private func deleteFromContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -251,14 +255,7 @@ final class CoreDataMethods {
 				index += 1
 			}
 		}
-		
-//		switch indexPath.section {
-//		case 0: currentArray.remove(at: indexPath.row)
-//		case 1: overdueArray.remove(at: indexPath.row)
-//		default:
-//			coreDataModel.remove(at: indexPath.row)
-//		}
-		//coreDataModel.remove(at: indexPath.row)
+
 		let _ : NSError! = nil
 		do {
 			try context.save()
@@ -333,20 +330,7 @@ final class CoreDataMethods {
 	}
 		return arrayResult
 	}
-	
-	
-//	func nightRemoveTodayTask(todayTasksArray array: [Tasks]) {
-//		var index = 0
-//		for item in array {
-//			let todayItem = Calendar.current.dateComponents([.day], from: item.taskDateDate ?? Date.now)
-//			let today = Calendar.current.dateComponents([.day], from: Date.now)
-//			if todayItem != today {
-//				todayTasksArray.remove(at: index)
-//				index -= 1
-//			}
-//			index += 1
-//		}
-//	}
+
 	
 	//MARK: - Fetch Request
 	public func fetchRequest() {

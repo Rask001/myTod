@@ -121,6 +121,7 @@ final class NewTask: UIViewController {
 		self.textField.backgroundColor    = .systemBackground
 		self.textField.font               = Constants.textFiledFont
 		self.textField.clearButtonMode    = .always
+		//self.textField.
 		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
 	}
 	

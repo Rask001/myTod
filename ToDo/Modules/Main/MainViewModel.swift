@@ -43,6 +43,7 @@ final class MainViewModel {
 	let navController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
+	let helper = Helper()
 	init(output: MainOutput) {
 		self.output = output
 	}
@@ -73,27 +74,13 @@ extension MainViewModel: MainViewModelProtocol {
 		view?.tableView.reloadData()
 	}
 	
-	private func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
-		var resultInt = 0
-		var resultString = ""
-		for num in itemsId {
-			if resultString.count < 7 {
-				if let chr = Int(String(num)) {
-					resultString += String(chr)
-				}
-			}
-		}
-		resultInt = Int(resultString) ?? 777
-		return resultInt
-	}
-	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		
 		let button = cell.buttonCell
 		
 		
-		button.tag = createShortIntWithoutStrChar(fromItemsId: items.id)
+		button.tag = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 		
 		print("button tag = \(button.tag)")
 		sectionIndex = button.tag
@@ -132,6 +119,11 @@ extension MainViewModel: MainViewModelProtocol {
 	func goToNewTaskVC() {
 		output?.goToNewTask()
 	}
+//	@objc private func editTitle() {
+//		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//		let model = coreDataModel
+//
+//	}
 	
 	@objc private func saveCheckmark(sender: UIButton) {
 		taptic.soft
@@ -139,7 +131,7 @@ extension MainViewModel: MainViewModelProtocol {
 		
 		let model = coreDataModel
 		for items in model {
-			let itemsId = createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if sender.tag == itemsId {
 				items.check.toggle()
 			}

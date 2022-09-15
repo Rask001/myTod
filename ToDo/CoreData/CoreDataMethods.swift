@@ -44,9 +44,12 @@ final class CoreDataMethods {
 		model.taskDateDate  = taskDateDate
 		model.createdAt     = createdAt
 		model.alarmImage    = alarmImage
+		model.descriptImage = false
 		model.check         = false
 		model.repeatImage   = false
 		model.timeInterval  = nil
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -77,8 +80,11 @@ final class CoreDataMethods {
 		model.createdAt     = createdAt
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
+		model.descriptImage = false
 		model.check         = false
 		model.timeInterval  = nil
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -108,8 +114,11 @@ final class CoreDataMethods {
 		model.createdAt     = createdAt
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
+		model.descriptImage = false
 		model.check         = false
 		model.timeInterval  = nil
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -139,8 +148,11 @@ final class CoreDataMethods {
 		model.createdAt     = createdAt
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
+		model.descriptImage = false
 		model.check         = false
 		model.timeInterval  = nil
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -164,12 +176,15 @@ final class CoreDataMethods {
 		model.type          = type
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
+		model.descriptImage = false
 		model.timeInterval  = timeInterval
 		model.createdAt     = createdAt
 		model.taskTime      = nil
 		model.taskDate      = nil
 		model.taskDateDate  = nil
 		model.check         = false
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -194,7 +209,10 @@ final class CoreDataMethods {
 		model.check         = false
 		model.alarmImage    = false
 		model.repeatImage   = false
+		model.descriptImage = false
 		model.timeInterval  = nil
+		model.descript      = ""
+		model.descriptSize  = 20
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -203,8 +221,36 @@ final class CoreDataMethods {
 		}
 	}
 	
+	public func saveDescription(cellTag: Int, description: String, descriptionSize: Double) {
+			CoreDataMethods.shared.fetchRequest()        //FIX:
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				items.descript = description
+				items.descriptSize = descriptionSize
+				if description != "" {
+					items.descriptImage = true
+				} else {
+					items.descriptImage = false
+				}
+			}
+		}
+		do {
+			try context.save()
+			print("save description")
+			print(descriptionSize)
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+		}
+
+	
+	//MARK: - editingCell
 		public func editingCell(cellTag: Int, newText: String) {
-		CoreDataMethods.shared.fetchRequest()
+			CoreDataMethods.shared.fetchRequest()        //FIX:
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
@@ -235,11 +281,6 @@ final class CoreDataMethods {
 		areYouSureAllert.addAction(yesAction)
 		presentedViewController.present(areYouSureAllert, animated: true)
 	}
-	
-//	private func editingContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
-//		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//		
-//	}
 	
 	private func deleteFromContext(indexPath: IndexPath, taskTitle: String, task: Tasks) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21G83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21279" systemVersion="21G115" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Tasks" representedClassName=".Tasks" syncable="YES">
         <attribute name="alarmImage" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="check" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="descript" attributeType="String"/>
+        <attribute name="descriptImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="descriptSize" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="repeatImage" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="taskDate" optional="YES" attributeType="String"/>
@@ -13,7 +16,4 @@
         <attribute name="timeInterval" optional="YES" attributeType="String"/>
         <attribute name="type" attributeType="String"/>
     </entity>
-    <elements>
-        <element name="Tasks" positionX="0" positionY="0" width="128" height="194"/>
-    </elements>
 </model>

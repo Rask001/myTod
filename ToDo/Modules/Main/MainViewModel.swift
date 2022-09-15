@@ -16,6 +16,7 @@ fileprivate enum Constants {
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
+	func goToDetail()
 	func createNavController()
 	var coreDataMethods: CoreDataMethods { get }
 	var coreDataModel: [Tasks] { get }
@@ -51,6 +52,7 @@ final class MainViewModel {
 
 extension MainViewModel: MainViewModelProtocol {
 	
+	
 	func createNavController() {
 		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
@@ -76,16 +78,10 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
-		
-		let button = cell.buttonCell
-		
-		
-		button.tag = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
-		
-		print("button tag = \(button.tag)")
-		sectionIndex = button.tag
-		
-		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
+		let buttonCell = cell.buttonCell
+		buttonCell.tag = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+		sectionIndex = buttonCell.tag
+		buttonCell.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
 	
 	var todayTasksArray: [Tasks] {
@@ -119,11 +115,11 @@ extension MainViewModel: MainViewModelProtocol {
 	func goToNewTaskVC() {
 		output?.goToNewTask()
 	}
-//	@objc private func editTitle() {
-//		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//		let model = coreDataModel
-//
-//	}
+	
+	func goToDetail() {
+		output?.goToDetail()
+	}
+	
 	
 	@objc private func saveCheckmark(sender: UIButton) {
 		taptic.soft

@@ -8,19 +8,19 @@ import UIKit
 import Foundation
 
 final class VisualViewCell {
-	var coreData = CoreDataMethods.shared.coreDataModel
 	
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	func visualViewCell(items: Tasks, cell: CustomCell) {
 		let button = cell.buttonCell
-		cell.id                       = items.id
-		cell.taskDateDate             = items.taskDateDate
-		cell.taskTime.text            = items.taskTime
-		cell.taskTitle.text           = items.taskTitle
-		cell.textFieldLabel.text      = items.taskTitle ////
-		cell.taskTime.isHidden        = !items.alarmImage
-		cell.alarmImageView.isHidden  = !items.alarmImage
-		cell.repeatImageView.isHidden = !items.repeatImage
+		cell.id                         = items.id
+		cell.taskDateDate               = items.taskDateDate
+		cell.taskTime.text              = items.taskTime
+		cell.taskTitle.text             = items.taskTitle
+		cell.textFieldLabel.text        = items.taskTitle
+		cell.taskTime.isHidden          = !items.alarmImage
+		cell.alarmImageView.isHidden    = !items.alarmImage
+		cell.repeatImageView.isHidden   = !items.repeatImage
+		cell.descriptImageView.isHidden = !items.descriptImage
 		
 		
 		//MARK: - SWITCH
@@ -32,6 +32,7 @@ final class VisualViewCell {
 		
 		
 		switch typeTask {
+			
 		case "justType":
 			switch check {
 			case true:
@@ -74,9 +75,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every \(taskDateInt/60) min"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -89,9 +88,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every day"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -103,9 +100,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every week"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -117,9 +112,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every month"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)

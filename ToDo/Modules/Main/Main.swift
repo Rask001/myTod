@@ -20,19 +20,24 @@ fileprivate enum Constants {
 
 }
 
+class localTaskStruct {
+static var taskStruct = TaskStruct()
+}
 
 //MARK: - Main
 final class Main: UIViewController {
 	
-	//MARK: - Properties
 	
+	//MARK: - Properties
 	var tableView = UITableView()
-	let buttonNewTask = UIButton()
+	let buttonNewTask = CustomButtonNewTask()
 	let navController = UINavigationController()
 	let taptic = TapticFeedback()
 	let theme = Theme()
+	let helper = Helper()
 	let gradient = CAGradientLayer()
 	var viewModel: MainViewModelProtocol
+	static let shared = MainViewModel.self
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -51,8 +56,6 @@ final class Main: UIViewController {
 		setConstraits()
 		viewModel.createNavController()
 		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
-		//view.backgroundColor = .backgroundColor
-		//self.view.applyGradientsLightBackgound(cornerRadius: 0)
 	}
 	
 	
@@ -62,24 +65,14 @@ final class Main: UIViewController {
 		viewModel.coreDataMethods.fetchRequest()
 		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
-		
-//	override func viewWillLayoutSubviews() {
-//		super.viewWillLayoutSubviews()
-//	}
-	
-//	override func viewDidLayoutSubviews() {
-//		super.viewDidLayoutSubviews()
-//	}
-	//scrollView.contentInsetAdjustmentBehavior = .automatic
+
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
 		self.view.addSubview(tableView)
-		//self.view.backgroundColor = Theme.current.backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 		self.tableView.register(CustomHeader.self, forCellReuseIdentifier: CustomHeader.identifier)
-		//self.tableView.backgroundColor  = .backgroundColor //.clear
 		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
@@ -87,41 +80,35 @@ final class Main: UIViewController {
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-		//self.tableView.contentInsetAdjustmentBehavior = .always
+		self.tableView.allowsSelection  = true
 	}
 
 	
 	func setupButton(){
-		//self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		//self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchDown)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
 		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
 		self.buttonNewTask.backgroundColor = Constants.buttonBackgroundColor
-		//self.buttonNewTask.applyGradients(cornerRadius: Constants.buttonCornerRadius)
-		//self.buttonNewTask.draw(CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 10, height: 10)))
-		//let gradientView = GradientView(from: .top, to: .bottom, startColor: .systemBlue, endColor: .systemYellow)
-		
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
-	@objc private func touchDown() {
-		self.buttonNewTask.layer.shadowRadius = 3
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
+	@objc private func goToNewTaskVC() {
+		if Counter.count == 0 {
+			TapticFeedback.shared.soft
+			Counter.count += 1
+		}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+			self.viewModel.goToNewTaskVC()
+			Counter.count = 0 
+		}
 	}
 	
-	@objc private func goToNewTaskVC() {
-		self.buttonNewTask.layer.shadowRadius = 4
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
-		viewModel.goToNewTaskVC()
-	}
 	
 	//MARK: - Set Constraits
 	
@@ -143,7 +130,36 @@ final class Main: UIViewController {
 	//MARK: - Notification, RELOAD TABLE VIEW
 	func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
 	}
+	@objc func goToDetail(notification: NSNotification) {
+		guard let userInfo = notification.userInfo else { return }
+		guard let buttonTag = userInfo["buttonTag"] else { return }
+		let tag: Int = buttonTag as! Int
+	  print(tag)
+		passData(cellTag: tag)
+		self.viewModel.goToDetail()
+	}
+	
+	func passData(cellTag: Int) {
+		CoreDataMethods.shared.fetchRequest()
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
+				localTaskStruct.taskStruct.createdAt     = items.createdAt
+				localTaskStruct.taskStruct.check         = items.check
+				localTaskStruct.taskStruct.taskDateDate  = items.taskDateDate
+				localTaskStruct.taskStruct.id            = items.id
+				localTaskStruct.taskStruct.descript      = items.descript
+				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
+				//localTaskStruct.taskStruct.descriptFontSize = items.descriptFontSize
+			}
+		}
+	}
+	
+	
 	
 	@objc func tableViewReloadData(notification: NSNotification) {
 		self.viewModel.coreDataMethods.fetchRequest()
@@ -154,20 +170,6 @@ final class Main: UIViewController {
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
-	
-//		func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//			let model = viewModel.selectionStructArray[section]
-//			let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeader.identifier) as! CustomHeader
-//			cell.setup(model: model)
-//			return cell.contentView
-//		}
-	
-//	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//		let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 35))
-//		headerView.layer.cornerRadius = 5
-//		headerView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
-//		return headerView
-//	}
 	
 	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -182,6 +184,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		viewModel.selectionStructArray[section].header
 	}
+	
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		
@@ -201,5 +204,22 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
 		viewModel.visualViewCell(items: itemsResult, cell: cell, indexPath: indexPath)
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		
+		let editButton = UIContextualAction(style: .normal, title: "") {_,_,_ in
+		print("work!")
+		}
+		editButton.backgroundColor = UIColor.backgroundColor
+		
+		editButton.image = UIImage.init(systemName: "pencil")
+		
+//		let editButton2 = UIContextualAction(style: .normal, title: "") { action, view, completion in
+//		}
+//		editButton2.image = UIImage.init(systemName: "star")
+//		editButton2.backgroundColor = UIColor.green
+		
+		return UISwipeActionsConfiguration(actions: [editButton])
 	}
 }

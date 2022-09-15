@@ -58,34 +58,6 @@ extension CAGradientLayer {
 		gradient.endPoint = CGPoint(x: 0.5, y: 1)
 	view.layer.insertSublayer(gradient, at: 0)
 	}
-	
-//	static func gradientLayer(for style: UIUserInterfaceStyle, in frame: CGRect) -> Self {
-//				let layer = Self()
-//				layer.colors = colors(for: style)
-//				layer.frame = frame
-//				return layer
-//		}
-//
-//	private static func colors(for style: UIUserInterfaceStyle) -> [CGColor] {
-//		var beginColor: UIColor
-//		var endColor: UIColor
-//
-//		switch style {
-//		case .unspecified:
-//			beginColor = .white
-//			endColor = .black
-//		case .light:
-//			beginColor = .blue
-//			endColor = .white
-//		case .dark:
-//			beginColor = .gray
-//			endColor = .white
-//		@unknown default:
-//			beginColor = .white
-//			endColor = .red
-//		}
-//		return [beginColor.cgColor, endColor.cgColor]
-// }
 }
 
 

@@ -9,6 +9,7 @@ import Foundation
 
 protocol MainOutput: AnyObject {
 	func goToNewTask()
+	func goToDetail()
 }
 
 protocol MainInput: AnyObject { }

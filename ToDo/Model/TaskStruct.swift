@@ -25,11 +25,14 @@ struct TaskStruct {
 	var taskDateDate  : Date?
 	var alarmImage    : Bool = false
 	var repeatImage   : Bool = false
+	var descriptImage : Bool = false
 	var check         : Bool = false
 	var createdAt     : Date = Date.now
 	var timeInterval  : String? = nil
 	var weekDay       : String?
 	var dayOfMonth    : String?
+	var descript      : String = ""
+	var descriptSize  : Double = 20
 	var weekDayChoice : [String]? = []
 	var monthDayChoice: [String]? = []
 	var type          : TypeTask = .justType

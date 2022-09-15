@@ -24,3 +24,8 @@ class Helper {
 		return resultInt
 	}
 }
+
+
+class Counter {
+	static var count = 0
+}

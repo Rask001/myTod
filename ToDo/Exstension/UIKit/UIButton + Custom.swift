@@ -8,12 +8,24 @@
 import Foundation
 import UIKit
 
+class CustomButtonNewTask: UIButton {
+		override var isHighlighted: Bool {
+				didSet {
+					guard let color = backgroundColor else { return }
+
+					UIView.animate(withDuration: self.isHighlighted ? 0 : 0.4, delay: 0.0, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+								self.backgroundColor = color.withAlphaComponent(self.isHighlighted ? 0.4 : 1)
+						})
+				}
+		}
+}
+
 extension UIButton {
 	convenience init(backrounColor: UIColor = .whiteBlack ?? .white,
 									 titleColor: UIColor = .lightGray,
 									 title: String,
 									 isShadow: Bool = false,
-									 font: UIFont? = .avenir20(),
+									 font: UIFont,
 									 cornerRaadius: CGFloat = 4) {
 		self.init(type: .system)
 		self.setTitle(title, for: .normal)
@@ -32,4 +44,8 @@ extension UIButton {
 	}
 }
 
-
+class CustomButton: UIButton {
+		override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+				return bounds.insetBy(dx: -12, dy: -12).contains(point)
+		}
+}

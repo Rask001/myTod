@@ -28,7 +28,7 @@ final class SecondVC: UIViewController {
 	//MARK: - Properties
 	
 	var tableView = UITableView()
-	let buttonNewTask = UIButton()
+	let buttonNewTask = CustomButtonNewTask()
 	let taptic = TapticFeedback()
 	let theme = Theme()
 	let viewModel: SecondViewModelProtocol
@@ -101,8 +101,7 @@ final class SecondVC: UIViewController {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .allTouchEvents)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
@@ -110,14 +109,11 @@ final class SecondVC: UIViewController {
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
-	@objc private func touchDown() {
-		self.buttonNewTask.layer.shadowRadius = 3
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
-	}
-	
 	@objc private func goToNewTaskVC() {
-		viewModel.goToNewTaskVC()
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+			TapticFeedback.shared.soft
+			self.viewModel.goToNewTaskVC()
+		}
 	}
 	
 	//MARK: - Set Constraits

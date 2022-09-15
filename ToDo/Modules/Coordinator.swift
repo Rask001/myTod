@@ -21,6 +21,7 @@ final class Coordinator: NewTaskOutput {
 	var mainView = UIViewController()
 	var seconvVC = UIViewController()
 	var settingVC = UIViewController()
+	var detailVC = UIViewController()
   var tabBarVC = UITabBarController()
 
 	
@@ -29,6 +30,7 @@ final class Coordinator: NewTaskOutput {
 		mainView = assembly.makeMain(output: self)
 		seconvVC = assembly.makeSecondVC(output: self)
 		settingVC = assembly.makeSettingVC(output: self)
+		detailVC = assembly.makeDetailVC(output: self)
 		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
 		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
@@ -37,13 +39,17 @@ final class Coordinator: NewTaskOutput {
 }
 
 extension Coordinator: MainOutput {
+	
 	func goToNewTask() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
 		mainView.present(newTaskVC, animated: true, completion: nil)
 	}
+	func goToDetail() {
+		let detailVC = assembly.makeDetailVC(output: self)
+		mainView.navigationController?.pushViewController(detailVC, animated: true)
+	}
 }
 
-extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput {
-
+extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
 	
 }

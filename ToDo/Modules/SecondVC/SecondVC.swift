@@ -32,7 +32,9 @@ final class SecondVC: UIViewController {
 	let taptic = TapticFeedback()
 	let theme = Theme()
 	let viewModel: SecondViewModelProtocol
-	let gradient = CAGradientLayer()
+	let	gradient = CAGradientLayer()
+	
+	
 	init(viewModel: SecondViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -49,29 +51,24 @@ final class SecondVC: UIViewController {
 		confugureTableView()
 		notification()
 		setConstraits()
-		//self.navigationController?.setNavigationBarHidden(true, animated: false)
 		viewModel.createNavController()
-		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
-		//view.backgroundColor = .backgroundColor
+    theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+			super.traitCollectionDidChange(previousTraitCollection)
+			theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(false)
+		super.viewWillAppear(true)
 		viewModel.coreDataMethods.fetchRequest()
-		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
-
 			}
 	
-//	override func viewDidAppear(_ animated: Bool) {
-//		super.viewWillAppear(false)
-//		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
-//	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewWillLayoutSubviews()
 		self.tableView.backgroundColor = .clear
-		//self.view.applyGradientsLightBackgound(cornerRadius: 0)
 	}
 	
 	

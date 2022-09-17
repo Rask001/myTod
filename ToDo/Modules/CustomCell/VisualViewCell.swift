@@ -9,6 +9,8 @@ import Foundation
 
 final class VisualViewCell {
 	
+	let helper = Helper()
+	
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	func visualViewCell(items: Tasks, cell: CustomCell) {
 		let button = cell.buttonCell
@@ -21,7 +23,7 @@ final class VisualViewCell {
 		cell.alarmImageView.isHidden    = !items.alarmImage
 		cell.repeatImageView.isHidden   = !items.repeatImage
 		cell.descriptImageView.isHidden = !items.descriptImage
-		
+		cell.weekLabel.isHidden         = true
 		
 		//MARK: - SWITCH
 		var typeTask: String { items.type }
@@ -72,7 +74,7 @@ final class VisualViewCell {
 			
 		case "timeRepeatType":
 			guard let taskDateInt = Int(items.timeInterval!) else { return }
-			cell.taskDate.text = "every \(taskDateInt/60) min"
+			cell.taskDate.text = "\(taskDateInt/60) min"
 			switch check {
 			case true:
 				checkLight()
@@ -97,7 +99,10 @@ final class VisualViewCell {
 			}
 			
 		case "weekRepeatType":
+			cell.weekLabel.isHidden = false
 			cell.taskDate.text = "every week"
+			let weekDaysString = helper.arrayToStringWeekDay(array: items.weekDays!)
+			cell.weekLabel.text = weekDaysString
 			switch check {
 			case true:
 				checkLight()
@@ -138,11 +143,13 @@ final class VisualViewCell {
 		}
 		
 		func painting(cell: CustomCell, color: UIColor, colorTwo: UIColor) {
-			cell.repeatImageView.tintColor  = color
-			cell.alarmImageView.tintColor   = color
-			cell.taskTime.textColor         = color
-			cell.taskDate.textColor         = color
-			cell.taskTitle.textColor        = colorTwo
+			cell.repeatImageView.tintColor   = color
+			cell.alarmImageView.tintColor    = color
+			cell.descriptImageView.tintColor = color
+			cell.taskTime.textColor          = color
+			cell.taskDate.textColor          = color
+			cell.weekLabel.textColor         = color
+			cell.taskTitle.textColor         = colorTwo
 		}
 	}
 }

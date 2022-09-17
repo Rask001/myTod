@@ -50,6 +50,7 @@ final class CoreDataMethods {
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = []
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -85,6 +86,7 @@ final class CoreDataMethods {
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = []
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -119,6 +121,7 @@ final class CoreDataMethods {
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = weekDay
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -153,6 +156,7 @@ final class CoreDataMethods {
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = []
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -185,6 +189,7 @@ final class CoreDataMethods {
 		model.check         = false
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = []
 		do{
 			try context.save()
 			coreDataModel.append(model)
@@ -213,6 +218,7 @@ final class CoreDataMethods {
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
+		model.weekDays      = []
 		do{
 			try context.save()
 			coreDataModel.append(model)

@@ -15,5 +15,6 @@
         <attribute name="taskTitle" attributeType="String"/>
         <attribute name="timeInterval" optional="YES" attributeType="String"/>
         <attribute name="type" attributeType="String"/>
+        <attribute name="weekDays" optional="YES" attributeType="Transformable"/>
     </entity>
 </model>

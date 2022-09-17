@@ -50,6 +50,9 @@ final class Main: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		print("view did load")
+//		NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundObserver), name: UIApplication.willEnterForegroundNotification, object: nil)
+//		NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundObserver), name: traitCollection.did, object: nil)
 		confugureTableView()
 		notification()
 		setupButton()
@@ -58,12 +61,22 @@ final class Main: UIViewController {
 		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
+//	@objc func willEnterForegroundObserver() {
+//		beginAppearanceTransition(true, animated: true)
+//		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+//	}
 	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+			super.traitCollectionDidChange(previousTraitCollection)
+		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(false)
+//		print("viewWillAppear!")
+//		beginAppearanceTransition(true, animated: true)
 		viewModel.coreDataMethods.fetchRequest()
-		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+	//	theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 
 	

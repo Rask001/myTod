@@ -23,6 +23,21 @@ class Helper {
 		resultInt = Int(resultString) ?? 777
 		return resultInt
 	}
+	
+	public func arrayToStringWeekDay(array: [String]) -> String {
+		var string = ""
+		let week = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+		var dayWeek = array
+		dayWeek.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
+		print (dayWeek)
+		for i in dayWeek {
+			string.append("\(i), ")
+		}
+		string.remove(at: string.index(before: string.endIndex))
+		string.remove(at: string.index(before: string.endIndex))
+		return string
+	}
+	
 }
 
 

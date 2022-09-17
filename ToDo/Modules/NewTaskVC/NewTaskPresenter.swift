@@ -35,7 +35,7 @@ final class NewTaskPresenter: NewTaskPresenterProtocol {
 		let dateFormatterMonth         = DateFormatter()
 		let dayOfMonth                 = DateFormatter()
 		timeFormatter.dateFormat       = "HH:mm"
-		dateFormatter.dateFormat       = "dd.MM"
+		dateFormatter.dateFormat       = "MMM d"
 		dateFormatterMonth.dateFormat  = "EEEE, MMM d"
 		dayOfMonth.dateFormat          = "d"
 		let taskTimeS                  = timeFormatter.string(from: dateFromDP)

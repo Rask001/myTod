@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 	
 	func applicationWillEnterForeground(_ application: UIApplication) {
+		print("applicationWillEnterForeground")
 		}
 	
 	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

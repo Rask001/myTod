@@ -26,6 +26,7 @@ extension Tasks {
 	  @NSManaged public var repeatImage: Bool
 	  @NSManaged public var descriptImage: Bool
     @NSManaged public var check: Bool
+	  @NSManaged public var weekDays: [String]?
 	  @NSManaged public var timeInterval: String?
   	@NSManaged public var type: String
 	  @NSManaged public var id: String

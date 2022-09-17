@@ -27,7 +27,6 @@ static var taskStruct = TaskStruct()
 //MARK: - Main
 final class Main: UIViewController {
 	
-	
 	//MARK: - Properties
 	var tableView = UITableView()
 	let buttonNewTask = CustomButtonNewTask()
@@ -50,9 +49,6 @@ final class Main: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		print("view did load")
-//		NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundObserver), name: UIApplication.willEnterForegroundNotification, object: nil)
-//		NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundObserver), name: traitCollection.did, object: nil)
 		confugureTableView()
 		notification()
 		setupButton()
@@ -61,10 +57,20 @@ final class Main: UIViewController {
 		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
-//	@objc func willEnterForegroundObserver() {
-//		beginAppearanceTransition(true, animated: true)
-//		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
-//	}
+	@objc func scrollUp(notification: NSNotification) {
+		self.buttonNewTask.isHidden = true
+		guard let userInfo = notification.userInfo else { return }
+		guard let height = (userInfo["height"]) else { return }
+		UIView.animate(withDuration: 0.3, delay: 0) {
+			self.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
+		}
+	}
+
+	@objc func keyboardWillHide(sender: NSNotification) {
+			 self.tableView.frame.origin.y = 0 // Move view to original position
+		self.buttonNewTask.isHidden = false
+	}
+	
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 			super.traitCollectionDidChange(previousTraitCollection)
@@ -73,10 +79,7 @@ final class Main: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(false)
-//		print("viewWillAppear!")
-//		beginAppearanceTransition(true, animated: true)
 		viewModel.coreDataMethods.fetchRequest()
-	//	theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 
 	
@@ -101,7 +104,6 @@ final class Main: UIViewController {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		//self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchDown)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
@@ -144,6 +146,8 @@ final class Main: UIViewController {
 	func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	@objc func goToDetail(notification: NSNotification) {
 		guard let userInfo = notification.userInfo else { return }
@@ -153,6 +157,9 @@ final class Main: UIViewController {
 		passData(cellTag: tag)
 		self.viewModel.goToDetail()
 	}
+	
+	
+	
 	
 	func passData(cellTag: Int) {
 		CoreDataMethods.shared.fetchRequest()
@@ -167,7 +174,6 @@ final class Main: UIViewController {
 				localTaskStruct.taskStruct.id            = items.id
 				localTaskStruct.taskStruct.descript      = items.descript
 				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
-				//localTaskStruct.taskStruct.descriptFontSize = items.descriptFontSize
 			}
 		}
 	}
@@ -220,19 +226,11 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	}
 	
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		
 		let editButton = UIContextualAction(style: .normal, title: "") {_,_,_ in
 		print("work!")
 		}
-		editButton.backgroundColor = UIColor.backgroundColor
-		
+		editButton.backgroundColor = UIColor.white.withAlphaComponent(0.15)
 		editButton.image = UIImage.init(systemName: "pencil")
-		
-//		let editButton2 = UIContextualAction(style: .normal, title: "") { action, view, completion in
-//		}
-//		editButton2.image = UIImage.init(systemName: "star")
-//		editButton2.backgroundColor = UIColor.green
-		
 		return UISwipeActionsConfiguration(actions: [editButton])
 	}
 }

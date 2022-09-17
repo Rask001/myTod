@@ -51,8 +51,7 @@ final class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
-	
-	
+
 	func createNavController() {
 		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}

@@ -30,6 +30,11 @@
 		3A6D0D9F28D20A14003FB551 /* CellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D0D9E28D20A14003FB551 /* CellProtocols.swift */; };
 		3A6D658C28D2740A00FEF24B /* CustomCell + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D658B28D2740A00FEF24B /* CustomCell + extension.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
+		3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */; };
+		3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */; };
+		3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DB28D8D3F5003BB436 /* DateFormat.swift */; };
+		3A9722DE28D92B8C003BB436 /* VoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DD28D92B8A003BB436 /* VoiceCell.swift */; };
+		3A9722E028D92BC2003BB436 /* VoiceCell + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DF28D92BC1003BB436 /* VoiceCell + extension.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
 		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
@@ -86,6 +91,11 @@
 		3A6D0D9E28D20A14003FB551 /* CellProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellProtocols.swift; sourceTree = "<group>"; };
 		3A6D658B28D2740A00FEF24B /* CustomCell + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomCell + extension.swift"; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
+		3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetVC.swift; sourceTree = "<group>"; };
+		3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetConst.swift; sourceTree = "<group>"; };
+		3A9722DB28D8D3F5003BB436 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
+		3A9722DD28D92B8A003BB436 /* VoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCell.swift; sourceTree = "<group>"; };
+		3A9722DF28D92BC1003BB436 /* VoiceCell + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoiceCell + extension.swift"; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
 		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -182,12 +192,14 @@
 			children = (
 				3ADB459F28882C1F00427BD8 /* Coordinator.swift */,
 				3ADB45A128882C9100427BD8 /* Assembly.swift */,
+				3A9722D628D8BDFD003BB436 /* recordSheet */,
 				3A3E17C828CE4FEE00C025D2 /* Detail */,
 				3AFC09FB28BB835B002C0C52 /* SettingVC */,
 				3AFC09F628BB5257002C0C52 /* SecondVC */,
 				3A7FFA5B2865CCD000A7CC27 /* Main */,
 				3A7FFA5C2865CCF900A7CC27 /* NewTaskVC */,
 				3A6D0D9928D2089D003FB551 /* Cell */,
+				3A9722E128D92BFF003BB436 /* VoiceCell */,
 				3A7FFA5F2867874500A7CC27 /* CustomCell */,
 			);
 			path = Modules;
@@ -259,6 +271,24 @@
 			path = CustomCell;
 			sourceTree = "<group>";
 		};
+		3A9722D628D8BDFD003BB436 /* recordSheet */ = {
+			isa = PBXGroup;
+			children = (
+				3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */,
+				3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */,
+			);
+			path = recordSheet;
+			sourceTree = "<group>";
+		};
+		3A9722E128D92BFF003BB436 /* VoiceCell */ = {
+			isa = PBXGroup;
+			children = (
+				3A9722DD28D92B8A003BB436 /* VoiceCell.swift */,
+				3A9722DF28D92BC1003BB436 /* VoiceCell + extension.swift */,
+			);
+			path = VoiceCell;
+			sourceTree = "<group>";
+		};
 		3AC8555727EFCF0700A7891D /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */,
+				3A9722DB28D8D3F5003BB436 /* DateFormat.swift */,
 				3A3E17C628CE369500C025D2 /* Helper.swift */,
 				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
 				3AC261A728C1323B000A0285 /* NavigationController.swift */,
@@ -399,6 +430,7 @@
 				3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
 				3A5B2D4328CB3EB30041C4AB /* Theme.swift in Sources */,
+				3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */,
 				3AF3FBF028C213770002063B /* CustomHeader.swift in Sources */,
 				3A3E17C428CBBC0100C025D2 /* MTUserDefolts.swift in Sources */,
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
@@ -430,15 +462,19 @@
 				3A6D0D9828D1F3FB003FB551 /* Cell.swift in Sources */,
 				3AC261A828C1323B000A0285 /* NavigationController.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
+				3A9722DE28D92B8C003BB436 /* VoiceCell.swift in Sources */,
 				3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */,
 				3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */,
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,
 				3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */,
 				3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */,
 				3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */,
+				3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */,
+				3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */,
 				3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */,
 				3ADB459C2888269F00427BD8 /* MainViewModel.swift in Sources */,
 				3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */,
+				3A9722E028D92BC2003BB436 /* VoiceCell + extension.swift in Sources */,
 				3A6D0D9B28D208BE003FB551 /* CellViewModel.swift in Sources */,
 				3A6D658C28D2740A00FEF24B /* CustomCell + extension.swift in Sources */,
 				3A3E17D228CE515100C025D2 /* DetailVC.swift in Sources */,

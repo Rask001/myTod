@@ -20,7 +20,7 @@ final class CoreDataMethods {
 	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
 	var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
 	var selectionStructArray: [SectionStruct] = []
-	let helper = Helper()
+	//let helper = Helper()
 	
 	static let shared = CoreDataMethods()
 	
@@ -232,7 +232,7 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				items.descript = description
 				items.descriptSize = descriptionSize
@@ -260,7 +260,7 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				items.taskTitle = newText
 			}

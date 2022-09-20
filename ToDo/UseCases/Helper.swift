@@ -10,7 +10,7 @@ import Foundation
 
 class Helper {
 	
-	public func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
+	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
 		var resultInt = 0
 		var resultString = ""
 		for num in itemsId {
@@ -24,7 +24,7 @@ class Helper {
 		return resultInt
 	}
 	
-	public func arrayToStringWeekDay(array: [String]) -> String {
+	class func arrayToStringWeekDay(array: [String]) -> String {
 		var string = ""
 		let week = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
 		var dayWeek = array
@@ -37,7 +37,6 @@ class Helper {
 		string.remove(at: string.index(before: string.endIndex))
 		return string
 	}
-	
 }
 
 

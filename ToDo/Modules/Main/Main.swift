@@ -32,7 +32,7 @@ final class Main: UIViewController {
 	let buttonNewTask = CustomButtonNewTask()
 	let navController = UINavigationController()
 	let taptic = TapticFeedback()
-	let theme = Theme()
+	//let theme = Theme()
 	let helper = Helper()
 	let gradient = CAGradientLayer()
 	var viewModel: MainViewModelProtocol
@@ -54,7 +54,7 @@ final class Main: UIViewController {
 		setupButton()
 		setConstraits()
 		viewModel.createNavController()
-		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	@objc func scrollUp(notification: NSNotification) {
@@ -74,7 +74,7 @@ final class Main: UIViewController {
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 			super.traitCollectionDidChange(previousTraitCollection)
-		theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -139,6 +139,8 @@ final class Main: UIViewController {
 		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive               = true
 		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
 		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
+		
+		
 	}
 	
 	
@@ -165,7 +167,7 @@ final class Main: UIViewController {
 		CoreDataMethods.shared.fetchRequest()
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
 				localTaskStruct.taskStruct.createdAt     = items.createdAt
@@ -212,7 +214,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		viewModel.editingStyleBody(indexPath: indexPath)
+		viewModel.editingStyleBody(indexPath: indexPath) //
 	}
 	
 	//MARK: CellForRowAt
@@ -227,10 +229,11 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let editButton = UIContextualAction(style: .normal, title: "") {_,_,_ in
-		print("work!")
+			
 		}
 		editButton.backgroundColor = UIColor.white.withAlphaComponent(0.15)
 		editButton.image = UIImage.init(systemName: "pencil")
 		return UISwipeActionsConfiguration(actions: [editButton])
 	}
 }
+

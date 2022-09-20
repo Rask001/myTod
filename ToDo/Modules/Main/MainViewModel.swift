@@ -44,7 +44,6 @@ final class MainViewModel {
 	let navController = NavigationController()
 	let taptic = TapticFeedback()
 	weak var view: Main?
-	let helper = Helper()
 	init(output: MainOutput) {
 		self.output = output
 	}
@@ -78,7 +77,7 @@ extension MainViewModel: MainViewModelProtocol {
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		let buttonCell = cell.buttonCell
-		buttonCell.tag = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+		buttonCell.tag = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 		sectionIndex = buttonCell.tag
 		buttonCell.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
@@ -126,7 +125,7 @@ extension MainViewModel: MainViewModelProtocol {
 		
 		let model = coreDataModel
 		for items in model {
-			let itemsId = helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if sender.tag == itemsId {
 				items.check.toggle()
 			}

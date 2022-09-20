@@ -8,9 +8,7 @@ import UIKit
 import Foundation
 
 final class VisualViewCell {
-	
-	let helper = Helper()
-	
+		
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
 	func visualViewCell(items: Tasks, cell: CustomCell) {
 		let button = cell.buttonCell
@@ -101,7 +99,7 @@ final class VisualViewCell {
 		case "weekRepeatType":
 			cell.weekLabel.isHidden = false
 			cell.taskDate.text = "every week"
-			let weekDaysString = helper.arrayToStringWeekDay(array: items.weekDays!)
+			let weekDaysString = Helper.arrayToStringWeekDay(array: items.weekDays!)
 			cell.weekLabel.text = weekDaysString
 			switch check {
 			case true:

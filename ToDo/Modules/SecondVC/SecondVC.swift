@@ -30,7 +30,7 @@ final class SecondVC: UIViewController {
 	var tableView = UITableView()
 	let buttonNewTask = CustomButtonNewTask()
 	let taptic = TapticFeedback()
-	let theme = Theme()
+	//let theme = Theme()
 	let viewModel: SecondViewModelProtocol
 	let	gradient = CAGradientLayer()
 	
@@ -52,12 +52,12 @@ final class SecondVC: UIViewController {
 		notification()
 		setConstraits()
 		viewModel.createNavController()
-    theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+    Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 			super.traitCollectionDidChange(previousTraitCollection)
-			theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+			Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

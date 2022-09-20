@@ -51,7 +51,7 @@ extension RecordSheetVC {
 	
 	
 	func addSubview() {
-		self.view.backgroundColor = .white
+		self.view.backgroundColor = .secondarySystemBackground
 		self.view.addSubview(startButton)
 		self.view.addSubview(playPauseBTN)
 		self.view.addSubview(tableView)
@@ -87,9 +87,9 @@ extension RecordSheetVC {
 		startButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
 		tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-		tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-		tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300).isActive = true
+		tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
+		tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 280).isActive = true
 	}
 }

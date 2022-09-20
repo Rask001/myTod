@@ -24,6 +24,7 @@ class Helper {
 		return resultInt
 	}
 	
+	
 	class func arrayToStringWeekDay(array: [String]) -> String {
 		var string = ""
 		let week = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]

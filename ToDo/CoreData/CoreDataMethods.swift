@@ -282,6 +282,9 @@ final class CoreDataMethods {
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
 		let yesAction        = UIAlertAction(title: "Yes, delete \"\(taskTitle)\"", style: .destructive) {_ in
 			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task)
+//			let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
+//			print(idInt)
+//			FileAdmin.deleteFolder(name: "\(idInt)")
 		}
 		areYouSureAllert.addAction(noAction)
 		areYouSureAllert.addAction(yesAction)
@@ -292,6 +295,10 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
+		
+		let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
+		print(idInt)
+		FileAdmin.deleteFolder(name: "\(idInt)")
 		
 		var index = 0
 		for item in currentArray {
@@ -324,6 +331,7 @@ final class CoreDataMethods {
 
 		let _ : NSError! = nil
 		do {
+			
 			try context.save()
       NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		} catch {

@@ -49,6 +49,7 @@ final class Main: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		print(NSHomeDirectory())
 		confugureTableView()
 		notification()
 		setupButton()
@@ -136,7 +137,7 @@ final class Main: UIViewController {
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
 		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive               = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
 		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
 		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
 		
@@ -219,7 +220,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
 		let items: Tasks = viewModel.coreDataModel[indexPath.row]
 		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)

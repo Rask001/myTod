@@ -14,6 +14,7 @@ final class VoiceCell: UITableViewCell {
 
 	static let identifier = "VoiceCell"
 	
+	
 	lazy var backgroundViewCell = makeBackgroundViewCell()
 	lazy var textFieldLabel = makeTextField()
 	lazy var taskTitle = makeTaskTitle()
@@ -23,6 +24,7 @@ final class VoiceCell: UITableViewCell {
 	lazy var taskDateLabel = makeTaskDate()
 	lazy var buttonCell = makeButtonCell()
 	lazy var playPauseButton = makePlayPauseButton()
+	lazy var slider = makeSlider()
 
 	var taskDateDate: Date? = nil
 	var id: String = ""

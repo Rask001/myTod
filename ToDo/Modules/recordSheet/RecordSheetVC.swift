@@ -17,6 +17,9 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	var audioRecorder: AVAudioRecorder!
 	var audioPlayer: AVAudioPlayer!
 	var meterTimer:Timer!
+	let data = localTaskStruct.taskStruct
+	var id: Int = 0
+	
 	
 	lazy var startButton = makeStartButton()
 	lazy var playPauseBTN = makePlayPauseBTN()
@@ -37,6 +40,8 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	}
 	
 	func settings() {
+		let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
+		self.id = idInt
 		switch AVAudioSession.sharedInstance().recordPermission {
 		case AVAudioSession.RecordPermission.granted:
 			isAudioRecordingGranted = true
@@ -79,7 +84,7 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		self.tableView.register(VoiceCell.self, forCellReuseIdentifier: VoiceCell.identifier)
 		tableView.delegate = self
 		tableView.dataSource = self
-		tableView.backgroundColor = .secondarySystemBackground
+		tableView.backgroundColor = .clear
 		tableView.separatorStyle = .none
 	}
 	
@@ -104,6 +109,10 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	@objc func startRecord() {
 		
+		if numberOfRecord == 0 {
+			FileAdmin.createFolder(name: "\(id)")
+		}
+		
 		if isAudioRecordingGranted {
 			
 			//Create the session.
@@ -121,23 +130,24 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 					AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
 				]
 				numberOfRecord += 1
-				//Create audio file name URL
-				let audioFilename = getDirectory().appendingPathComponent("\(numberOfRecord).m4a")
-				let audioFileName = URL(fileURLWithPath: "\(numberOfRecord).m4a", relativeTo: getDirectory())
-				print(audioFilename.path)
-				print(audioFileName.path)
+				guard let audioFileUrl = FileAdmin.createFile(nameFolder: "\(id)", name: "\(numberOfRecord).m4a", contents: nil) else { return }
+//				let audioFilename = getDirectory().appendingPathComponent("\(numberOfRecord).m4a")
+//				print(audioFilename.path)
+				
+				
 				
 				//Create the audio recording, and assign ourselves as the delegate
-				audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+				audioRecorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
 				audioRecorder.delegate = self
 				audioRecorder.isMeteringEnabled = true
 				audioRecorder.record()
 				meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioRecordMeter(timer:)), userInfo:nil, repeats:true)
-				UserDefaults.standard.set(numberOfRecord, forKey: "myNumber")
+				UserDefaults.standard.set(numberOfRecord, forKey: "\(id)")
 				UserDefaults.standard.set(Date.now, forKey: "\(numberOfRecord).m4a")
-				print(numberOfRecord)
+				
 				tableView.reloadData()
 			}
+			
 			catch let error {
 				print("Error for start audio recording: \(error.localizedDescription)")
 			}
@@ -171,10 +181,10 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	
 	//получаем место хранения файла
-	func getDirectory() -> URL {
-		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-		return paths
-	}
+//	func getDirectory() -> URL {
+//		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+//		return paths
+//	}
 	
 	func displayAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -190,7 +200,7 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 				print("Accepted")
 			}
 		}
-		if let number: Int = UserDefaults.standard.object(forKey: "myNumber") as? Int {
+		if let number: Int = UserDefaults.standard.object(forKey: "\(id)") as? Int {
 			numberOfRecord = number
 		}
 	}
@@ -208,6 +218,7 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		
 		let cell   = tableView.dequeueReusableCell(withIdentifier: VoiceCell.identifier, for: indexPath) as! VoiceCell
+		
 		let date = UserDefaults.standard.object(forKey: "\(String(indexPath.row + 1)).m4a")
 		let text = "№ \(String(indexPath.row + 1)) \(DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now))"
 		cell.textFieldLabel.text = text
@@ -220,7 +231,7 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 //			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 		
 		func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-			let path = getDirectory().appendingPathComponent("\(indexPath.row + 1).m4a")
+			guard let path = FileAdmin.getFileUrl(nameFolder: "\(id)", name: "\(indexPath.row + 1).m4a") else { return } //getDirectory().appendingPathComponent("\(indexPath.row + 1).m4a")
 			do{
 				audioPlayer = try AVAudioPlayer(contentsOf: path)
 				audioPlayer.play()
@@ -229,25 +240,22 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 				displayAlert(title: "error", message: "smth wrong")
 			}
 		}
+	
+	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 120
+		return 152
 	}
-//	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-//		return 100
-//	}
+
 	
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		
-		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-		let documentDirectory = paths[0]
-		
-		let fileURL = URL(fileURLWithPath: "\(indexPath.row + 1).m4a", relativeTo: documentDirectory)
 
+		guard let fileURL = FileAdmin.getFileUrl(nameFolder: "\(id)", name: "\(indexPath.row + 1).m4a") else { return }
 			do {
 				try FileManager.default.removeItem(at: fileURL)
 				print("file is removed")
 				numberOfRecord -= 1
-				UserDefaults.standard.set(numberOfRecord, forKey: "myNumber")
+				UserDefaults.standard.set(numberOfRecord, forKey: "\(id)") //"myNumber"
 				self.tableView.deleteRows(at: [indexPath], with: .automatic)
 				self.tableView.reloadData()
 					UserDefaults.standard.removeObject(forKey: "\(String(indexPath.row + 1)).m4a")

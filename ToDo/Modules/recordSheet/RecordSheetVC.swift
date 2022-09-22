@@ -11,14 +11,14 @@ import AVFoundation
 
 
 
-class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
+final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
-	var recordingSession: AVAudioSession!
-	var audioRecorder: AVAudioRecorder!
-	var audioPlayer: AVAudioPlayer!
-	var meterTimer:Timer!
-	let data = localTaskStruct.taskStruct
-	var id: Int = 0
+	private var recordingSession: AVAudioSession!
+	private	var audioRecorder: AVAudioRecorder!
+	internal var meterTimerRecord: Timer!
+	private var cellVoice: VoiceCell?
+	private let data = localTaskStruct.taskStruct
+	private var id: Int = 0
 	
 	
 	lazy var startButton = makeStartButton()
@@ -27,8 +27,8 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	lazy var timeLabel = makeTimeLabel()
 	lazy var tableView = makeTableView()
 	
-	var numberOfRecord = 0
-	var isAudioRecordingGranted: Bool!
+	private var numberOfRecord = 0
+	private var isAudioRecordingGranted: Bool!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -39,7 +39,7 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		setupConstraints()
 	}
 	
-	func settings() {
+	private func settings() {
 		let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
 		self.id = idInt
 		switch AVAudioSession.sharedInstance().recordPermission {
@@ -65,22 +65,22 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		}
 	}
 	
-	func setupStopRecord() {
+	private func setupStopRecord() {
 		stopRecordButton.setTitle("stop record", for: .normal)
 		stopRecordButton.addTarget(self, action: #selector(stopRecord), for: .touchUpInside)
 	}
 	
-	func setupStartButton() {
+	private func setupStartButton() {
 		startButton.setTitle("start recording", for: .normal)
 		startButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
 	}
 	
-	func setupPlayPauseButton() {
+	private func setupPlayPauseButton() {
 		playPauseBTN.setTitle("pause", for: .normal)
 		playPauseBTN.addTarget(self, action: #selector(playPause), for: .touchUpInside)
 	}
 	
-	func setupTableView() {
+	private func setupTableView() {
 		self.tableView.register(VoiceCell.self, forCellReuseIdentifier: VoiceCell.identifier)
 		tableView.delegate = self
 		tableView.dataSource = self
@@ -91,21 +91,15 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	@objc func stopRecord() {
 		audioRecorder.stop()
 		audioRecorder = nil
-		meterTimer.invalidate()
+		timeLabel.text = "00:00:00"
+		meterTimerRecord.invalidate()
 		tableView.reloadData()
 	}
-
 	
 	@objc func playPause() {
-		if audioPlayer.isPlaying {
-			audioPlayer.pause()
-			playPauseBTN.setTitle("play", for: .normal)
-		} else {
-			audioPlayer.play()
-			playPauseBTN.setTitle("pause", for: .normal)
-		}
 		
 	}
+
 	
 	@objc func startRecord() {
 		
@@ -131,21 +125,16 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 				]
 				numberOfRecord += 1
 				guard let audioFileUrl = FileAdmin.createFile(nameFolder: "\(id)", name: "\(numberOfRecord).m4a", contents: nil) else { return }
-//				let audioFilename = getDirectory().appendingPathComponent("\(numberOfRecord).m4a")
-//				print(audioFilename.path)
-				
-				
 				
 				//Create the audio recording, and assign ourselves as the delegate
 				audioRecorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
 				audioRecorder.delegate = self
 				audioRecorder.isMeteringEnabled = true
 				audioRecorder.record()
-				meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioRecordMeter(timer:)), userInfo:nil, repeats:true)
+				meterTimerRecord = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioRecordMeter(timer:)), userInfo:nil, repeats:true)
+				
 				UserDefaults.standard.set(numberOfRecord, forKey: "\(id)")
 				UserDefaults.standard.set(Date.now, forKey: "\(numberOfRecord).m4a")
-				
-				tableView.reloadData()
 			}
 			
 			catch let error {
@@ -165,35 +154,16 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 			audioRecorder.updateMeters()
 		}
 	}
+
 	
-	@objc func updateAudioPlayerMeter(timer: Timer) {
-		
-		if audioPlayer.isPlaying {
-			let hr = Int((audioPlayer.currentTime / 60) / 60)
-			let min = Int(audioPlayer.currentTime / 60)
-			let sec = Int(audioPlayer.currentTime.truncatingRemainder(dividingBy: 60))
-			
-			let totalTimeString = String(format: "%02d:%02d:%02d", hr, min, sec)
-			timeLabel.text = totalTimeString
-			audioPlayer.updateMeters()
-		}
-	}
-	
-	
-	//получаем место хранения файла
-//	func getDirectory() -> URL {
-//		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-//		return paths
-//	}
-	
-	func displayAlert(title: String, message: String) {
+	private func displayAlert(title: String, message: String) {
 		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "dismiss", style: .default, handler: nil))
 		present(alert, animated: true, completion: nil)
 	}
 	
 	
-	func setupRecording() {
+	private func setupRecording() {
 		recordingSession = AVAudioSession.sharedInstance()
 		AVAudioSession.sharedInstance().requestRecordPermission { hasPermission in
 			if hasPermission {
@@ -211,45 +181,53 @@ class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 
 extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 		
-		public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 			return numberOfRecord
 		}
 		
-	public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		
-		let cell   = tableView.dequeueReusableCell(withIdentifier: VoiceCell.identifier, for: indexPath) as! VoiceCell
+
+	
+	private func visualViewVoiceCell(indexPath: IndexPath, cell: VoiceCell) {
 		
 		let date = UserDefaults.standard.object(forKey: "\(String(indexPath.row + 1)).m4a")
 		let text = "№ \(String(indexPath.row + 1)) \(DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now))"
 		cell.textFieldLabel.text = text
 		cell.taskDateLabel.text = DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now)
-		//cell.textLabel?.text = text
+	//	[weak self]
+		cell.buttonAction = { [weak self] in
+			
+			guard let self = self else { return }
+			guard let path = FileAdmin.getFileUrl(nameFolder: "\(self.id)", name: "\(indexPath.row + 1).m4a") else { return }
+			
+			self.cellVoice = cell
+			cell.audioPlayer = try AVAudioPlayer(contentsOf: path)
+			cell.togglePlayback()
+		}
+	}
+	
+//
+//	if self.audioPlayer?.isPlaying != nil {
+//		//self?.audioPlayer?.pause()
+//		cell.playPauseButton.setImage(UIImage(systemName: "pause.fill")?.withTintColor(UIColor.black, renderingMode: .alwaysOriginal), for: .normal)
+//	} else {
+//		//self?.audioPlayer?.play()
+//		cell.playPauseButton.setImage(UIImage(systemName: "play.fill")?.withTintColor(UIColor.black, renderingMode: .alwaysOriginal), for: .normal)
+//	}
+//
+			
+	
+	internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell   = tableView.dequeueReusableCell(withIdentifier: VoiceCell.identifier, for: indexPath) as! VoiceCell
+		visualViewVoiceCell(indexPath: indexPath, cell: cell)
 		return cell
 	}
-			
-			
-//			let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-		
-		func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-			guard let path = FileAdmin.getFileUrl(nameFolder: "\(id)", name: "\(indexPath.row + 1).m4a") else { return } //getDirectory().appendingPathComponent("\(indexPath.row + 1).m4a")
-			do{
-				audioPlayer = try AVAudioPlayer(contentsOf: path)
-				audioPlayer.play()
-				meterTimer = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioPlayerMeter(timer:)), userInfo:nil, repeats:true)
-			} catch {
-				displayAlert(title: "error", message: "smth wrong")
-			}
-		}
 	
-	
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+	internal func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return 152
 	}
 
-	
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+	internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		
-
 		guard let fileURL = FileAdmin.getFileUrl(nameFolder: "\(id)", name: "\(indexPath.row + 1).m4a") else { return }
 			do {
 				try FileManager.default.removeItem(at: fileURL)
@@ -264,7 +242,6 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 				print(error.localizedDescription)
 				print("Could not delete file, probably read-only filesystem")
 			}
-	
 		self.tableView.reloadData()
 		//}
 	}

@@ -57,7 +57,7 @@ class FileAdmin {
 			
 		manager.createFile(atPath: fileURL.path,
 												 contents: contents,
-												 attributes: [FileAttributeKey.creationDate : Date()])
+											 attributes: [FileAttributeKey.creationDate : Date()])
 		return fileURL
 	}
 	

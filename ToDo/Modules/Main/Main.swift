@@ -50,6 +50,7 @@ final class Main: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		print(NSHomeDirectory())
+		
 		confugureTableView()
 		notification()
 		setupButton()

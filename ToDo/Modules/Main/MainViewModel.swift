@@ -122,7 +122,6 @@ extension MainViewModel: MainViewModelProtocol {
 	@objc private func saveCheckmark(sender: UIButton) {
 		taptic.soft
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		
 		let model = coreDataModel
 		for items in model {
 			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)

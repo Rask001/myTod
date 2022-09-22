@@ -21,6 +21,7 @@ extension RecordSheetVC {
 	func makePlayPauseBTN() -> UIButton {
 		let button = UIButton(type: .system)
 		button.setTitle("pause", for: .normal)
+		button.tag = 0
 		button.addTarget(self, action: #selector(playPause), for: .touchUpInside)
 		return button
 	}

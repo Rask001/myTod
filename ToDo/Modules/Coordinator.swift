@@ -17,12 +17,13 @@ final class Coordinator: NewTaskOutput {
 		self.assembly = assembly
 	}
 	
-	var newTaskView = UIViewController()
-	var mainView = UIViewController()
-	var seconvVC = UIViewController()
-	var settingVC = UIViewController()
-	var detailVC = UIViewController()
-  var tabBarVC = UITabBarController()
+	private var newTaskView = UIViewController()
+	private var mainView = UIViewController()
+	private var seconvVC = UIViewController()
+	private var settingVC = UIViewController()
+	private var detailVC = UIViewController()
+	private var tabBarVC = UITabBarController()
+	
 
 	
 
@@ -42,11 +43,11 @@ extension Coordinator: MainOutput {
 	
 	func goToNewTask() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
-		mainView.present(newTaskVC, animated: true, completion: nil)
+		mainView.showDetailViewController(newTaskVC, sender: self)
 	}
 	func goToDetail() {
 		let detailVC = assembly.makeDetailVC(output: self)
-		mainView.navigationController?.pushViewController(detailVC, animated: true)
+		mainView.show(detailVC, sender: self)
 	}
 }
 

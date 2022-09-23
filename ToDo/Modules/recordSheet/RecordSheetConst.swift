@@ -11,36 +11,29 @@ import UIKit
 
 extension RecordSheetVC {
 	
-	func makeStartButton() -> UIButton {
-		let btn = UIButton(type: .system)
-		btn.setTitle("start recording", for: .normal)
-		btn.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
-		return btn
+	internal func makeStartButton() -> UIButton {
+		let recordButton = UIButton()
+		recordButton.layer.cornerRadius = 35
+		let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large)
+		recordButton.setImage(UIImage(systemName: "record.circle.fill", withConfiguration: config)?.withTintColor(UIColor(named: "SoftRed")!, renderingMode: .alwaysOriginal), for: .normal)
+		recordButton.scalesLargeContentImage = true
+		recordButton.layer.shadowColor = UIColor.black.cgColor
+		recordButton.layer.shadowRadius = 3
+		recordButton.layer.shadowOpacity = 0.2
+		recordButton.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		recordButton.backgroundColor = .clear//UIColor(named: "SoftRed")
+		recordButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+		return recordButton
 	}
 	
-	func makePlayPauseBTN() -> UIButton {
-		let button = UIButton(type: .system)
-		button.setTitle("pause", for: .normal)
-		button.tag = 0
-		button.addTarget(self, action: #selector(playPause), for: .touchUpInside)
-		return button
-	}
-	
-	func makeStopRecordButton() -> UIButton {
-		let btn = UIButton(type: .system)
-		btn.setTitle("stop record", for: .normal)
-		btn.addTarget(self, action: #selector(stopRecord), for: .touchUpInside)
-		return btn
-	}
-	
-	func makeTimeLabel() -> UILabel {
+	internal func makeTimeLabel() -> UILabel {
 		let lbl = UILabel()
 		lbl.textAlignment = .center
 		lbl.text = "00:00:00"
 		return lbl
 	}
 	
-	func makeTableView() -> UITableView {
+	internal func makeTableView() -> UITableView {
 		let tV = UITableView()
 		tV.delegate = self
 		tV.dataSource = self
@@ -48,20 +41,15 @@ extension RecordSheetVC {
 		return tV
 	}
 	
-	
-	
-	
-	func addSubview() {
+	internal func addSubview() {
 		self.view.backgroundColor = .secondarySystemBackground
-		self.view.addSubview(startButton)
-		self.view.addSubview(playPauseBTN)
+		self.view.addSubview(recordButton)
 		self.view.addSubview(tableView)
-		self.view.addSubview(stopRecordButton)
 		self.view.addSubview(timeLabel)
 	}
 	
 	
-	func setupConstraints() {
+	internal func setupConstraints() {
 		
 		timeLabel.translatesAutoresizingMaskIntoConstraints = false
 		timeLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
@@ -69,23 +57,11 @@ extension RecordSheetVC {
 		timeLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 		timeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		
-		stopRecordButton.translatesAutoresizingMaskIntoConstraints = false
-		stopRecordButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-		stopRecordButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 150).isActive = true
-		stopRecordButton.widthAnchor.constraint(equalToConstant: 200).isActive = true
-		stopRecordButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-		
-		playPauseBTN.translatesAutoresizingMaskIntoConstraints = false
-		playPauseBTN.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-		playPauseBTN.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
-		playPauseBTN.widthAnchor.constraint(equalToConstant: 150).isActive = true
-		playPauseBTN.heightAnchor.constraint(equalToConstant: 50).isActive = true
-		
-		startButton.translatesAutoresizingMaskIntoConstraints = false
-		startButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-		startButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
-		startButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-		startButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+		recordButton.translatesAutoresizingMaskIntoConstraints = false
+		recordButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50).isActive = true
+		recordButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
+		recordButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+		recordButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
 		
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true

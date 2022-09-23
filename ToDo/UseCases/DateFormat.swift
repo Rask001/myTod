@@ -8,7 +8,7 @@
 import Foundation
 
 
-class DateFormat {
+final class DateFormat {
 	class func formatDate(textFormat: String, date: Date) -> String {
 		let date = date
 		let dateFormatter = DateFormatter()

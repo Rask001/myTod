@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class Theme {
+final class Theme {
 class func switchTheme(gradient: CAGradientLayer, view: UIView, traitCollection: UITraitCollection) {
 		switch MTUserDefaults.shared.theme {
 		case .lightTheme:

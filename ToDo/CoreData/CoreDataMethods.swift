@@ -8,18 +8,18 @@ import UIKit
 import CoreData
 
 final class CoreDataMethods {
-
 	
-	var coreDataModel: [Tasks] = []
-	var todayTasksArray: [Tasks] = []
-	var overdueArray: [Tasks] = []
-	var currentArray: [Tasks] = []
-	var completedArray: [Tasks] = []
-	var sectionIndex: Int?
-	var sectionStructCur = SectionStruct(header: "current tasks", row: [])
-	var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
-	var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
-	var selectionStructArray: [SectionStruct] = []
+	
+	internal var coreDataModel: [Tasks] = []
+	internal var todayTasksArray: [Tasks] = []
+	internal var overdueArray: [Tasks] = []
+	internal var currentArray: [Tasks] = []
+	internal var completedArray: [Tasks] = []
+	internal var sectionIndex: Int?
+	private var sectionStructCur = SectionStruct(header: "current tasks", row: [])
+	private var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
+	private var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
+	internal var selectionStructArray: [SectionStruct] = []
 	//let helper = Helper()
 	
 	static let shared = CoreDataMethods()
@@ -47,6 +47,7 @@ final class CoreDataMethods {
 		model.descriptImage = false
 		model.check         = false
 		model.repeatImage   = false
+		model.voiceImage    = false
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
@@ -63,10 +64,10 @@ final class CoreDataMethods {
 	}
 	
 	func saveDailyRepitionTask(taskTitle:    String,
-										         taskTime:     String,
-										         taskDateDate: Date,
-										         createdAt:    Date,
-										         alarmImage:   Bool,
+														 taskTime:     String,
+														 taskDateDate: Date,
+														 createdAt:    Date,
+														 alarmImage:   Bool,
 														 repeatImage:  Bool,
 														 type:         String) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -82,6 +83,7 @@ final class CoreDataMethods {
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.descriptImage = false
+		model.voiceImage    = false
 		model.check         = false
 		model.timeInterval  = nil
 		model.descript      = ""
@@ -97,12 +99,12 @@ final class CoreDataMethods {
 	}
 	
 	func saveWeekDaysRepitionTask(taskTitle:    String,
-														    taskTime:     String,
-														    taskDateDate: Date,
-														    createdAt:    Date,
-														    alarmImage:   Bool,
-														    repeatImage:  Bool,
-														    type:         String,
+																taskTime:     String,
+																taskDateDate: Date,
+																createdAt:    Date,
+																alarmImage:   Bool,
+																repeatImage:  Bool,
+																type:         String,
 																weekDay:      [String]) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
@@ -117,6 +119,7 @@ final class CoreDataMethods {
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.descriptImage = false
+		model.voiceImage    = false
 		model.check         = false
 		model.timeInterval  = nil
 		model.descript      = ""
@@ -132,13 +135,13 @@ final class CoreDataMethods {
 	}
 	
 	func saveDaysMonthRepitionTask(taskTitle:   String,
-																taskTime:     String,
-																taskDateDate: Date,
-																createdAt:    Date,
-																alarmImage:   Bool,
-																repeatImage:  Bool,
-																type:         String,
-																monthDay:     [String]) {
+																 taskTime:     String,
+																 taskDateDate: Date,
+																 createdAt:    Date,
+																 alarmImage:   Bool,
+																 repeatImage:  Bool,
+																 type:         String,
+																 monthDay:     [String]) {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		guard let entity = NSEntityDescription.entity(forEntityName: "Tasks", in: context) else {return}
 		let model = Tasks(entity: entity, insertInto: context)
@@ -152,6 +155,7 @@ final class CoreDataMethods {
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.descriptImage = false
+		model.voiceImage    = false
 		model.check         = false
 		model.timeInterval  = nil
 		model.descript      = ""
@@ -181,6 +185,7 @@ final class CoreDataMethods {
 		model.alarmImage    = alarmImage
 		model.repeatImage   = repeatImage
 		model.descriptImage = false
+		model.voiceImage    = false
 		model.timeInterval  = timeInterval
 		model.createdAt     = createdAt
 		model.taskTime      = nil
@@ -215,6 +220,7 @@ final class CoreDataMethods {
 		model.alarmImage    = false
 		model.repeatImage   = false
 		model.descriptImage = false
+		model.voiceImage    = false
 		model.timeInterval  = nil
 		model.descript      = ""
 		model.descriptSize  = 20
@@ -227,8 +233,37 @@ final class CoreDataMethods {
 		}
 	}
 	
+	public func saveVoiceImage(tag: Int, isVisible: Bool = true) {
+		//CoreDataMethods.shared.fetchRequest()
+		
+		
+		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+		let fetchRequest: NSFetchRequest<Tasks> = Tasks.fetchRequest()
+		do {
+			coreDataModel = try context.fetch(fetchRequest)
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if tag == itemsId {
+				items.voiceImage = true
+				items.voiceImage = isVisible
+			}
+		}
+		do {
+			try context.save()
+			print("save voiceImage")
+		} catch let error as NSError {
+			print(error.localizedDescription)
+		}
+		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+	}
+	
 	public func saveDescription(cellTag: Int, description: String, descriptionSize: Double) {
-			CoreDataMethods.shared.fetchRequest()        //FIX:
+		CoreDataMethods.shared.fetchRequest()        //FIX:
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
@@ -251,12 +286,12 @@ final class CoreDataMethods {
 			print(error.localizedDescription)
 		}
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
-		}
-
+	}
+	
 	
 	//MARK: - editingCell
-		public func editingCell(cellTag: Int, newText: String) {
-			CoreDataMethods.shared.fetchRequest()        //FIX:
+	public func editingCell(cellTag: Int, newText: String) {
+		CoreDataMethods.shared.fetchRequest()        //FIX:
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
@@ -272,7 +307,7 @@ final class CoreDataMethods {
 			print(error.localizedDescription)
 		}
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
-		}
+	}
 	
 	//MARK: - Delete Cell
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {
@@ -282,9 +317,9 @@ final class CoreDataMethods {
 		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
 		let yesAction        = UIAlertAction(title: "Yes, delete \"\(taskTitle)\"", style: .destructive) {_ in
 			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task)
-//			let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
-//			print(idInt)
-//			FileAdmin.deleteFolder(name: "\(idInt)")
+			//			let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
+			//			print(idInt)
+			//			FileAdmin.deleteFolder(name: "\(idInt)")
 		}
 		areYouSureAllert.addAction(noAction)
 		areYouSureAllert.addAction(yesAction)
@@ -328,18 +363,18 @@ final class CoreDataMethods {
 				index += 1
 			}
 		}
-
+		
 		let _ : NSError! = nil
 		do {
 			
 			try context.save()
-      NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
+			NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 		} catch {
 			print("error : \(error)")
 		}
 	}
 	
-	func appendTodayTask(coreDataModel array: [Tasks]) -> [Tasks] {
+	private func appendTodayTask(coreDataModel array: [Tasks]) -> [Tasks] {
 		var arrayResult: [Tasks] = []
 		for item in array {
 			if let notNil = item.taskDateDate {
@@ -353,7 +388,7 @@ final class CoreDataMethods {
 		return arrayResult
 	}
 	
-	func appendOverdueTask(coreDataModel array: [Tasks]) -> [Tasks] {
+	private func appendOverdueTask(coreDataModel array: [Tasks]) -> [Tasks] {
 		var arrayResult: [Tasks] = []
 		for item in array {
 			if let notNil = item.taskDateDate {
@@ -367,7 +402,7 @@ final class CoreDataMethods {
 		return arrayResult
 	}
 	
-	func appendCurrentTask(coreDataModel array: [Tasks]) -> [Tasks] {
+	private func appendCurrentTask(coreDataModel array: [Tasks]) -> [Tasks] {
 		var arrayResult: [Tasks] = []
 		for item in array {
 			if item.taskDateDate == nil || item.taskDateDate ?? Date.now > Date.now {
@@ -377,7 +412,7 @@ final class CoreDataMethods {
 		return arrayResult
 	}
 	
-	func appendCompletedTask(currentTask: inout [Tasks], todayTask: inout [Tasks], overdueTask: inout [Tasks], coreDataModel: [Tasks]) -> [Tasks] {
+	private func appendCompletedTask(currentTask: inout [Tasks], todayTask: inout [Tasks], overdueTask: inout [Tasks], coreDataModel: [Tasks]) -> [Tasks] {
 		var arrayResult: [Tasks] = []
 		for item in coreDataModel {
 			if item.check == true {
@@ -401,10 +436,10 @@ final class CoreDataMethods {
 			if item.check == true {
 				todayTask.removeAll{ $0.check == true }
 			}
-	}
+		}
 		return arrayResult
 	}
-
+	
 	
 	//MARK: - Fetch Request
 	public func fetchRequest() {

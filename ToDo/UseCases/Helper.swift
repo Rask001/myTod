@@ -8,7 +8,7 @@
 import Foundation
 
 
-class Helper {
+final class Helper {
 	
 	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
 		var resultInt = 0
@@ -25,7 +25,7 @@ class Helper {
 	}
 	
 	
-	class func arrayToStringWeekDay(array: [String]) -> String {
+	final class func arrayToStringWeekDay(array: [String]) -> String {
 		var string = ""
 		let week = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
 		var dayWeek = array
@@ -41,6 +41,6 @@ class Helper {
 }
 
 
-class Counter {
+final class Counter {
 	static var count = 0
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-class DateForm {
+final class DateForm {
 	func format(data: Date) -> String {
 		let dateForm = DateFormatter()
 		dateForm.dateFormat = "E, d MMM HH:mm"

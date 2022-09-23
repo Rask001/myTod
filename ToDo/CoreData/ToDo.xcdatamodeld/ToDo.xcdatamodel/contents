@@ -15,6 +15,7 @@
         <attribute name="taskTitle" attributeType="String"/>
         <attribute name="timeInterval" optional="YES" attributeType="String"/>
         <attribute name="type" attributeType="String"/>
+        <attribute name="voiceImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="weekDays" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName=".[String]"/>
     </entity>
 </model>

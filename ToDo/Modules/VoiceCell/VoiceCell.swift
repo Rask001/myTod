@@ -19,7 +19,6 @@ final class VoiceCell: UITableViewCell {
 	internal var audioPlayer: AVAudioPlayer!
 	internal var meterTimer: Timer!
 	
-	
 	lazy var backgroundViewCell = makeBackgroundViewCell()
 	lazy var textFieldLabel = makeTextField()
 	lazy var taskTitle = makeTaskTitle()
@@ -31,16 +30,16 @@ final class VoiceCell: UITableViewCell {
 	lazy var playPauseButton = makePlayPauseButton()
 	lazy var slider = makeSlider()
 	
-	var buttonAction: (() throws -> Void)?
-	var taskDateDate: Date? = nil
-	var id: String = UUID().uuidString
+	internal var buttonAction: (() throws -> Void)?
+	internal var taskDateDate: Date? = nil
+	internal var id: String = UUID().uuidString
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		addSubviewAndConfigure()
 		setConstraintsCell()
-		UserDefaults.standard.set(0, forKey: "pauseTime")
 	}
+	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}

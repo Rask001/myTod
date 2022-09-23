@@ -119,12 +119,12 @@ final class LocalNotification {
 		}
 	}
 	
-	func deleteAllNotification() {
+	private func deleteAllNotification() {
 		UNUserNotificationCenter.current().removeAllDeliveredNotifications()
 		UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 	}
 	
-	func convertDateWeek(of dayStr: String, and date: Date) -> Date {
+	private func convertDateWeek(of dayStr: String, and date: Date) -> Date {
 		let dFStrToDate = DateFormatter()
 		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
 		let componentsForm = DateComponentsFormatter()
@@ -135,7 +135,7 @@ final class LocalNotification {
 		return result!
 	}
 	
-	func convertDateMonth(of dayStr: String, and date: Date) -> Date {
+	private func convertDateMonth(of dayStr: String, and date: Date) -> Date {
 		let dFStrToDate = DateFormatter()
 		let components = Calendar.current.dateComponents([.hour, .minute], from: date)
 		let componentsForm = DateComponentsFormatter()

@@ -11,7 +11,7 @@ fileprivate enum Constants {
 	static var taskTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
 }
 
-class CustomHeader: UITableViewCell {
+final class CustomHeader: UITableViewCell {
 	static let shared = CustomHeader()
 	static let identifier = "CustomHeader"
 
@@ -42,18 +42,18 @@ class CustomHeader: UITableViewCell {
 
 
 //	MARK: - SetConstraints
-	func addSubviewAndConfigure() {
+	private func addSubviewAndConfigure() {
 		self.backgroundColor = .red
 		self.addSubview(backgroundViewCell)
 		self.backgroundViewCell.addSubview(taskTitle)
 
 	}
 
-	func setup(model: SectionStruct) {
+	private func setup(model: SectionStruct) {
 		self.taskTitle.text = model.header
 	}
 
-	func setConstraintsCell() {
+	private func setConstraintsCell() {
 		taskTitle.translatesAutoresizingMaskIntoConstraints                                                          = false
 		taskTitle.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive                                     = true
 		taskTitle.leadingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: 20).isActive        = true

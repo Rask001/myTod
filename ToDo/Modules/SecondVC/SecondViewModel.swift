@@ -32,10 +32,10 @@ protocol SecondViewModelProtocol {
 
 final class SecondViewModel {
 	private weak var output: SecondVCOutput?
-	let coreDataMethods = CoreDataMethods()
-	let NavController = NavigationController()
-	let visualViewCell = VisualViewCell()
-	let taptic = TapticFeedback()
+	internal let coreDataMethods = CoreDataMethods()
+	private let NavController = NavigationController()
+	private let visualViewCell = VisualViewCell()
+	private let taptic = TapticFeedback()
 	weak var view: SecondVC?
 	init(output: SecondVCOutput) {
 		self.output = output
@@ -44,47 +44,47 @@ final class SecondViewModel {
 
 extension SecondViewModel: SecondViewModelProtocol {
 	
-	func createNavController() {
+	internal func createNavController() {
 		NavController.createNavigationController(viewController: view!, title: "today", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	
 	
-	func tableViewReload() {
+	internal func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
 			self!.reloadTable()
 		}
 	}
 	
-	func reloadTable() {
+	internal func reloadTable() {
 		view?.tableView.reloadData()
 	}
 	
-	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
+	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		let button = cell.buttonCell
 		button.tag = indexPath.row
 		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
 	
-	var todayTasksArray: [Tasks] {
+	internal var todayTasksArray: [Tasks] {
 		get {
 			coreDataMethods.todayTasksArray
 		}
 	}
 	
-	var coreDataModel: [Tasks] {
+	internal var coreDataModel: [Tasks] {
 		get {
 			coreDataMethods.coreDataModel
 		}
 	}
 	
 	
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
+	internal func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
 		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
-	func goToNewTaskVC() {
+	internal func goToNewTaskVC() {
 		output?.goToNewTask()
 		}
 	

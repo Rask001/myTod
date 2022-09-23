@@ -20,7 +20,7 @@ fileprivate enum Constants {
 
 }
 
-class localTaskStruct {
+final class localTaskStruct {
 static var taskStruct = TaskStruct()
 }
 
@@ -28,14 +28,14 @@ static var taskStruct = TaskStruct()
 final class Main: UIViewController {
 	
 	//MARK: - Properties
-	var tableView = UITableView()
-	let buttonNewTask = CustomButtonNewTask()
-	let navController = UINavigationController()
-	let taptic = TapticFeedback()
+	internal var tableView = UITableView()
+	internal let buttonNewTask = CustomButtonNewTask()
+	internal let navController = UINavigationController()
+	internal let taptic = TapticFeedback()
 	//let theme = Theme()
-	let helper = Helper()
-	let gradient = CAGradientLayer()
-	var viewModel: MainViewModelProtocol
+	internal let helper = Helper()
+	internal let gradient = CAGradientLayer()
+	internal var viewModel: MainViewModelProtocol
 	static let shared = MainViewModel.self
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
@@ -102,7 +102,7 @@ final class Main: UIViewController {
 	}
 
 	
-	func setupButton(){
+	private func setupButton(){
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
@@ -147,7 +147,7 @@ final class Main: UIViewController {
 	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
-	func notification() {
+	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
@@ -165,7 +165,7 @@ final class Main: UIViewController {
 	
 	
 	
-	func passData(cellTag: Int) {
+	private func passData(cellTag: Int) {
 		CoreDataMethods.shared.fetchRequest()
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {

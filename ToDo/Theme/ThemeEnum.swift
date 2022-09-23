@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 enum ThemeEnum: Int {
 	case system
 	case lightTheme
@@ -26,7 +25,6 @@ enum ThemeEnum: Int {
 		}
 	}
 }
-
 
 
 extension CAGradientLayer {

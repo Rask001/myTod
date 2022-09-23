@@ -28,7 +28,7 @@ final class NewTaskPresenter: NewTaskPresenterProtocol {
 		self.view = view
 	}
 	
-	func dFormatter(dateFromDP: UIDatePicker) -> String {
+	internal func dFormatter(dateFromDP: UIDatePicker) -> String {
 		let dateFromDP                 = dateFromDP.date
 		let timeFormatter              = DateFormatter()
 		let dateFormatter              = DateFormatter()
@@ -47,7 +47,7 @@ final class NewTaskPresenter: NewTaskPresenterProtocol {
 		return result
 	}
 	
-	func tFormatter(paramDataPicker: UIDatePicker) -> (String, String, String) {
+	internal func tFormatter(paramDataPicker: UIDatePicker) -> (String, String, String) {
 		let timeFromDP                  = paramDataPicker.date
 		let timeHourFormatter           = DateFormatter()
 		let timeMinFormatter            = DateFormatter()

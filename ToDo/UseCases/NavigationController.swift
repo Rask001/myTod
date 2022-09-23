@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
- struct NavigationController {
+struct NavigationController {
 	 
 	 func createNavigationController(viewController: UIViewController, title: String?, font: UIFont, textColor: UIColor, backgroundColor: UIColor, leftItemText: String, rightItemText: String, itemColor: UIColor) {
 		let control = viewController

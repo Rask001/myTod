@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FileAdmin {
+final class FileAdmin {
 	
 	class func createFolder(name: String) {
 		let manager = FileManager.default

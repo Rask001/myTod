@@ -27,12 +27,12 @@ final class SecondVC: UIViewController {
 	
 	//MARK: - Properties
 	
-	var tableView = UITableView()
-	let buttonNewTask = CustomButtonNewTask()
-	let taptic = TapticFeedback()
+	internal var tableView = UITableView()
+	private let buttonNewTask = CustomButtonNewTask()
+	private let taptic = TapticFeedback()
 	//let theme = Theme()
-	let viewModel: SecondViewModelProtocol
-	let	gradient = CAGradientLayer()
+	private let viewModel: SecondViewModelProtocol
+	private let	gradient = CAGradientLayer()
 	
 	
 	init(viewModel: SecondViewModelProtocol) {
@@ -93,7 +93,7 @@ final class SecondVC: UIViewController {
 	@objc func continueFunc(){
 		
 	}
-	func setupButton(){
+	private func setupButton(){
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
@@ -131,7 +131,7 @@ final class SecondVC: UIViewController {
 	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
-	func notification() {
+	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	

@@ -10,7 +10,7 @@ import Foundation
 final class VisualViewCell {
 		
 	//визуальное отоброжение ячеек в зависимости от статуса задачи
-	func visualViewCell(items: Tasks, cell: CustomCell) {
+	internal func visualViewCell(items: Tasks, cell: CustomCell) {
 		let button = cell.buttonCell
 		cell.id                         = items.id
 		cell.taskDateDate               = items.taskDateDate
@@ -21,6 +21,7 @@ final class VisualViewCell {
 		cell.alarmImageView.isHidden    = !items.alarmImage
 		cell.repeatImageView.isHidden   = !items.repeatImage
 		cell.descriptImageView.isHidden = !items.descriptImage
+		cell.voiceImageView.isHidden    = !items.voiceImage
 		cell.weekLabel.isHidden         = true
 		
 		//MARK: - SWITCH

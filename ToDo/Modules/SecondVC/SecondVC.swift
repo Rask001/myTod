@@ -63,6 +63,7 @@ final class SecondVC: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(true)
 		viewModel.coreDataMethods.fetchRequest()
+		CurrentTabBar.number = 2
 			}
 	
 	
@@ -84,6 +85,33 @@ final class SecondVC: UIViewController {
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 		self.tableView.contentInset.top = 20
+		NotificationCenter.default.addObserver(self, selector: #selector(goToDetailSecond), name: Notification.Name("tapSecond"), object: .none)
+	}
+	
+		@objc func goToDetailSecond(notification: NSNotification) {
+			guard let userInfo = notification.userInfo else { return }
+			guard let buttonTag = userInfo["buttonTag"] else { return }
+			let tag: Int = buttonTag as! Int
+			print(tag)
+			passData(cellTag: tag)
+			self.viewModel.goToNewTaskVC()
+		}
+	
+	private func passData(cellTag: Int) {
+		CoreDataMethods.shared.fetchRequest()
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
+				localTaskStruct.taskStruct.createdAt     = items.createdAt
+				localTaskStruct.taskStruct.check         = items.check
+				localTaskStruct.taskStruct.taskDateDate  = items.taskDateDate
+				localTaskStruct.taskStruct.id            = items.id
+				localTaskStruct.taskStruct.descript      = items.descript
+				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
+			}
+		}
 	}
 	
 	
@@ -107,7 +135,8 @@ final class SecondVC: UIViewController {
 	}
 	
 	@objc private func goToNewTaskVC() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self]  in
+			guard let self = self else { return }
 			TapticFeedback.shared.soft
 			self.viewModel.goToNewTaskVC()
 		}

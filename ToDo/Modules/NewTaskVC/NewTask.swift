@@ -543,7 +543,8 @@ final class NewTask: UIViewController {
 		self.infoLabel.textColor = UIColor.red
 		self.infoLabel.font = Constants.infoLabelFont20
 		text != nil ? (self.infoLabel.text = text) : (self.infoLabel.text = oldValue)
-		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) { [weak self]  in
+			guard let self = self else { return }
 			self.infoLabel.textColor = UIColor.blackWhite
 			self.infoLabel.font = Constants.infoLabelFont
 			self.infoLabel.text = oldValue

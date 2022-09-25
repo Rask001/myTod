@@ -32,7 +32,6 @@ final class Main: UIViewController {
 	internal let buttonNewTask = CustomButtonNewTask()
 	internal let navController = UINavigationController()
 	internal let taptic = TapticFeedback()
-	//let theme = Theme()
 	internal let helper = Helper()
 	internal let gradient = CAGradientLayer()
 	internal var viewModel: MainViewModelProtocol
@@ -82,6 +81,7 @@ final class Main: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(false)
 		viewModel.coreDataMethods.fetchRequest()
+		CurrentTabBar.number = 1
 	}
 
 	
@@ -120,7 +120,8 @@ final class Main: UIViewController {
 			TapticFeedback.shared.soft
 			Counter.count += 1
 		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+			guard let self = self else { return }
 			self.viewModel.goToNewTaskVC()
 			Counter.count = 0 
 		}
@@ -150,6 +151,7 @@ final class Main: UIViewController {
 	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
+		
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
@@ -161,7 +163,6 @@ final class Main: UIViewController {
 		passData(cellTag: tag)
 		self.viewModel.goToDetail()
 	}
-	
 	
 	
 	
@@ -227,15 +228,6 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
 		viewModel.visualViewCell(items: itemsResult, cell: cell, indexPath: indexPath)
 		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-		let editButton = UIContextualAction(style: .normal, title: "") {_,_,_ in
-			
-		}
-		editButton.backgroundColor = UIColor.white.withAlphaComponent(0.15)
-		editButton.image = UIImage.init(systemName: "pencil")
-		return UISwipeActionsConfiguration(actions: [editButton])
 	}
 }
 

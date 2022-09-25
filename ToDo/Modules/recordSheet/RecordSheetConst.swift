@@ -29,7 +29,28 @@ extension RecordSheetVC {
 	internal func makeTimeLabel() -> UILabel {
 		let lbl = UILabel()
 		lbl.textAlignment = .center
+		lbl.font = UIFont(name: "Helvetica Neue Medium", size: 40)
 		lbl.text = "00:00:00"
+		
+		lbl.layer.shadowColor = UIColor.black.cgColor
+		lbl.layer.shadowRadius = 2
+		lbl.layer.shadowOpacity = 0.4
+		lbl.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		lbl.backgroundColor = .clear//
+		return lbl
+	}
+	
+	internal func makeTimeBigLabel() -> UILabel {
+		let lbl = UILabel()
+		lbl.textAlignment = .center
+		lbl.font = UIFont(name: "Helvetica Neue Medium", size: 45)
+		lbl.text = "00:00:00"
+		
+		lbl.layer.shadowColor = UIColor.black.cgColor
+		lbl.layer.shadowRadius = 2
+		lbl.layer.shadowOpacity = 0.4
+		lbl.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		lbl.backgroundColor = .clear//
 		return lbl
 	}
 	
@@ -43,17 +64,26 @@ extension RecordSheetVC {
 	
 	internal func addSubview() {
 		self.view.backgroundColor = .secondarySystemBackground
+		self.view.addSubview(imageView)
 		self.view.addSubview(recordButton)
 		self.view.addSubview(tableView)
 		self.view.addSubview(timeLabel)
+		self.view.addSubview(bigLabel)
 	}
 	
 	
 	internal func setupConstraints() {
 		
+		bigLabel.translatesAutoresizingMaskIntoConstraints = false
+		bigLabel.centerXAnchor.constraint(equalTo: self.timeLabel.centerXAnchor).isActive = true
+		bigLabel.centerYAnchor.constraint(equalTo: self.recordButton.centerYAnchor).isActive = true
+		bigLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
+		bigLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
+		bigLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+		
 		timeLabel.translatesAutoresizingMaskIntoConstraints = false
-		timeLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-		timeLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 200).isActive = true
+		timeLabel.centerYAnchor.constraint(equalTo: self.recordButton.centerYAnchor).isActive = true
+		timeLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
 		timeLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 		timeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		
@@ -67,6 +97,6 @@ extension RecordSheetVC {
 		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
 		tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 		tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
-		tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 280).isActive = true
+		tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 170).isActive = true
 	}
 }

@@ -66,7 +66,8 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	private func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
-			self!.reloadTable()
+				guard let self = self else { return }
+			self.reloadTable()
 		}
 	}
 	

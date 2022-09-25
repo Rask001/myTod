@@ -51,8 +51,9 @@ extension SecondViewModel: SecondViewModelProtocol {
 	
 	
 	internal func tableViewReload() {
-		DispatchQueue.main.async { [weak self] in
-			self!.reloadTable()
+		DispatchQueue.main.async { [weak self]  in
+			guard let self = self else { return }
+			self.reloadTable()
 		}
 	}
 	
@@ -85,7 +86,7 @@ extension SecondViewModel: SecondViewModelProtocol {
 	}
 	
 	internal func goToNewTaskVC() {
-		output?.goToNewTask()
+		output?.goToNewTaskSecond()
 		}
 	
 		@objc private func saveCheckmark(sender: UIButton) {

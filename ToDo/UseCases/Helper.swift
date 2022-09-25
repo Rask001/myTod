@@ -44,3 +44,7 @@ final class Helper {
 final class Counter {
 	static var count = 0
 }
+
+final class CurrentTabBar {
+	static var number = 0
+}

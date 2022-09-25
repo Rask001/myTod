@@ -21,10 +21,14 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	private var id: Int = 0
 	
 	lazy var recordButton = makeStartButton()
-	//lazy var playPauseBTN = makePlayPauseBTN()
-	//lazy var stopRecordButton = makeStopRecordButton()
 	lazy var timeLabel = makeTimeLabel()
 	lazy var tableView = makeTableView()
+	lazy var bigLabel = makeTimeBigLabel()
+	
+	let imageView = UIImageView()
+	
+//	let anotherLabel = UILabel()
+	var differenceInSize = CGFloat()
 	
 	private var numberOfRecord = 0
 	private var isAudioRecordingGranted = true
@@ -36,6 +40,66 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		setupRecording()
 		addSubview()
 		setupConstraints()
+		imageView.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0)
+	  imageView.frame = CGRect(x: 0, y: -10, width: self.view.frame.width, height: 10)
+		animSet()
+	}
+	
+	private func animSet() {
+		self.bigLabel.center = self.timeLabel.center
+		self.differenceInSize = bigLabel.font.pointSize / timeLabel.font.pointSize
+		self.timeLabel.alpha = 1
+		self.bigLabel.alpha = 0
+		self.bigLabel.transform = CGAffineTransform(scaleX: 1/self.differenceInSize, y: 1/self.differenceInSize)
+	}
+	
+	private func animateImageView() {
+		UIView.animate(withDuration: 1, delay: 0.2) { [weak self]  in
+			guard let self = self else { return }
+			self.timeLabel.layer.shadowRadius = 5
+			self.timeLabel.layer.shadowOpacity = 0.4
+			self.timeLabel.layer.shadowOffset = CGSize(width: 0, height: 6 )
+			
+			self.bigLabel.layer.shadowRadius = 5
+			self.bigLabel.layer.shadowOpacity = 0.4
+			self.bigLabel.layer.shadowOffset = CGSize(width: 0, height: 6 )
+			
+			self.timeLabel.alpha = 0
+			self.bigLabel.alpha = 1
+			self.timeLabel.transform = CGAffineTransform(scaleX: self.differenceInSize, y: self.differenceInSize)
+			self.bigLabel.transform = CGAffineTransform.identity
+			
+			self.imageView.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.1)
+			self.imageView.frame = CGRect(x: 0, y: -10, width: self.view.frame.width, height: 800)
+		}
+	}
+	
+	private func animateDownImageView() {
+		UIView.animate(withDuration: 1, delay: 0.3) { [weak self]  in
+			guard let self = self else { return }
+			self.timeLabel.font = UIFont(name: "Helvetica Neue Medium", size: 40)
+			self.imageView.backgroundColor = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 0.0)
+			self.imageView.frame = CGRect(x: 0, y: -10, width: self.view.frame.width, height: 10)
+			
+			
+			self.timeLabel.layer.shadowRadius = 2
+			self.timeLabel.layer.shadowOpacity = 0.4
+			self.timeLabel.layer.shadowOffset = CGSize(width: 0, height: 3 )
+			
+			self.bigLabel.layer.shadowRadius = 2
+			self.bigLabel.layer.shadowOpacity = 0.4
+			self.bigLabel.layer.shadowOffset = CGSize(width: 0, height: 3 )
+			
+			
+			
+			self.timeLabel.alpha = 1
+			self.bigLabel.alpha = 0
+			
+			self.bigLabel.transform = CGAffineTransform(scaleX: 1/self.differenceInSize, y: 1/self.differenceInSize)
+			self.timeLabel.transform = CGAffineTransform.identity
+			
+		
+		}
 	}
 	
 	private func settings() {
@@ -50,7 +114,8 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 			break
 		case AVAudioSession.RecordPermission.undetermined:
 			AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
-				DispatchQueue.main.async {
+				DispatchQueue.main.async { [weak self]  in
+					guard let self = self else { return }
 					if allowed {
 						self.isAudioRecordingGranted = true
 					} else {
@@ -76,19 +141,8 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		tableView.dataSource = self
 		tableView.backgroundColor = .clear
 		tableView.separatorStyle = .none
+		tableView.allowsSelection  = true
 	}
-	
-//	@objc func stopRecord() {
-//		audioRecorder.stop()
-//		audioRecorder = nil
-//		timeLabel.text = "00:00:00"
-//		meterTimerRecord.invalidate()
-//		tableView.reloadData()
-//	}
-//	
-//	@objc func playPause() {
-//		
-//	}
 	
 	internal func toggleRecordStop() {
 		switch isAudioRecordingGranted {
@@ -96,8 +150,10 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 		case false: stop()
 		}
 	}
+																	
 	
 	internal func record() {
+		animateImageView()
 			//Create the session.
 			let session = AVAudioSession.sharedInstance()
 			do {
@@ -134,9 +190,11 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	
 	internal func stop() {
+		animateDownImageView()
 		audioRecorder.stop()
 		audioRecorder = nil
 		timeLabel.text = "00:00:00"
+		bigLabel.text = "00:00:00"
 		meterTimerRecord.invalidate()
 		let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large)
 		recordButton.setImage(UIImage(systemName: "record.circle.fill", withConfiguration: config)?.withTintColor(UIColor(named: "SoftRed")!, renderingMode: .alwaysOriginal), for: .normal)
@@ -147,7 +205,6 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	@objc func startRecord() {
 		let number = UserDefaults.standard.object(forKey: "\(id)")
-		
 		if number as? Int == 0 {
 			FileAdmin.createFolder(name: "\(id)")
 			CoreDataMethods.shared.saveVoiceImage(tag: id)
@@ -163,8 +220,10 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 			let hr = Int((audioRecorder.currentTime / 60) / 60)
 			let min = Int(audioRecorder.currentTime / 60)
 			let sec = Int(audioRecorder.currentTime.truncatingRemainder(dividingBy: 60))
+			//let ms = Int((self.audioRecorder.currentTime * 1000).truncatingRemainder(dividingBy: 1000))
 			let totalTimeString = String(format: "%02d:%02d:%02d", hr, min, sec)
 			timeLabel.text = totalTimeString
+			bigLabel.text = totalTimeString
 			audioRecorder.updateMeters()
 		}
 	}
@@ -207,10 +266,8 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 		cell.textFieldLabel.text = text
 		cell.taskDateLabel.text = DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now)
 		cell.buttonAction = { [weak self] in
-			
 			guard let self = self else { return }
 			guard let path = FileAdmin.getFileUrl(nameFolder: "\(self.id)", name: "\(indexPath.row + 1).m4a") else { return }
-			
 			self.cellVoice = cell
 			cell.audioPlayer = try AVAudioPlayer(contentsOf: path)
 			cell.togglePlayback()

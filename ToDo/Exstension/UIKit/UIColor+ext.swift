@@ -25,7 +25,24 @@ extension UIColor {
 	static let blackWhite = UIColor(named: "BlackWhite")
 	static let cellColor = UIColor(named: "CellColor")
 	static let newTaskButtonColor = UIColor(named: "NewTaskButtonColor")
+	static let backgroundColorDark = UIColor(named: "BackgroundColorDark")
 	
+	
+
+	static let dynamicColorTop = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+		if traitCollection.userInterfaceStyle == .light {
+			return .systemBlue
+		} else {
+			return .gray
+		}
+	}
+	static let dynamicColorBottom = UIColor { (traitCollection: UITraitCollection) -> UIColor in
+		if traitCollection.userInterfaceStyle == .light {
+			return .systemYellow
+		} else {
+			return .white
+		}
+	}
 
 	  static let offWhite = rgb(255, 225, 235)
 }

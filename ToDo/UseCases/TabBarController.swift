@@ -6,6 +6,19 @@
 //
 
 //
+fileprivate enum Constants {
+	static var mainTitle: String { "my tasks" }
+	static var buttonTitle: String { "+" }
+	static var buttonTitleColor = UIColor.blackWhite
+	static var buttonBackgroundColor = UIColor.newTaskButtonColor
+	static var buttonCornerRadius: CGFloat { 35 }
+	static var tableViewRowHeight: CGFloat { 60 }
+	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 10)!}
+
+}
+
+
+
 import UIKit
 protocol TabBarOutput: AnyObject {}
 
@@ -13,12 +26,17 @@ final class TabBarController: UITabBarController {
 	let dateNow = Date.now
 	
 	func createTabBarController(rootVC1: UIViewController, rootVC2: UIViewController, rootVC3: UIViewController) -> UITabBarController {
+		
+		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.systemBlue], for: .selected)
+		UITabBar.appearance().tintColor = .systemBlue
 		let tabBarVC = UITabBarController()
 		let firstPic = UIImage(systemName: "list.bullet.rectangle.fill")
 		
 		
 		let todayPic = UIImage(systemName: calendarDate())
 		let settingPic = UIImage(systemName: "gear")
+	
+		
 		
 		tabBarVC.viewControllers = [generationNavigationController(rootVC: rootVC1, title: "all tasks", image: firstPic!, tag: 0),
 																generationNavigationController(rootVC: rootVC2, title: "today", image: todayPic!, tag: 1),

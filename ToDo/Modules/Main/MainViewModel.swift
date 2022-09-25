@@ -16,6 +16,7 @@ fileprivate enum Constants {
 protocol MainViewModelProtocol {
 	func reloadTable()
 	func goToNewTaskVC()
+	func goToDetail()
 	func createNavController()
 	var coreDataMethods: CoreDataMethods { get }
 	var coreDataModel: [Tasks] { get }
@@ -38,10 +39,10 @@ protocol MainViewModelProtocol {
 
 final class MainViewModel {
 	private weak var output: MainOutput?
-	let coreDataMethods = CoreDataMethods()
-	let visualViewCell = VisualViewCell()
-	let navController = NavigationController()
-	let taptic = TapticFeedback()
+	internal let coreDataMethods = CoreDataMethods()
+	private let visualViewCell = VisualViewCell()
+	private let navController = NavigationController()
+	private let taptic = TapticFeedback()
 	weak var view: Main?
 	init(output: MainOutput) {
 		self.output = output
@@ -49,8 +50,8 @@ final class MainViewModel {
 }
 
 extension MainViewModel: MainViewModelProtocol {
-	
-	func createNavController() {
+
+	internal func createNavController() {
 		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
@@ -63,83 +64,68 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 	}
 	
-	func tableViewReload() {
+	private func tableViewReload() {
 		DispatchQueue.main.async { [weak self] in
-			self!.reloadTable()
+				guard let self = self else { return }
+			self.reloadTable()
 		}
 	}
 	
-	func reloadTable() {
+	internal func reloadTable() {
 		view?.tableView.reloadData()
 	}
 	
-	private func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
-		var resultInt = 0
-		var resultString = ""
-		for num in itemsId {
-			if resultString.count < 7 {
-				if let chr = Int(String(num)) {
-					resultString += String(chr)
-				}
-			}
-		}
-		resultInt = Int(resultString) ?? 777
-		return resultInt
-	}
-	
-	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
+	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
-		
-		let button = cell.buttonCell
-		
-		
-		button.tag = createShortIntWithoutStrChar(fromItemsId: items.id)
-		
-		print("button tag = \(button.tag)")
-		sectionIndex = button.tag
-		
-		button.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
+		let buttonCell = cell.buttonCell
+		buttonCell.tag = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+		sectionIndex = buttonCell.tag
+		buttonCell.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
 	
-	var todayTasksArray: [Tasks] {
+	internal var todayTasksArray: [Tasks] {
 		coreDataMethods.todayTasksArray
 	}
 	
-	var overdueArray: [Tasks] {
+	internal var overdueArray: [Tasks] {
 		coreDataMethods.overdueArray
 	}
 	
-	var currentArray: [Tasks] {
+	internal var currentArray: [Tasks] {
 		coreDataMethods.currentArray
 	}
 	
-	var completedArray: [Tasks] {
+	internal var completedArray: [Tasks] {
 		coreDataMethods.completedArray
 	}
 	
-	var coreDataModel: [Tasks] {
+	internal var coreDataModel: [Tasks] {
 		coreDataMethods.coreDataModel
 	}
 	
-	var selectionStructArray: [SectionStruct] {
+	internal var selectionStructArray: [SectionStruct] {
 		coreDataMethods.selectionStructArray
 	}
 	
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
+	internal func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks]) {
 		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
-	func goToNewTaskVC() {
+	internal func goToNewTaskVC() {
 		output?.goToNewTask()
 	}
+	
+	internal func goToDetail() {
+		output?.goToDetail()
+	}
+	
 	
 	@objc private func saveCheckmark(sender: UIButton) {
 		taptic.soft
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-		
 		let model = coreDataModel
 		for items in model {
-			let itemsId = createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if sender.tag == itemsId {
 				items.check.toggle()
 			}
@@ -153,7 +139,7 @@ extension MainViewModel: MainViewModelProtocol {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	
-	func editingStyleBody(indexPath: IndexPath) {
+	internal func editingStyleBody(indexPath: IndexPath) {
 		taptic.warning
 		coreDataMethods.fetchRequest()
 		switch indexPath.section {
@@ -186,7 +172,7 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 	}
 	
-	func cellForRowAtBody(items: Tasks, key: Int, indexPath: IndexPath) -> Tasks{
+	internal func cellForRowAtBody(items: Tasks, key: Int, indexPath: IndexPath) -> Tasks{
 		var items: Tasks = coreDataModel[indexPath.row]
 		let currentEmpty = { self.currentArray.isEmpty }
 		let overEmpty = { self.overdueArray.isEmpty }

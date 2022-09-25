@@ -8,19 +8,21 @@ import UIKit
 import Foundation
 
 final class VisualViewCell {
-	var coreData = CoreDataMethods.shared.coreDataModel
-	
-	//визуальное отоброжение ячеек в зависимости от статуса задачи
-	func visualViewCell(items: Tasks, cell: CustomCell) {
-		let button = cell.buttonCell
-		cell.id                       = items.id
-		cell.taskDateDate             = items.taskDateDate
-		cell.taskTime.text            = items.taskTime
-		cell.taskTitle.text           = items.taskTitle
-		cell.taskTime.isHidden        = !items.alarmImage
-		cell.alarmImageView.isHidden  = !items.alarmImage
-		cell.repeatImageView.isHidden = !items.repeatImage
 		
+	//визуальное отоброжение ячеек в зависимости от статуса задачи
+	internal func visualViewCell(items: Tasks, cell: CustomCell) {
+		let button = cell.buttonCell
+		cell.id                         = items.id
+		cell.taskDateDate               = items.taskDateDate
+		cell.taskTime.text              = items.taskTime
+		cell.taskTitle.text             = items.taskTitle
+		cell.textFieldLabel.text        = items.taskTitle
+		cell.taskTime.isHidden          = !items.alarmImage
+		cell.alarmImageView.isHidden    = !items.alarmImage
+		cell.repeatImageView.isHidden   = !items.repeatImage
+		cell.descriptImageView.isHidden = !items.descriptImage
+		cell.voiceImageView.isHidden    = !items.voiceImage
+		cell.weekLabel.isHidden         = true
 		
 		//MARK: - SWITCH
 		var typeTask: String { items.type }
@@ -31,6 +33,7 @@ final class VisualViewCell {
 		
 		
 		switch typeTask {
+			
 		case "justType":
 			switch check {
 			case true:
@@ -70,12 +73,10 @@ final class VisualViewCell {
 			
 		case "timeRepeatType":
 			guard let taskDateInt = Int(items.timeInterval!) else { return }
-			cell.taskDate.text = "every \(taskDateInt/60) min"
+			cell.taskDate.text = "\(taskDateInt/60) min"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -88,9 +89,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every day"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -99,12 +98,13 @@ final class VisualViewCell {
 			}
 			
 		case "weekRepeatType":
+			cell.weekLabel.isHidden = false
 			cell.taskDate.text = "every week"
+			let weekDaysString = Helper.arrayToStringWeekDay(array: items.weekDays!)
+			cell.weekLabel.text = weekDaysString
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -116,9 +116,7 @@ final class VisualViewCell {
 			cell.taskDate.text = "every month"
 			switch check {
 			case true:
-				button.setImage(UIImage.init(systemName: "checkmark"), for: .normal)
-				button.backgroundColor = .cellColor
-				button.tintColor = .lightGray
+				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
 				cell.taskTitle.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
@@ -144,11 +142,13 @@ final class VisualViewCell {
 		}
 		
 		func painting(cell: CustomCell, color: UIColor, colorTwo: UIColor) {
-			cell.repeatImageView.tintColor  = color
-			cell.alarmImageView.tintColor   = color
-			cell.taskTime.textColor         = color
-			cell.taskDate.textColor         = color
-			cell.taskTitle.textColor        = colorTwo
+			cell.repeatImageView.tintColor   = color
+			cell.alarmImageView.tintColor    = color
+			cell.descriptImageView.tintColor = color
+			cell.taskTime.textColor          = color
+			cell.taskDate.textColor          = color
+			cell.weekLabel.textColor         = color
+			cell.taskTitle.textColor         = colorTwo
 		}
 	}
 }

@@ -17,11 +17,13 @@ final class Coordinator: NewTaskOutput {
 		self.assembly = assembly
 	}
 	
-	var newTaskView = UIViewController()
-	var mainView = UIViewController()
-	var seconvVC = UIViewController()
-	var settingVC = UIViewController()
-  var tabBarVC = UITabBarController()
+	private var newTaskView = UIViewController()
+	private var mainView = UIViewController()
+	private var seconvVC = UIViewController()
+	private var settingVC = UIViewController()
+	private var detailVC = UIViewController()
+	private var tabBarVC = UITabBarController()
+	
 
 	
 
@@ -29,20 +31,33 @@ final class Coordinator: NewTaskOutput {
 		mainView = assembly.makeMain(output: self)
 		seconvVC = assembly.makeSecondVC(output: self)
 		settingVC = assembly.makeSettingVC(output: self)
+		detailVC = assembly.makeDetailVC(output: self)
 		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
 		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
+		window.overrideUserInterfaceStyle = MTUserDefaults.shared.theme.getUserIntefaceStyle() //определение пользовательской темы
 	}
 }
 
 extension Coordinator: MainOutput {
+	
 	func goToNewTask() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
-		mainView.present(newTaskVC, animated: true, completion: nil)
+		mainView.showDetailViewController(newTaskVC, sender: self)
+	}
+	func goToDetail() {
+		let detailVC = assembly.makeDetailVC(output: self)
+		mainView.show(detailVC, sender: self)
+		print("goToDetail")
 	}
 }
 
-extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput {
-
+extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
+	
+	func goToNewTaskSecond() {
+		let detailVC = assembly.makeDetailVC(output: self)
+		seconvVC.show(detailVC, sender: self)
+		print("goToNewTaskSecond")
+	}
 	
 }

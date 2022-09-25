@@ -24,41 +24,41 @@ fileprivate enum Constants {
 }
 
 final class NewTask: UIViewController {
-	var taskStruct = TaskStruct()
-	var presenter: NewTaskPresenterProtocol!
-  var taptic = TapticFeedback()
+	internal var taskStruct = TaskStruct()
+	internal var presenter: NewTaskPresenterProtocol!
+	private var taptic = TapticFeedback()
 	
 	
 	//MARK: - Properties
-	let dataPicker              = UIDatePicker()
-	let timePicker              = UIDatePicker()
-	let timePickerDWM           = UIDatePicker()
+	private let dataPicker              = UIDatePicker()
+	private let timePicker              = UIDatePicker()
+	private let timePickerDWM           = UIDatePicker()
 	
-	let switchAlert             = UISwitch()
-	let switchAlertRepeat       = UISwitch()
-	let alertLabel              = UIImageView()
-	let repeatLabel             = UIImageView()
-	let infoLabel               = UILabel()
-	let textField               = UITextField()
-	let navigationBar           = UINavigationBar()
-	var repeatSegmented         = UISegmentedControl()
+	private let switchAlert             = UISwitch()
+	private let switchAlertRepeat       = UISwitch()
+	private let alertLabel              = UIImageView()
+	private let repeatLabel             = UIImageView()
+	internal let infoLabel               = UILabel()
+	private let textField               = UITextField()
+	private let navigationBar           = UINavigationBar()
+	private var repeatSegmented         = UISegmentedControl()
 	
-	var button                  = UIButton()
-	let weekDayButton           = UIButton()
-	var buttonMonth             = UIButton()
+	private var button                  = UIButton()
+	private let weekDayButton           = UIButton()
+	private var buttonMonth             = UIButton()
 	
-	var buttonStackView         = UIStackView()
-	var buttonMonthHStackView   = UIStackView()
-	var buttonMonthHStackView2  = UIStackView()
-	var buttonMonthHStackView3  = UIStackView()
-	var buttonMonthHStackView4  = UIStackView()
-	var buttonMonthHStackView5  = UIStackView()
-	var buttonMonthVStackView   = UIStackView()
-	var segmentedItems          = ["day", "week", "month", "set time"]
-	var segmented1Items          = ["Alarm", "Reapeat"]
-	let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-	var buttonArray: [UIButton] = []
-	var coreData                = CoreDataMethods()
+	private var buttonStackView         = UIStackView()
+	private var buttonMonthHStackView   = UIStackView()
+	private var buttonMonthHStackView2  = UIStackView()
+	private var buttonMonthHStackView3  = UIStackView()
+	private var buttonMonthHStackView4  = UIStackView()
+	private var buttonMonthHStackView5  = UIStackView()
+	private var buttonMonthVStackView   = UIStackView()
+	private let segmentedItems          = ["day", "week", "month", "set time"]
+	private var segmented1Items          = ["Alarm", "Reapeat"]
+	internal let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	private var buttonArray: [UIButton] = []
+	private var coreData                = CoreDataMethods()
 	
 	
 	//MARK: - LiveCycles
@@ -121,6 +121,7 @@ final class NewTask: UIViewController {
 		self.textField.backgroundColor    = .systemBackground
 		self.textField.font               = Constants.textFiledFont
 		self.textField.clearButtonMode    = .always
+		//self.textField.
 		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
 	}
 	
@@ -542,7 +543,8 @@ final class NewTask: UIViewController {
 		self.infoLabel.textColor = UIColor.red
 		self.infoLabel.font = Constants.infoLabelFont20
 		text != nil ? (self.infoLabel.text = text) : (self.infoLabel.text = oldValue)
-		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) { [weak self]  in
+			guard let self = self else { return }
 			self.infoLabel.textColor = UIColor.blackWhite
 			self.infoLabel.font = Constants.infoLabelFont
 			self.infoLabel.text = oldValue
@@ -595,7 +597,7 @@ final class NewTask: UIViewController {
 	
 	
 	//MARK: - addSubviewAndConfigure
-	func addSubviewAndConfigure(){
+	private func addSubviewAndConfigure(){
 		self.view.backgroundColor = Constants.backgroundColorView
 		self.view.addSubview(self.textField)
 		self.view.addSubview(self.dataPicker)
@@ -613,7 +615,7 @@ final class NewTask: UIViewController {
 	
 	
 	//MARK: - SetConstraits
-	func setConstraits() {
+	private func setConstraits() {
 		self.textField.translatesAutoresizingMaskIntoConstraints                                                        = false
 		self.textField.widthAnchor.constraint(equalToConstant: 300).isActive                                            = true
 		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true
@@ -635,14 +637,12 @@ final class NewTask: UIViewController {
 		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
 		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                           = true
 		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                            = true
-		//self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive               = true
 		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70).isActive = true
 		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                      = true
 		
 		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
 		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
 		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
-		//self.repeatLabel.trailingAnchor.constraint(equalTo: self.switchAlertRepeat.leadingAnchor, constant: -8).isActive              = true
 		self.repeatLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -70).isActive = true
 		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive               = true
 		
@@ -673,7 +673,6 @@ final class NewTask: UIViewController {
 		self.buttonMonthVStackView.translatesAutoresizingMaskIntoConstraints                                            = false
 		self.buttonMonthVStackView.widthAnchor.constraint(equalToConstant: 294).isActive                                = true
 		self.buttonMonthVStackView.heightAnchor.constraint(equalToConstant: 208).isActive                               = true
-		//self.buttonMonthVStackView.bottomAnchor.constraint(greaterThanOrEqualTo: view.bottomAnchor, constant: -70).isActive = true
 		self.buttonMonthVStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                  = true
 		self.buttonMonthVStackView.topAnchor.constraint(equalTo: self.timePickerDWM.bottomAnchor, constant: 0).isActive = true
 		

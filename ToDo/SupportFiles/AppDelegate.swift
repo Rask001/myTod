@@ -4,13 +4,14 @@
 //
 //  Created by Антон on 26.03.2022.
 //
- 
 import UIKit
 import CoreData
 import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+	
+	
 
 	var window: UIWindow?
 	private let assembly = Assembly()
@@ -20,13 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
+		 
 
 		 //запрос у пользователя на отправку локал нотификейшн
 		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self
 		 LocalNotificationRequest.shared.requestAuthorization(notificationCenter: notificationCenter)
 		 return true
-	 }
+	}
+	
+	func applicationWillEnterForeground(_ application: UIApplication) {
+		print("applicationWillEnterForeground")
+		}
 	
 	func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
 			return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
@@ -78,6 +84,7 @@ lazy var persistentContainer: NSPersistentContainer = {
 	    }
 	}
 }
+
 
 
 //MARK: NOTIFICATION EXTENSION

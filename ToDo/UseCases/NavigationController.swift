@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
- struct NavigationController {
+struct NavigationController {
 	 
 	 func createNavigationController(viewController: UIViewController, title: String?, font: UIFont, textColor: UIColor, backgroundColor: UIColor, leftItemText: String, rightItemText: String, itemColor: UIColor) {
 		let control = viewController
@@ -22,7 +22,7 @@ import UIKit
 				navBarAppearance.configureWithOpaqueBackground()
 				navBarAppearance.largeTitleTextAttributes = [.foregroundColor: textColor]
 				navBarAppearance.titleTextAttributes = textAttributes
-			navBarAppearance.backgroundColor = backgroundColor
+			  navBarAppearance.backgroundColor = backgroundColor
 			  navBarAppearance.shadowColor = backgroundColor
 			//navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
 

@@ -20,18 +20,22 @@ fileprivate enum Constants {
 
 }
 
-
+final class localTaskStruct {
+static var taskStruct = TaskStruct()
+}
 
 //MARK: - Main
 final class Main: UIViewController {
 	
 	//MARK: - Properties
-	
-	var tableView = UITableView()
-	let buttonNewTask = UIButton()
-	let navController = UINavigationController()
-	let taptic = TapticFeedback()
-	var viewModel: MainViewModelProtocol
+	internal var tableView = UITableView()
+	internal let buttonNewTask = CustomButtonNewTask()
+	internal let navController = UINavigationController()
+	internal let taptic = TapticFeedback()
+	internal let helper = Helper()
+	internal let gradient = CAGradientLayer()
+	internal var viewModel: MainViewModelProtocol
+	static let shared = MainViewModel.self
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -44,80 +48,85 @@ final class Main: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		print(NSHomeDirectory())
+		
 		confugureTableView()
 		notification()
 		setupButton()
 		setConstraits()
 		viewModel.createNavController()
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
+	@objc func scrollUp(notification: NSNotification) {
+		self.buttonNewTask.isHidden = true
+		guard let userInfo = notification.userInfo else { return }
+		guard let height = (userInfo["height"]) else { return }
+		UIView.animate(withDuration: 0.3, delay: 0) {
+			self.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
+		}
+	}
+
+	@objc func keyboardWillHide(sender: NSNotification) {
+			 self.tableView.frame.origin.y = 0 // Move view to original position
+		self.buttonNewTask.isHidden = false
+	}
+	
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+			super.traitCollectionDidChange(previousTraitCollection)
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+		super.viewWillAppear(false)
 		viewModel.coreDataMethods.fetchRequest()
-		//self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+		CurrentTabBar.number = 1
+	}
 
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-	}
-		
-//	override func viewWillLayoutSubviews() {
-//		super.viewWillLayoutSubviews()
-//	}
-	
-//	override func viewDidLayoutSubviews() {
-//		super.viewDidLayoutSubviews()
-//	}
-	
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
 		self.view.addSubview(tableView)
-		self.view.backgroundColor = Constants.backgroundColorView
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
 		self.tableView.register(CustomHeader.self, forCellReuseIdentifier: CustomHeader.identifier)
-		self.tableView.backgroundColor  = .backgroundColor //.clear
+		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-		//self.tableView.contentInset.top = 20
+		self.tableView.allowsSelection  = true
 	}
+
 	
-	
-	func setupButton(){
-		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
+	private func setupButton(){
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchDown)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
 		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
-		//self.buttonNewTask.draw(CGRect(origin: CGPoint(x: 5, y: 5), size: CGSize(width: 10, height: 10)))
-		
+		self.buttonNewTask.backgroundColor = Constants.buttonBackgroundColor
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
-	@objc private func touchDown() {
-		self.buttonNewTask.layer.shadowRadius = 3
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
+	@objc private func goToNewTaskVC() {
+		if Counter.count == 0 {
+			TapticFeedback.shared.soft
+			Counter.count += 1
+		}
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+			guard let self = self else { return }
+			self.viewModel.goToNewTaskVC()
+			Counter.count = 0 
+		}
 	}
 	
-	@objc private func goToNewTaskVC() {
-		self.buttonNewTask.layer.shadowRadius = 4
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 3 )
-		viewModel.goToNewTaskVC()
-	}
 	
 	//MARK: - Set Constraits
 	
@@ -130,16 +139,51 @@ final class Main: UIViewController {
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
 		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
 		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
 		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
+		
+		
 	}
 	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
-	func notification() {
+	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
+	@objc func goToDetail(notification: NSNotification) {
+		guard let userInfo = notification.userInfo else { return }
+		guard let buttonTag = userInfo["buttonTag"] else { return }
+		let tag: Int = buttonTag as! Int
+	  print(tag)
+		passData(cellTag: tag)
+		self.viewModel.goToDetail()
+	}
+	
+	
+	
+	private func passData(cellTag: Int) {
+		CoreDataMethods.shared.fetchRequest()
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
+				localTaskStruct.taskStruct.createdAt     = items.createdAt
+				localTaskStruct.taskStruct.check         = items.check
+				localTaskStruct.taskStruct.taskDateDate  = items.taskDateDate
+				localTaskStruct.taskStruct.id            = items.id
+				localTaskStruct.taskStruct.descript      = items.descript
+				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
+			}
+		}
+	}
+	
+	
 	
 	@objc func tableViewReloadData(notification: NSNotification) {
 		self.viewModel.coreDataMethods.fetchRequest()
@@ -150,20 +194,6 @@ final class Main: UIViewController {
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
-	
-//		func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//			let model = viewModel.selectionStructArray[section]
-//			let cell = tableView.dequeueReusableCell(withIdentifier: CustomHeader.identifier) as! CustomHeader
-//			cell.setup(model: model)
-//			return cell.contentView
-//		}
-	
-//	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//		let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 300, height: 35))
-//		headerView.layer.cornerRadius = 5
-//		headerView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.6)
-//		return headerView
-//	}
 	
 	//MARK: Section
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -179,18 +209,20 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		viewModel.selectionStructArray[section].header
 	}
 	
+	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		
 		return 30
 	}
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		viewModel.editingStyleBody(indexPath: indexPath)
+		viewModel.editingStyleBody(indexPath: indexPath) //
 	}
 	
 	//MARK: CellForRowAt
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell   = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as! CustomCell
 		let key = indexPath.section
 		let items: Tasks = viewModel.coreDataModel[indexPath.row]
 		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
@@ -198,5 +230,4 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		return cell
 	}
 }
-
 

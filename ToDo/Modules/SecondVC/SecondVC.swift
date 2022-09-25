@@ -27,10 +27,14 @@ final class SecondVC: UIViewController {
 	
 	//MARK: - Properties
 	
-	var tableView = UITableView()
-	let buttonNewTask = UIButton()
-	let taptic = TapticFeedback()
-	let viewModel: SecondViewModelProtocol
+	internal var tableView = UITableView()
+	private let buttonNewTask = CustomButtonNewTask()
+	private let taptic = TapticFeedback()
+	//let theme = Theme()
+	private let viewModel: SecondViewModelProtocol
+	private let	gradient = CAGradientLayer()
+	
+	
 	init(viewModel: SecondViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -47,33 +51,33 @@ final class SecondVC: UIViewController {
 		confugureTableView()
 		notification()
 		setConstraits()
-		self.navigationController?.setNavigationBarHidden(true, animated: false)
-		//viewModel.createNavController()
+		viewModel.createNavController()
+    Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+			super.traitCollectionDidChange(previousTraitCollection)
+			Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+		super.viewWillAppear(true)
 		viewModel.coreDataMethods.fetchRequest()
-	}
+		CurrentTabBar.number = 2
+			}
+	
 	
 	override func viewDidLayoutSubviews() {
 		super.viewWillLayoutSubviews()
-	
+		self.tableView.backgroundColor = .clear
 	}
 	
 	
 	//MARK: - Configure
 	
 	private func confugureTableView() {
-	//	self.title = "lollololol"
-//		self.navigationBar.tintColor = .systemBlue
-	//  self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.futura20()!, NSAttributedString.Key.foregroundColor: UIColor.white]
 		self.view.addSubview(tableView)
-		self.view.backgroundColor = .backgroundColor
 		self.tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
-		self.tableView.backgroundColor  = .clear
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
@@ -81,18 +85,35 @@ final class SecondVC: UIViewController {
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 		self.tableView.contentInset.top = 20
+		NotificationCenter.default.addObserver(self, selector: #selector(goToDetailSecond), name: Notification.Name("tapSecond"), object: .none)
 	}
 	
-//	private func navigationControllerSetup() {
-//		navigationItem.title = "today"
-//		let textAttributes = [NSAttributedString.Key.font: Constants.navigationTitleFont, NSAttributedString.Key.foregroundColor: UIColor.blackWhite]
-//		navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
-//		self.navigationController?.navigationBar.barTintColor = .backgroundColor
-//		UINavigationBar.appearance().shadowImage = UIImage() //убирает полоску под нав контроллером
-////		let backButtonItem = UIBarButtonItem(title: "back", style: .plain, target: nil, action: nil)
-////		backButtonItem.tintColor = UIColor.blackWhite
-////		navigationItem.leftBarButtonItems = [backButtonItem]
-//	}
+		@objc func goToDetailSecond(notification: NSNotification) {
+			guard let userInfo = notification.userInfo else { return }
+			guard let buttonTag = userInfo["buttonTag"] else { return }
+			let tag: Int = buttonTag as! Int
+			print(tag)
+			passData(cellTag: tag)
+			self.viewModel.goToNewTaskVC()
+		}
+	
+	private func passData(cellTag: Int) {
+		CoreDataMethods.shared.fetchRequest()
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
+				localTaskStruct.taskStruct.createdAt     = items.createdAt
+				localTaskStruct.taskStruct.check         = items.check
+				localTaskStruct.taskStruct.taskDateDate  = items.taskDateDate
+				localTaskStruct.taskStruct.id            = items.id
+				localTaskStruct.taskStruct.descript      = items.descript
+				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
+			}
+		}
+	}
+	
 	
 	@objc func cancelFunc(){
 		
@@ -100,13 +121,12 @@ final class SecondVC: UIViewController {
 	@objc func continueFunc(){
 		
 	}
-	func setupButton(){
+	private func setupButton(){
 		self.buttonNewTask.backgroundColor    = Constants.buttonBackgroundColor
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(touchDown), for: .touchDown)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .allTouchEvents)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
@@ -114,35 +134,33 @@ final class SecondVC: UIViewController {
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
-	@objc private func touchDown() {
-		self.buttonNewTask.layer.shadowRadius = 3
-		self.buttonNewTask.layer.shadowOpacity = 0.2
-		self.buttonNewTask.layer.shadowOffset = CGSize(width: 0, height: 1 )
-	}
-	
 	@objc private func goToNewTaskVC() {
-		viewModel.goToNewTaskVC()
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self]  in
+			guard let self = self else { return }
+			TapticFeedback.shared.soft
+			self.viewModel.goToNewTaskVC()
+		}
 	}
 	
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
-		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 34).isActive                           = true
-		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
-		
-		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
-		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive               = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
+		tableView.translatesAutoresizingMaskIntoConstraints                                                = false
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                        = true
+		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive      = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive                = true //34
+		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive         = true
+		   
+		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                            = false
+		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive    = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                                 = true
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                                = true
 	}
 	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
-	func notification() {
+	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	

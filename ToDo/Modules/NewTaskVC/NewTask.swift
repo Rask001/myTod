@@ -21,6 +21,7 @@ fileprivate enum Constants {
 	static var infoLabelFont20: UIFont { UIFont(name: "Futura", size: 20)!}
 	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
 	static var backgroundColorView: UIColor { .systemBackground }
+	static var barColorView: UIColor { UIColor(named: "barNewTask") ?? .systemBackground }
 }
 
 final class NewTask: UIViewController {
@@ -107,9 +108,10 @@ final class NewTask: UIViewController {
 		navigationItem.leftBarButtonItem       = leftButton
 		navigationItem.rightBarButtonItem      = rightButton
 		self.navigationBar.items               = [navigationItem]
+		self.navigationBar.backgroundColor = Constants.barColorView
 		self.navigationBar.setValue(true, forKey: "hidesShadow")
-		self.navigationBar.barTintColor = Constants.backgroundColorView
-		self.navigationBar.backgroundColor = Constants.backgroundColorView
+		self.navigationBar.barTintColor = Constants.barColorView
+		self.navigationBar.backgroundColor = Constants.barColorView//Constants.backgroundColorView
 		self.view.addSubview(navigationBar)
 	}
 	
@@ -118,10 +120,8 @@ final class NewTask: UIViewController {
 		self.textField.layer.cornerRadius = 5
 		self.textField.placeholder        = Constants.textFiledPlaceholder
 		self.textField.borderStyle        = UITextField.BorderStyle.none
-		self.textField.backgroundColor    = .systemBackground
 		self.textField.font               = Constants.textFiledFont
 		self.textField.clearButtonMode    = .always
-		//self.textField.
 		self.textField.addTarget(self, action: #selector(textFieldDidChande), for: .editingChanged)
 	}
 	
@@ -144,7 +144,6 @@ final class NewTask: UIViewController {
 	}
 	
 	private func switchAlertSetup() {
-		//switchAlert.isHidden          = true
 		switchAlert.isEnabled         = false
 		switchAlert.isOn              = false
 		switchAlert.onTintColor       = .backgroundColor
@@ -422,12 +421,10 @@ final class NewTask: UIViewController {
 		taskStruct.alarmImage = switchAlert.isOn
 		switch switchAlert.isOn {
 		case true:
-			//self.dataPicker.isEnabled            = true
 			self.dataPicker.isHidden             = false
 			self.infoLabel.text                  = "Set the date and time of the reminder"
 			self.taskStruct.type                 = .singleAlertType
 		case false:
-			//self.dataPicker.isEnabled            = false
 			self.dataPicker.isHidden             = true
 			self.dataPicker.minimumDate          = Date()
 			self.switchAlertRepeat.isOn          = false
@@ -514,24 +511,24 @@ final class NewTask: UIViewController {
 																		 type:         taskStruct.type.rawValue)
 		case .weekRepeatType:
 			guard taskStruct.weekDayChoice != [] else { redText("set the days of the week", 1000); return }
-			coreData.saveWeekDaysRepitionTask(taskTitle: taskStruct.taskTitle,
-																				taskTime: taskStruct.taskTime!,
+			coreData.saveWeekDaysRepitionTask(taskTitle:    taskStruct.taskTitle,
+																				taskTime:     taskStruct.taskTime!,
 																				taskDateDate: taskStruct.taskDateDate!,
-																				createdAt: taskStruct.createdAt,
-																				alarmImage: taskStruct.alarmImage,
-																				repeatImage: taskStruct.repeatImage,
-																				type: taskStruct.type.rawValue,
-																				weekDay: taskStruct.weekDayChoice!)
+																				createdAt:    taskStruct.createdAt,
+																				alarmImage:   taskStruct.alarmImage,
+																				repeatImage:  taskStruct.repeatImage,
+																				type:         taskStruct.type.rawValue,
+																				weekDay:      taskStruct.weekDayChoice!)
 		case .monthRepeatType:
 			guard taskStruct.monthDayChoice != [] else { redText("set the days of the month", 1000); return }
-			coreData.saveDaysMonthRepitionTask(taskTitle: taskStruct.taskTitle,
-																				 taskTime: taskStruct.taskTime!,
+			coreData.saveDaysMonthRepitionTask(taskTitle:    taskStruct.taskTitle,
+																				 taskTime:     taskStruct.taskTime!,
 																				 taskDateDate: taskStruct.taskDateDate!,
-																				 createdAt: taskStruct.createdAt,
-																				 alarmImage: taskStruct.alarmImage,
-																				 repeatImage: taskStruct.repeatImage,
-																				 type: taskStruct.type.rawValue,
-																				 monthDay: taskStruct.monthDayChoice!)
+																				 createdAt:    taskStruct.createdAt,
+																				 alarmImage:   taskStruct.alarmImage,
+																				 repeatImage:  taskStruct.repeatImage,
+																				 type:         taskStruct.type.rawValue,
+																				 monthDay:     taskStruct.monthDayChoice!)
 		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)

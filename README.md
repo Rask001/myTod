@@ -1,4 +1,8 @@
 # ToDo
+![MyCollages-2](https://user-images.githubusercontent.com/97259692/192172196-5d35bcdf-ee6d-4182-a7e6-18c9d86b5c0e.png)
+![MyCollages](https://user-images.githubusercontent.com/97259692/192172137-cb3139f1-75a1-408b-a56a-edf8aa3eb0aa.png)
+
+
 myProject (in progress..)
 
 Приложение для создания заметок и напоминаний. 
@@ -32,12 +36,12 @@ myProject (in progress..)
 **технологии:**
 
 1. Адаптивная верстка кодом с использованием NSLayoutConstraint & Anchors
-2. Частично архитектура MVVM
+2. Архитектура MVVM + MVC
 3. Хранение данных:
 - CoreData
 - FileManager (для аудио)
 - UserDefaults
-4. Amimations
+4. UIAnimation
 5. AVPlayer, AVRecorder
 6. UserNotifications
 

@@ -30,7 +30,6 @@ final class SecondVC: UIViewController {
 	internal var tableView = UITableView()
 	private let buttonNewTask = CustomButtonNewTask()
 	private let taptic = TapticFeedback()
-	//let theme = Theme()
 	private let viewModel: SecondViewModelProtocol
 	private let	gradient = CAGradientLayer()
 	
@@ -166,7 +165,6 @@ final class SecondVC: UIViewController {
 	
 	@objc func tableViewReloadData(notification: NSNotification){
 		self.viewModel.coreDataMethods.fetchRequest()
-			//self.viewModel.coreDataFetch()
 			self.viewModel.reloadTable()
 	}
 }

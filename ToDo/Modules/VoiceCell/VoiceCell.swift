@@ -15,7 +15,6 @@ import AVFAudio
 final class VoiceCell: UITableViewCell {
 	
 	static let identifier = "VoiceCell"
-	var check = false
 	internal var audioPlayer: AVAudioPlayer!
 	internal var meterTimer: Timer!
 	
@@ -33,6 +32,7 @@ final class VoiceCell: UITableViewCell {
 	internal var buttonAction: (() throws -> Void)?
 	internal var taskDateDate: Date? = nil
 	internal var id: String = UUID().uuidString
+	internal var check = false
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)

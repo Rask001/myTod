@@ -14,7 +14,6 @@ fileprivate enum Constants {
 	static var buttonCornerRadius: CGFloat { 35 }
 	static var tableViewRowHeight: CGFloat { 60 }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 10)!}
-
 }
 
 
@@ -50,9 +49,6 @@ final class TabBarController: UITabBarController {
 			navigationVC.navigationBar.setValue(true, forKey: "hidesShadow")
 			return navigationVC
 		}
-//		rootVC1.loadViewIfNeeded()  //подгружает значек таб бара при запуске
-//		rootVC2.loadViewIfNeeded()  //подгружает значек таб бара при запуске
-//		rootVC3.loadViewIfNeeded()  //подгружает значек таб бара при запуске
 		return tabBarVC
 	}
 	

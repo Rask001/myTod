@@ -33,6 +33,7 @@
 		3A9722DE28D92B8C003BB436 /* VoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DD28D92B8A003BB436 /* VoiceCell.swift */; };
 		3A9722E028D92BC2003BB436 /* VoiceCell + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DF28D92BC1003BB436 /* VoiceCell + extension.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
+		3A9B533428E26A4B002F0E95 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B533328E26A4B002F0E95 /* Animations.swift */; };
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
 		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
 		3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB9C28B287234B700EB5544 /* UIColor+ext.swift */; };
@@ -90,6 +91,7 @@
 		3A9722DD28D92B8A003BB436 /* VoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCell.swift; sourceTree = "<group>"; };
 		3A9722DF28D92BC1003BB436 /* VoiceCell + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoiceCell + extension.swift"; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
+		3A9B533328E26A4B002F0E95 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
 		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		3AB9C28B287234B700EB5544 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				3A3E17C628CE369500C025D2 /* Helper.swift */,
 				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
 				3AC261A728C1323B000A0285 /* NavigationController.swift */,
+				3A9B533328E26A4B002F0E95 /* Animations.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 			files = (
 				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
 				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
+				3A9B533428E26A4B002F0E95 /* Animations.swift in Sources */,
 				3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
 				3A5B2D4328CB3EB30041C4AB /* Theme.swift in Sources */,

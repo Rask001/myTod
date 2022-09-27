@@ -49,7 +49,7 @@ final class NewTask: UIViewController {
 	private var buttonMonth             = UIButton()
 	
 	private var buttonStackView         = UIStackView()
-	private var buttonMonthHStackView   = UIStackView()
+  private var buttonMonthHStackView   = UIStackView()
 	private var buttonMonthHStackView2  = UIStackView()
 	private var buttonMonthHStackView3  = UIStackView()
 	private var buttonMonthHStackView4  = UIStackView()
@@ -60,8 +60,8 @@ final class NewTask: UIViewController {
 	internal let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	private var buttonArray: [UIButton] = []
 	private var coreData                = CoreDataMethods()
-	
-	
+	private var animations              = Animations()
+  
 	//MARK: - LiveCycles
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -70,6 +70,7 @@ final class NewTask: UIViewController {
 		self.textField.becomeFirstResponder()
 	}
 	
+
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
@@ -473,13 +474,13 @@ final class NewTask: UIViewController {
 	@objc private func continueFunc() {
 		taskStruct.createdAt  = Date.now
 		let text = infoLabel.text
-		guard let textTitle = textField.text, !textTitle.isEmpty else { redText(nil); return }
-		guard text != "Set the date and time of the reminder" else { redText(nil); return }
-		guard text != "Choose a repeat rate" else { redText(nil); return }
-		guard text != "Set the repeat time" else { redText(nil); return }
-		guard text != "Daily reminders at set times" else { redText("set the time", 1000); return }
-		guard text != "Weekly reminders at set times" else { redText("set the time and days of the week", 1000); return }
-		guard text != "Monthly reminders at set times" else { redText("set the time and days of the month", 1000); return }
+		guard let textTitle = textField.text, !textTitle.isEmpty else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Set the date and time of the reminder" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Choose a repeat rate" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Set the repeat time" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Daily reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Weekly reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != "Monthly reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
 		
 		switch taskStruct.type {
 		case .justType:
@@ -510,7 +511,7 @@ final class NewTask: UIViewController {
 																		 repeatImage:  taskStruct.repeatImage,
 																		 type:         taskStruct.type.rawValue)
 		case .weekRepeatType:
-			guard taskStruct.weekDayChoice != [] else { redText("set the days of the week", 1000); return }
+			guard taskStruct.weekDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveWeekDaysRepitionTask(taskTitle:    taskStruct.taskTitle,
 																				taskTime:     taskStruct.taskTime!,
 																				taskDateDate: taskStruct.taskDateDate!,
@@ -520,7 +521,7 @@ final class NewTask: UIViewController {
 																				type:         taskStruct.type.rawValue,
 																				weekDay:      taskStruct.weekDayChoice!)
 		case .monthRepeatType:
-			guard taskStruct.monthDayChoice != [] else { redText("set the days of the month", 1000); return }
+			guard taskStruct.monthDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveDaysMonthRepitionTask(taskTitle:    taskStruct.taskTitle,
 																				 taskTime:     taskStruct.taskTime!,
 																				 taskDateDate: taskStruct.taskDateDate!,
@@ -532,20 +533,6 @@ final class NewTask: UIViewController {
 		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
-	}
-	
-	private func redText(_ text: String?, _ time: Int = 200) {
-		taptic.error
-		let oldValue = self.infoLabel.text
-		self.infoLabel.textColor = UIColor.red
-		self.infoLabel.font = Constants.infoLabelFont20
-		text != nil ? (self.infoLabel.text = text) : (self.infoLabel.text = oldValue)
-		DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(time)) { [weak self]  in
-			guard let self = self else { return }
-			self.infoLabel.textColor = UIColor.blackWhite
-			self.infoLabel.font = Constants.infoLabelFont
-			self.infoLabel.text = oldValue
-		}
 	}
 	
 	private func allEnabled() {

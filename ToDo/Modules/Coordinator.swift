@@ -59,5 +59,4 @@ extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput
 		seconvVC.show(detailVC, sender: self)
 		print("goToNewTaskSecond")
 	}
-	
 }

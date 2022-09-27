@@ -16,5 +16,4 @@ final class DateFormat {
 		let result = dateFormatter.string(from: date)
 		return result
 	}
-	
 }

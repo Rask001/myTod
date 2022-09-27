@@ -14,7 +14,6 @@ fileprivate enum Constants {
 	static var buttonCornerRadius: CGFloat { 35 }
 	static var tableViewRowHeight: CGFloat { 60 }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 10)!}
-
 }
 
 

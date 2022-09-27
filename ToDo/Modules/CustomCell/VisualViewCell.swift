@@ -145,6 +145,7 @@ final class VisualViewCell {
 			cell.repeatImageView.tintColor   = color
 			cell.alarmImageView.tintColor    = color
 			cell.descriptImageView.tintColor = color
+			cell.voiceImageView.tintColor    = color
 			cell.taskTime.textColor          = color
 			cell.taskDate.textColor          = color
 			cell.weekLabel.textColor         = color

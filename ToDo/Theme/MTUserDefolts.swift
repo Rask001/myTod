@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct MTUserDefaults {
 	static var shared = MTUserDefaults()
@@ -16,5 +17,22 @@ struct MTUserDefaults {
 			UserDefaults.standard.set(newValue.rawValue, forKey: "selectedTheme")
 		}
 	}
+}
+
+enum ThemeEnum: Int {
+	case system
+	case lightTheme
+	case darkTheme
 	
+	func getUserIntefaceStyle() -> UIUserInterfaceStyle {
+		
+		switch self {
+		case .system:
+			return .unspecified
+		case .lightTheme:
+			return .light
+		case .darkTheme:
+			return .dark
+		}
+	}
 }

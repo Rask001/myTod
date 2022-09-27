@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-class Animations {
+final class Animations {
 	
 	 func shake(text: UILabel, duration: CFTimeInterval) {
 		UINotificationFeedbackGenerator().notificationOccurred(.error)
 		let animation = CAKeyframeAnimation()
 		animation.keyPath = "position.x"
 		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-		//animation.values = [-10.0, 10.0, -8.0, 8.0, -5.0, 5.0, -3.0, 3.0, 0.0 ] //-15.0, 15.0, -13.0, 13.0, //не попадает в таптик фидбэк((
+		//[-10.0, 10.0, -8.0, 8.0, -5.0, 5.0, -3.0, 3.0, 0.0 ] не попадает в таптик фидбэк((
 		animation.values = [-10.0, 10.0, -5.0, 5.0, 0.0 ]
 		animation.duration = duration
 		animation.isAdditive = true
@@ -23,9 +23,7 @@ class Animations {
 		text.layer.animation(forKey: "shake")
 	}
 	
-	
-  //	var differenceInSize = CGFloat() // объявить в классе!
-	
+	//	var differenceInSize = CGFloat() // объявить в классе!
 	func animSet(smallLb: UILabel, bigLb: UILabel, differenceInSize: inout CGFloat) {  // добавить во viewDidLoad
 		bigLb.center = smallLb.center
 		differenceInSize = bigLb.font.pointSize / smallLb.font.pointSize

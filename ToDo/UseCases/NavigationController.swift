@@ -17,7 +17,6 @@ struct NavigationController {
 		let textAttributes = [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: textColor]
 		control.navigationController?.navigationBar.titleTextAttributes = textAttributes as [NSAttributedString.Key : Any]
 		
-//		if #available(iOS 13.0, *) {
 				let navBarAppearance = UINavigationBarAppearance()
 				navBarAppearance.configureWithOpaqueBackground()
 				navBarAppearance.largeTitleTextAttributes = [.foregroundColor: textColor]
@@ -32,11 +31,7 @@ struct NavigationController {
 
 			control.navigationController?.navigationBar.prefersLargeTitles = false
 			control.navigationController?.navigationBar.isTranslucent = false
-//		} else {
-//				// Fallback on earlier versions
-//			control.navigationController?.navigationBar.barTintColor = backgroundColor
-//			control.navigationController?.navigationBar.tintColor = backgroundColor
-//		}
+
 	
 		let leftButtonItem = UIBarButtonItem(title: leftItemText, style: .plain, target: nil, action: nil)
 		leftButtonItem.tintColor = itemColor

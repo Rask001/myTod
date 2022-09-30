@@ -86,7 +86,7 @@ final class VisualViewCell {
 			}
 			
 		case "dayRepeatType":
-			cell.taskDate.text = "every day"
+			cell.taskDate.text = NSLocalizedString("every day", comment: "")
 			switch check {
 			case true:
 				checkLight()
@@ -99,7 +99,7 @@ final class VisualViewCell {
 			
 		case "weekRepeatType":
 			cell.weekLabel.isHidden = false
-			cell.taskDate.text = "every week"
+			cell.taskDate.text = NSLocalizedString("every week", comment: "")
 			let weekDaysString = Helper.arrayToStringWeekDay(array: items.weekDays!)
 			cell.weekLabel.text = weekDaysString
 			switch check {
@@ -113,7 +113,7 @@ final class VisualViewCell {
 			}
 			
 		case "monthRepeatType":
-			cell.taskDate.text = "every month"
+			cell.taskDate.text = NSLocalizedString("every month", comment: "")
 			switch check {
 			case true:
 				checkLight()

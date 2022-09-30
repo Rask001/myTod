@@ -54,9 +54,14 @@ extension Coordinator: MainOutput {
 
 extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
 	
-	func goToNewTaskSecond() {
+	func goToDetailSecond() {
 		let detailVC = assembly.makeDetailVC(output: self)
 		seconvVC.show(detailVC, sender: self)
 		print("goToNewTaskSecond")
+	}
+	
+	func goToNewTaskSecond() {
+		let newTaskVC = assembly.makeNewTaskVC(output: self)
+		seconvVC.showDetailViewController(newTaskVC, sender: self)
 	}
 }

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class Helper {
 	
 	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
@@ -24,14 +23,78 @@ final class Helper {
 		return resultInt
 	}
 	
+//	class func EnToRuToEn(araay: [String]) -> [String] {
+//		let array1 = araay
+//		var newArray: [String] = []
+//		for day in array1 {
+//			switch day {
+//			case "sun":
+//				newArray.append("вс")
+//			case "mon":
+//				newArray.append("пн")
+//			case "tue":
+//				newArray.append("вт")
+//			case "wed":
+//				newArray.append("ср")
+//			case "thu":
+//				newArray.append("чт")
+//			case "fri":
+//				newArray.append("пт")
+//			case "sat":
+//				newArray.append("сб")
+//			case "вс":
+//				newArray.append("sun")
+//			case "пн":
+//				newArray.append("mon")
+//			case "вт":
+//				newArray.append("tue")
+//			case "ср":
+//				newArray.append("wed")
+//			case "чт":
+//				newArray.append("thu")
+//			case "пт":
+//				newArray.append("fri")
+//			case "сб":
+//				newArray.append("sat")
+//			default:
+//				break
+//			}
+//		}
+//		return newArray
+//	}
 	
-	final class func arrayToStringWeekDay(array: [String]) -> String {
+	
+	class func arrayToStringWeekDay(array: [String]) -> String {
 		var string = ""
-		let week = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
-		var dayWeek = array
-		dayWeek.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
-		print (dayWeek)
-		for i in dayWeek {
+		var dayWeekDef = array
+		//var dayWeek = EnToRuToEn(araay: array)
+		var week: [String] = []
+		let locale = NSLocale.preferredLanguages.first!
+		if locale.hasPrefix("en") {
+			week = [NSLocalizedString("sun", comment: ""),
+							NSLocalizedString("mon", comment: ""),
+						  NSLocalizedString("tue", comment: ""),
+						  NSLocalizedString("wed", comment: ""),
+						  NSLocalizedString("thu", comment: ""),
+						  NSLocalizedString("fri", comment: ""),
+						  NSLocalizedString("sat", comment: "")]
+		} else if locale.hasPrefix("ru") {
+			week = [NSLocalizedString("mon", comment: ""),
+							NSLocalizedString("tue", comment: ""),
+							NSLocalizedString("wed", comment: ""),
+							NSLocalizedString("thu", comment: ""),
+							NSLocalizedString("fri", comment: ""),
+							NSLocalizedString("sat", comment: ""),
+							NSLocalizedString("sun", comment: "")]
+		}
+		
+		//print("dayWeek: \(dayWeek), dayWeekDef: \(dayWeekDef), week: \(week)")
+		
+		dayWeekDef.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
+		//dayWeek.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
+		
+		
+		for i in dayWeekDef {
 			string.append("\(i), ")
 		}
 		string.remove(at: string.index(before: string.endIndex))

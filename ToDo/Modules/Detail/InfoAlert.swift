@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 final class InfoAlert: UIViewController{
 	
 	private let infoViewAllert = UIView()
@@ -46,19 +47,19 @@ final class InfoAlert: UIViewController{
 	
 	private func getData() {
 		let dateForm = DateForm()
-		let check = data.check ? "Completed" : "Not completed"
-		let taskDate = data.taskDateDate == nil ? "Without time" : dateForm.format(data: data.taskDateDate!)
+		let check = data.check ? NSLocalizedString("Completed", comment: "") : NSLocalizedString("Not completed", comment: "")
+		let taskDate = data.taskDateDate == nil ? NSLocalizedString("Without time", comment: "") : dateForm.format(data: data.taskDateDate!)
 		let isOver: String
 		if data.taskDateDate != nil {
-			isOver = data.taskDateDate! > Date.now ? "No" : "Yes"
+			isOver = data.taskDateDate! > Date.now ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
 		} else {
-			isOver = "Without time"
+			isOver = NSLocalizedString("Without time", comment: "")
 		}
-	
-		self.statusLabel.text = "status: \(check)"
-		self.createdAt.text = "creation time: \(dateForm.format(data: data.createdAt))"
-		self.dateLabel.text = "alert time: \(taskDate)"
-		self.isOverdue.text = "is overdue: \(isOver)"
+
+		self.statusLabel.text = String.localizedStringWithFormat(NSLocalizedString("status: %@", comment: ""), check)
+		self.createdAt.text = String.localizedStringWithFormat(NSLocalizedString("creation time: %@", comment: ""), dateForm.format(data: data.createdAt))
+		self.dateLabel.text = String.localizedStringWithFormat(NSLocalizedString("alert time: %@", comment: ""), taskDate)
+		self.isOverdue.text = String.localizedStringWithFormat(NSLocalizedString("is overdue: %@", comment: ""), isOver)
 	}
 	
 	@objc func dismissView() {

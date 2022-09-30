@@ -1,0 +1,103 @@
+/* 
+  Localizable.strings
+  ToDo
+
+  Created by Антон on 29.09.2022.
+  
+*/
+//MARK: - MAIN
+"my tasks" = "my tasks";
+
+
+
+//MARK: - NewTask
+"...write something here" = "...write something here";
+"create your note" = "create your note";
+"Set the date and time of the reminder" = "Set the date and time of the reminder";
+"Choose a repeat rate" = "Choose a repeat rate";
+"Monthly reminders at set times" = "Monthly reminders at set times";
+"Set the repeat time" = "Set the repeat time";
+"Weekly reminders at set times" = "Weekly reminders at set times";
+"Daily reminders at set times" = "Daily reminders at set times";
+"repeat every day at %@" = "repeat every day at %@";
+
+"new task" = "new task";
+"repeat every selected day of the week at %@" = "repeat every selected day of the week at %@";
+"repeat every selected day of the month at %@" = "repeat every selected day of the month at %@";
+"the reminder will be set for\n %@ %@" = "the reminder will be set for\n %@ %@";
+
+"hours" = "hours";
+"hour" = "hour";
+"minutes" = "minutes";
+"minute" = "minute";
+
+"repeat every %@ %@" = "repeat every %@ %@";
+"repeat every %@ %@ %@ %@" = "repeat every %@ %@ %@ %@";
+
+"day" = "day";
+"week" = "week";
+"month" = "month";
+"set time" = "set time";
+
+"sun" = "sun";
+"mon" = "mon";
+"tue" = "tue";
+"wed" = "wed";
+"thu" = "thu";
+"fri" = "fri";
+"sat" = "sat";
+
+//"вс" = "sun";
+//"пн" = "mon";
+//"вт" = "tue";
+//"ср" = "wed";
+//"чт" = "thu";
+//"пт" = "fri";
+//"сб" = "sat";
+
+"Sunday" = "Sunday";
+"Monday" = "Monday";
+"Tuesday" = "Tuesday";
+"Wednesday" = "Wednesday";
+"Thursday" = "Thursday";
+"Friday" = "Friday";
+"Saturday" = "Saturday";
+
+
+//MARK: - Mian/CoreDataMhetods
+"current tasks" = "current tasks";
+"overdue tasks" = "overdue tasks";
+"completed tasks" = "completed tasks";
+
+
+"every day" = "every day";
+"every week" = "every week";
+"every month" = "every month";
+
+
+//MARK: - TabBar
+
+"all tasks" = "all tasks";
+"today" = "today";
+"settings" = "settings";
+
+//MARK: - SettingVC
+"System" = "System";
+"Light" = "Light";
+"Dark" = "Light";
+
+
+//MARK: - DescriptionVC
+"you can add a description and create a voice note" = "you can add a description and create a voice note";
+
+
+//MARK: - infoAlertDetail
+"status: %@" = "status: %@";
+"creation time: %@" = "creation time: %@";
+"alert time: %@" = "alert time: %@";
+"is overdue: %@" = "is overdue: %@";
+"No" = "No";
+"Yes" = "Yes";
+"Without time" = "Without time";
+"Completed" = "Completed";
+"Not completed" = "Not сompleted";

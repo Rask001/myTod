@@ -10,7 +10,7 @@ import UIKit
 //MARK: - enum Constants
 
 fileprivate enum Constants {
-	static var mainTitle: String { "today" }
+	//static var mainTitle: String { "today" }
 	static var buttonTitle: String { "+" }
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
@@ -28,11 +28,12 @@ final class SecondVC: UIViewController {
 	//MARK: - Properties
 	
 	internal var tableView = UITableView()
-	private let buttonNewTask = CustomButtonNewTask()
+	private let buttonNewTask = UIButton()
 	private let taptic = TapticFeedback()
 	private let viewModel: SecondViewModelProtocol
 	private let	gradient = CAGradientLayer()
-	
+	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
+	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
 	
 	init(viewModel: SecondViewModelProtocol) {
 		self.viewModel = viewModel
@@ -93,7 +94,7 @@ final class SecondVC: UIViewController {
 			let tag: Int = buttonTag as! Int
 			print(tag)
 			passData(cellTag: tag)
-			self.viewModel.goToNewTaskVC()
+			self.viewModel.goToNewTaskSecond()
 		}
 	
 	private func passData(cellTag: Int) {
@@ -125,7 +126,8 @@ final class SecondVC: UIViewController {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .allTouchEvents)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVCDown), for: .touchDown)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
@@ -133,28 +135,58 @@ final class SecondVC: UIViewController {
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
-	@objc private func goToNewTaskVC() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self]  in
-			guard let self = self else { return }
-			TapticFeedback.shared.soft
-			self.viewModel.goToNewTaskVC()
+	
+	@objc private func goToNewTaskVCDown() {
+		TapticFeedback.shared.soft
+		print(buttonNewTaskHeightAnchor?.isActive as Any)
+		buttonNewTaskHeightAnchor?.isActive = false
+		buttonNewTaskWidthAnchor?.isActive = false
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
+
+		self.buttonNewTask.layer.cornerRadius = 40
+		UIView.animate(withDuration: 0.1) { [weak self] in
+			self?.view.layoutIfNeeded()
 		}
 	}
+	
+	@objc private func goToNewTaskVC() {
+		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskHeightAnchor?.isActive = true
+		buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTask.layer.cornerRadius = 35
+		UIView.animate(withDuration: 0.1) { [weak self] in
+			self?.view.layoutIfNeeded()
+		}
+		if Counter.count == 0 {
+			TapticFeedback.shared.light
+			Counter.count += 1
+		}
+		  self.viewModel.goToNewTaskSecond()
+			Counter.count = 0
+	}
+	
+	
+	
+	
 	
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		tableView.translatesAutoresizingMaskIntoConstraints                                                = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                        = true
-		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive      = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive                = true //34
-		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive         = true
+		tableView.translatesAutoresizingMaskIntoConstraints = false
+		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive = true
+		tableView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive = true
 		   
-		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                            = false
-		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive    = true
-		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                                 = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                                = true
+		buttonNewTask.translatesAutoresizingMaskIntoConstraints = false
+		buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
+		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
+		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskWidthAnchor?.isActive = true
+		buttonNewTaskHeightAnchor?.isActive = true
 	}
 	
 	

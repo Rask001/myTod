@@ -10,13 +10,14 @@ import Foundation
 
 fileprivate enum Constants {
 	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var navigationTitle: String { NSLocalizedString("today", comment: "")}
 }
 
 //MARK: - SecondViewModelProtocol
 
 protocol SecondViewModelProtocol {
 	func reloadTable()
-	func goToNewTaskVC()
+	func goToNewTaskSecond()
 	func createNavController()
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
@@ -45,7 +46,7 @@ final class SecondViewModel {
 extension SecondViewModel: SecondViewModelProtocol {
 	
 	internal func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: "today", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
+		NavController.createNavigationController(viewController: view!, title: Constants.navigationTitle, font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	
@@ -85,7 +86,7 @@ extension SecondViewModel: SecondViewModelProtocol {
 		coreDataMethods.deleteCell(indexPath: indexPath, presentedViewController: presentedViewController, tasksModel: taskModel)
 	}
 	
-	internal func goToNewTaskVC() {
+	internal func goToNewTaskSecond() {
 		output?.goToNewTaskSecond()
 		}
 	

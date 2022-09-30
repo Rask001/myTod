@@ -11,8 +11,8 @@ import CoreData
 
 fileprivate enum Constants {
 	static var textFiledFont: UIFont { UIFont(name: "Helvetica Neue", size: 20)!}
-	static var navigationItemTitle: String { "new task" }
-	static var textFiledPlaceholder: String { "...write something here" }
+	static var navigationItemTitle: String { NSLocalizedString("new task", comment: "") }
+	static var textFiledPlaceholder: String { NSLocalizedString("...write something here", comment: "")  }
 	static var leftButtonImage: UIImage { UIImage(named: "xmrk")! }
 	static var rightButtonImage: UIImage { UIImage(named: "chckmrk")! }
 	static var alertLabelImage: UIImage { UIImage(systemName: "alarm")! }
@@ -55,9 +55,20 @@ final class NewTask: UIViewController {
 	private var buttonMonthHStackView4  = UIStackView()
 	private var buttonMonthHStackView5  = UIStackView()
 	private var buttonMonthVStackView   = UIStackView()
-	private let segmentedItems          = ["day", "week", "month", "set time"]
+	private let segmentedItems          = [NSLocalizedString("day", comment: ""),
+																				 NSLocalizedString("week", comment: ""),
+																				 NSLocalizedString("month", comment: ""),
+																				 NSLocalizedString("set time", comment: "")]
 	private var segmented1Items          = ["Alarm", "Reapeat"]
-	internal let weekDaysArray           = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+	internal let weekDaysArray           = [NSLocalizedString("Sunday", comment: ""),
+																				 NSLocalizedString("Monday", comment: ""),
+																				 NSLocalizedString("Tuesday", comment: ""),
+																				 NSLocalizedString("Wednesday", comment: ""),
+																				 NSLocalizedString("Thursday", comment: ""),
+																				 NSLocalizedString("Friday", comment: ""),
+																				 NSLocalizedString("Saturday", comment: "")]
+	
+	//["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	private var buttonArray: [UIButton] = []
 	private var coreData                = CoreDataMethods()
 	private var animations              = Animations()
@@ -194,7 +205,7 @@ final class NewTask: UIViewController {
 		infoLabel.numberOfLines = 2
 		infoLabel.textAlignment = .center
 		infoLabel.font          = Constants.infoLabelFont
-		infoLabel.text          = "create your note"
+		infoLabel.text          = NSLocalizedString("create your note", comment: "")
 		infoLabel.textColor     = .blackWhite
 	}
 	
@@ -225,7 +236,25 @@ final class NewTask: UIViewController {
 	
 	//MARK: - Methods
 	private func createButtonWeekDays() {
-		let weekDaysName = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
+		let locale = NSLocale.preferredLanguages.first!
+		var weekDaysName: [String] = []
+		if locale.hasPrefix("en") {
+			weekDaysName = [NSLocalizedString("sun", comment: ""),
+													NSLocalizedString("mon", comment: ""),
+													NSLocalizedString("tue", comment: ""),
+													NSLocalizedString("wed", comment: ""),
+													NSLocalizedString("thu", comment: ""),
+													NSLocalizedString("fri", comment: ""),
+													NSLocalizedString("sat", comment: "")]
+		} else if locale.hasPrefix("ru") {
+			weekDaysName = [NSLocalizedString("mon", comment: ""),
+													NSLocalizedString("tue", comment: ""),
+													NSLocalizedString("wed", comment: ""),
+													NSLocalizedString("thu", comment: ""),
+													NSLocalizedString("fri", comment: ""),
+													NSLocalizedString("sat", comment: ""),
+										    	NSLocalizedString("sun", comment: ""),]
+		}
 		var buttonTag = 0
 		for i in weekDaysName {
 			self.button = UIButton(title: "\(i)", isShadow: true, font: UIFont.systemFont(ofSize: 15, weight: .regular), cornerRaadius: 12)
@@ -335,21 +364,22 @@ final class NewTask: UIViewController {
 	private func infoLabelTextTime(timeH: String, timeM: String, timeHM: String) {
 		var hour = ""
 		var min  = ""
-		timeH != "1" ? (hour = "hours") : (hour = "hour")
-		timeM != "1" ? (min = "minutes") : (min = "minute")
-		
+		timeH != "1" ? (hour = NSLocalizedString("hours", comment: "")) : (hour = NSLocalizedString("hour", comment: ""))
+		timeM != "1" ? (min = NSLocalizedString("minutes", comment: "")) : (min = NSLocalizedString("minute", comment: ""))
+		let time = taskStruct.taskTime!
 		switch repeatSegmented.selectedSegmentIndex {
-		case 0: infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
-		case 1: infoLabel.text = "repeat every selected day of the week at \(taskStruct.taskTime!)"
-		case 2: infoLabel.text = "repeat every selected day of the month at \(taskStruct.taskTime!)"
+		case 0: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every day at %@", comment: ""), time)
+		//	NSLocalizedString("repeat every day at \(taskStruct.taskTime!)", comment: "")
+		case 1: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every selected day of the week at %@", comment: ""), time)
+		case 2: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every selected day of the month at %@", comment: ""), time)
 		default:
 			
 			if timeM == "0" {
-				infoLabel.text = "repeat every \(timeH) \(hour)"
+				infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every %@ %@", comment: ""), timeH, hour)
 			} else if timeH == "0" {
-				infoLabel.text = "repeat every \(timeM) \(min)"
+				infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every %@ %@", comment: ""), timeM, min)
 			} else {
-				infoLabel.text = "repeat every \(timeH) \(hour) \(timeM) \(min)"
+				infoLabel.text =  String.localizedStringWithFormat(NSLocalizedString("repeat every %@ %@ %@ %@", comment: ""), timeH, hour, timeM, min)
 			}
 		}
 	}
@@ -365,11 +395,12 @@ final class NewTask: UIViewController {
 	
 	private func infoLabelTextDate(paramDP: UIDatePicker, month: String) {
 		guard paramDP.isEqual(self.dataPicker) else { return }
+		let time = taskStruct.taskTime!
 		switch repeatSegmented.selectedSegmentIndex {
-		case 0:  infoLabel.text = "repeat every day at \(taskStruct.taskTime!)"
-		case 1:  infoLabel.text = "repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)"
-		case 2:  infoLabel.text = "repeat every selected day of the month at \n \(taskStruct.taskTime!)"
-		default: infoLabel.text = "the reminder will be set for\n \(month) \(taskStruct.taskTime!)"
+		case 0:  infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every day at %@", comment: ""), time)
+		case 1:  infoLabel.text = NSLocalizedString("repeat every \(taskStruct.weekDay!) at \(taskStruct.taskTime!)", comment: "")
+		case 2:  infoLabel.text = NSLocalizedString("repeat every selected day of the month at\n \(taskStruct.taskTime!)", comment: "")
+		default: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("the reminder will be set for\n %@ %@", comment: ""), month, time)
 		}
 	}
 	
@@ -384,7 +415,7 @@ final class NewTask: UIViewController {
 				self.buttonStackView.isHidden   = true
 				self.buttonMonthVStackView.isHidden = true
 				self.taskStruct.type            = .dayRepeatType
-				infoLabel.text                  = "Daily reminders at set times"
+				infoLabel.text                  = NSLocalizedString("Daily reminders at set times", comment: "")
 			case 1:
 				self.view.endEditing(true)
 				self.dataPicker.isHidden        = true
@@ -393,7 +424,7 @@ final class NewTask: UIViewController {
 				self.buttonStackView.isHidden   = false
 				self.buttonMonthVStackView.isHidden = true
 				self.taskStruct.type            = .weekRepeatType
-				infoLabel.text                  = "Weekly reminders at set times"
+				infoLabel.text                  = NSLocalizedString("Weekly reminders at set times", comment: "")
 			case 2:
 				self.view.endEditing(true)
 				self.dataPicker.isHidden        = true
@@ -402,7 +433,7 @@ final class NewTask: UIViewController {
 				self.buttonStackView.isHidden   = true
 				self.buttonMonthVStackView.isHidden = false
 				self.taskStruct.type            = .monthRepeatType
-				infoLabel.text                  = "Monthly reminders at set times"
+				infoLabel.text                  = NSLocalizedString("Monthly reminders at set times", comment: "")
 			case 3:
 				self.view.endEditing(true)
 				self.dataPicker.isHidden        = true
@@ -411,7 +442,7 @@ final class NewTask: UIViewController {
 				self.buttonStackView.isHidden   = true
 				self.buttonMonthVStackView.isHidden = true
 				self.taskStruct.type            = .timeRepeatType
-				infoLabel.text                  = "Set the repeat time"
+				infoLabel.text                  = NSLocalizedString("Set the repeat time", comment: "")
 			default:
 				break
 			}
@@ -423,7 +454,7 @@ final class NewTask: UIViewController {
 		switch switchAlert.isOn {
 		case true:
 			self.dataPicker.isHidden             = false
-			self.infoLabel.text                  = "Set the date and time of the reminder"
+			self.infoLabel.text                  = NSLocalizedString("Set the date and time of the reminder", comment: "")
 			self.taskStruct.type                 = .singleAlertType
 		case false:
 			self.dataPicker.isHidden             = true
@@ -435,7 +466,7 @@ final class NewTask: UIViewController {
 			self.buttonStackView.isHidden        = true
 			self.buttonMonthVStackView.isHidden  = true
 			self.taskStruct.type                 = .justType
-			self.infoLabel.text                  = "create your note"
+			self.infoLabel.text                  = NSLocalizedString("create your note", comment: "")
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 		}
 	}
@@ -451,7 +482,7 @@ final class NewTask: UIViewController {
 			self.repeatSegmented.isEnabled            = true
 			self.dataPicker.isHidden                  = true
 			self.dataPicker.minimumDate               = nil
-			self.infoLabel.text                       = "Choose a repeat rate"
+			self.infoLabel.text                       = NSLocalizedString("Choose a repeat rate", comment: "")
 		case false:
 			self.repeatSegmented.isHidden            = true
 			self.repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
@@ -463,7 +494,7 @@ final class NewTask: UIViewController {
 			self.buttonStackView.isHidden             = true
 			self.buttonMonthVStackView.isHidden       = true
 			self.taskStruct.type                      = .singleAlertType
-			self.infoLabel.text                       = "Set the date and time of the reminder"
+			self.infoLabel.text                       = NSLocalizedString("Set the date and time of the reminder", comment: "")
 			self.taskStruct.repeatImage               = false
 			self.taskStruct.alarmImage                = true
 		}
@@ -475,12 +506,12 @@ final class NewTask: UIViewController {
 		taskStruct.createdAt  = Date.now
 		let text = infoLabel.text
 		guard let textTitle = textField.text, !textTitle.isEmpty else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Set the date and time of the reminder" else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Choose a repeat rate" else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Set the repeat time" else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Daily reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Weekly reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
-		guard text != "Monthly reminders at set times" else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Set the date and time of the reminder", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Choose a repeat rate", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Set the repeat time", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Daily reminders at set times", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Weekly reminders at set times", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
+		guard text != NSLocalizedString("Monthly reminders at set times", comment: "") else { animations.shake(text: infoLabel, duration: 0.4); return }
 		
 		switch taskStruct.type {
 		case .justType:
@@ -547,7 +578,7 @@ final class NewTask: UIViewController {
 		buttonStackView.isHidden       = true
 		buttonMonthVStackView.isHidden = true
 		taskStruct.type                = .justType
-		infoLabel.text                 = "create your note"
+		infoLabel.text                 = NSLocalizedString("create your note", comment: "")
 		repeatSegmented.selectedSegmentIndex = UISegmentedControl.noSegment
 	}
 	
@@ -565,7 +596,7 @@ final class NewTask: UIViewController {
 		switchAlert.isEnabled          = false
 		buttonStackView.isHidden       = true
 		buttonMonthVStackView.isHidden = true
-		infoLabel.text                 = "create your note"
+		infoLabel.text                 = NSLocalizedString("create your note", comment: "")
 		taskStruct.taskTime            = ""
 		taskStruct.taskDate            = ""
 		taskStruct.taskDateDate        = nil

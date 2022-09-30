@@ -8,6 +8,18 @@
 import Foundation
 import UIKit
 
+//MARK: - Constants
+private enum Constants {
+	static var bigLabelFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 45)! }
+	static var timeLabelFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)! }
+	static var recordButtonBackgroundColor: UIColor { .clear }
+	static var recordButtonCornerRadius: CGFloat { 35 }
+	static var recordButtonColor: UIColor { UIColor(named: "SoftRed") ?? .red}
+	static var recordButtonImage: String { "record.circle.fill" }
+	static var stopButtonImage: String { "stop" }
+	static var config: UIImage.SymbolConfiguration { UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large) }
+}
+
 extension RecordSheetVC {
 	
 	internal func makeStartButton() -> UIButton {
@@ -99,17 +111,4 @@ extension RecordSheetVC {
 		tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5).isActive = true
 		tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 170).isActive = true
 	}
-}
-
-
-//MARK: - Constants
-private enum Constants {
-	static var bigLabelFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 45)! }
-	static var timeLabelFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)! }
-	static var recordButtonBackgroundColor: UIColor { .clear }
-	static var recordButtonCornerRadius: CGFloat { 35 }
-	static var recordButtonColor: UIColor { UIColor(named: "SoftRed") ?? .red}
-	static var recordButtonImage: String { "record.circle.fill" }
-	static var stopButtonImage: String { "stop" }
-	static var config: UIImage.SymbolConfiguration { UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .large) }
 }

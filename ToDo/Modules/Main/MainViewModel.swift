@@ -9,6 +9,10 @@ import Foundation
 
 fileprivate enum Constants {
 	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var title: String { NSLocalizedString("my tasks", comment: "") }
+	static var currentTasks: String { NSLocalizedString("current tasks", comment: "") }
+	static var overdueTasks: String { NSLocalizedString("overdue tasks", comment: "") }
+	static var completedTasks: String { NSLocalizedString("completed tasks", comment: "") }
 }
 
 //MARK: - MainViewModelProtocol
@@ -52,7 +56,7 @@ final class MainViewModel {
 extension MainViewModel: MainViewModelProtocol {
 
 	internal func createNavController() {
-		navController.createNavigationController(viewController: view!, title: "my tasks", font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
+		navController.createNavigationController(viewController: view!, title: Constants.title, font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
 	}
 	
 	
@@ -144,27 +148,27 @@ extension MainViewModel: MainViewModelProtocol {
 		coreDataMethods.fetchRequest()
 		switch indexPath.section {
 		case 0:
-			if  coreDataMethods.selectionStructArray[0].header == "current tasks" {
+			if  coreDataMethods.selectionStructArray[0].header == Constants.currentTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
-			} else if coreDataMethods.selectionStructArray[0].header == "overdue tasks" {
+			} else if coreDataMethods.selectionStructArray[0].header == Constants.overdueTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
-			} else if coreDataMethods.selectionStructArray[0].header == "completed tasks" {
+			} else if coreDataMethods.selectionStructArray[0].header == Constants.completedTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
 			}
 		case 1:
-			if coreDataMethods.selectionStructArray[1].header == "current tasks" {
+			if coreDataMethods.selectionStructArray[1].header == Constants.currentTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
-			} else if coreDataMethods.selectionStructArray[1].header == "overdue tasks" {
+			} else if coreDataMethods.selectionStructArray[1].header == Constants.overdueTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
-			} else if coreDataMethods.selectionStructArray[1].header == "completed tasks" {
+			} else if coreDataMethods.selectionStructArray[1].header == Constants.completedTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
 			}
 		case 2:
-			if coreDataMethods.selectionStructArray[2].header == "current tasks" {
+			if coreDataMethods.selectionStructArray[2].header == Constants.currentTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
-			} else if coreDataMethods.selectionStructArray[2].header == "overdue tasks" {
+			} else if coreDataMethods.selectionStructArray[2].header == Constants.overdueTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
-			} else if coreDataMethods.selectionStructArray[2].header == "completed tasks" {
+			} else if coreDataMethods.selectionStructArray[2].header == Constants.completedTasks {
 				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
 			}
 		default:

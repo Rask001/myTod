@@ -6,7 +6,11 @@
 //
 import UIKit
 import CoreData
-
+fileprivate enum Constants {
+	static var currentTasks: String { NSLocalizedString("current tasks", comment: "") }
+	static var overdueTasks: String { NSLocalizedString("overdue tasks", comment: "") }
+	static var completedTasks: String { NSLocalizedString("completed tasks", comment: "") }
+}
 final class CoreDataMethods {
 	
 	
@@ -16,9 +20,9 @@ final class CoreDataMethods {
 	internal var currentArray: [Tasks] = []
 	internal var completedArray: [Tasks] = []
 	internal var sectionIndex: Int?
-	private var sectionStructCur = SectionStruct(header: "current tasks", row: [])
-	private var sectionStructOver = SectionStruct(header: "overdue tasks", row: [])
-	private var sectionStructCompleted = SectionStruct(header: "completed tasks", row: [])
+	private var sectionStructCur = SectionStruct(header: Constants.currentTasks, row: [])
+	private var sectionStructOver = SectionStruct(header: Constants.overdueTasks, row: [])
+	private var sectionStructCompleted = SectionStruct(header: Constants.completedTasks, row: [])
 	internal var selectionStructArray: [SectionStruct] = []
 	//let helper = Helper()
 	

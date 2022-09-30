@@ -7,7 +7,10 @@
 
 //
 fileprivate enum Constants {
-	static var mainTitle: String { "my tasks" }
+	static var mainTitle: String { NSLocalizedString("my tasks", comment: "") }
+	static var allTasksTitle: String { NSLocalizedString("all tasks", comment: "") }
+	static var todayTitle: String { NSLocalizedString("today", comment: "") }
+	static var settingsTitle: String { NSLocalizedString("settings", comment: "") }
 	static var buttonTitle: String { "+" }
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
@@ -37,9 +40,9 @@ final class TabBarController: UITabBarController {
 	
 		
 		
-		tabBarVC.viewControllers = [generationNavigationController(rootVC: rootVC1, title: "all tasks", image: firstPic!, tag: 0),
-																generationNavigationController(rootVC: rootVC2, title: "today", image: todayPic!, tag: 1),
-																 generationNavigationController(rootVC: rootVC3, title: "settings", image: settingPic!, tag: 2)]
+		tabBarVC.viewControllers = [generationNavigationController(rootVC: rootVC1, title: Constants.allTasksTitle, image: firstPic!, tag: 0),
+																generationNavigationController(rootVC: rootVC2, title: Constants.todayTitle, image: todayPic!, tag: 1),
+																generationNavigationController(rootVC: rootVC3, title: Constants.settingsTitle, image: settingPic!, tag: 2)]
 		
 		
 		func generationNavigationController(rootVC: UIViewController, title: String, image: UIImage, tag: Int) -> UINavigationController {

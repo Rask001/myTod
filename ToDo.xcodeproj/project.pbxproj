@@ -38,6 +38,8 @@
 		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
 		3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB9C28B287234B700EB5544 /* UIColor+ext.swift */; };
 		3AC261A828C1323B000A0285 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC261A728C1323B000A0285 /* NavigationController.swift */; };
+		3AC7E34C28E5D4CB00B6F5DF /* String + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7E34B28E5D4CB00B6F5DF /* String + ext.swift */; };
+		3AC7E35628E72BB100B6F5DF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AC7E35828E72BB100B6F5DF /* Localizable.strings */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
 		3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */; };
 		3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */; };
@@ -96,6 +98,9 @@
 		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		3AB9C28B287234B700EB5544 /* UIColor+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+ext.swift"; sourceTree = "<group>"; };
 		3AC261A728C1323B000A0285 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		3AC7E34B28E5D4CB00B6F5DF /* String + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + ext.swift"; sourceTree = "<group>"; };
+		3AC7E35728E72BB100B6F5DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3AC7E35928E72BB900B6F5DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -169,6 +174,7 @@
 				3AC8555727EFCF0700A7891D /* CoreData */,
 				3ADBF4DF2827F4F5000BA06B /* Exstension */,
 				3A4F562927EF9EAE00ECF06B /* SupportFiles */,
+				3AC7E35828E72BB100B6F5DF /* Localizable.strings */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -286,6 +292,7 @@
 			children = (
 				3AD1FF762827FA41002ECA67 /* UILabel+ext.swift */,
 				3A0995D028E296D60060921A /* CAGradientLayer+ext.swift */,
+				3AC7E34B28E5D4CB00B6F5DF /* String + ext.swift */,
 				3AB9C28B287234B700EB5544 /* UIColor+ext.swift */,
 				3AD1FF7A2827FB25002ECA67 /* UIFont + ext.swift */,
 				3A65658A289548970014BD04 /* UIButton + Custom.swift */,
@@ -379,6 +386,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 3A4F560227EF947E00ECF06B;
 			productRefGroup = 3A4F560C27EF947F00ECF06B /* Products */;
@@ -396,6 +404,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A4F561E27EF948300ECF06B /* LaunchScreen.storyboard in Resources */,
+				3AC7E35628E72BB100B6F5DF /* Localizable.strings in Resources */,
 				3A4F561B27EF948300ECF06B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -407,6 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AC7E34C28E5D4CB00B6F5DF /* String + ext.swift in Sources */,
 				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
 				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
 				3A9B533428E26A4B002F0E95 /* Animations.swift in Sources */,
@@ -472,6 +482,15 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		3AC7E35828E72BB100B6F5DF /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3AC7E35728E72BB100B6F5DF /* en */,
+				3AC7E35928E72BB900B6F5DF /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -479,6 +498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -540,6 +560,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";

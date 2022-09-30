@@ -6,10 +6,10 @@
 //
 import CoreData
 import UIKit
+import Foundation
 //MARK: - enum Constants
 
 fileprivate enum Constants {
-	static var mainTitle: String { "my tasks" }
 	static var buttonTitle: String { "+" }
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
@@ -17,7 +17,6 @@ fileprivate enum Constants {
 	static var tableViewRowHeight: CGFloat { 60 }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
 	static var backgroundColorView: UIColor { .backgroundColor! }
-
 }
 
 final class localTaskStruct {
@@ -29,13 +28,16 @@ final class Main: UIViewController {
 	
 	//MARK: - Properties
 	internal var tableView = UITableView()
-	internal let buttonNewTask = CustomButtonNewTask()
+	internal let buttonNewTask = UIButton()//CustomButtonNewTask
 	internal let navController = UINavigationController()
 	internal let taptic = TapticFeedback()
 	internal let helper = Helper()
 	internal let gradient = CAGradientLayer()
 	internal var viewModel: MainViewModelProtocol
 	static let shared = MainViewModel.self
+	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
+	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
+	
 	init(viewModel: MainViewModelProtocol) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -102,11 +104,12 @@ final class Main: UIViewController {
 	}
 
 	
-	private func setupButton(){
+	private func setupButton() {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
 		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
-		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchDown)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVCDown), for: .touchDown)
+		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
 		self.buttonNewTask.layer.shadowRadius = 3
 		self.buttonNewTask.layer.shadowOpacity = 0.2
@@ -115,16 +118,35 @@ final class Main: UIViewController {
 		self.tableView.addSubview(buttonNewTask)
 	}
 	
+	@objc private func goToNewTaskVCDown() {
+		TapticFeedback.shared.soft
+		print(buttonNewTaskHeightAnchor?.isActive as Any)
+		buttonNewTaskHeightAnchor?.isActive = false
+		buttonNewTaskWidthAnchor?.isActive = false
+		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
+		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
+
+		self.buttonNewTask.layer.cornerRadius = 40
+		UIView.animate(withDuration: 0.1) { [weak self] in
+			self?.view.layoutIfNeeded()
+		}
+	}
+	
 	@objc private func goToNewTaskVC() {
+		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskHeightAnchor?.isActive = true
+		buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTask.layer.cornerRadius = 35
+		UIView.animate(withDuration: 0.1) { [weak self] in
+			self?.view.layoutIfNeeded()
+		}
 		if Counter.count == 0 {
-			TapticFeedback.shared.soft
+			TapticFeedback.shared.light
 			Counter.count += 1
 		}
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-			guard let self = self else { return }
 			self.viewModel.goToNewTaskVC()
-			Counter.count = 0 
-		}
+			Counter.count = 0
 	}
 	
 	
@@ -138,12 +160,12 @@ final class Main: UIViewController {
 		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
-		buttonNewTask.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-		buttonNewTask.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -31).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 70).isActive                             = true
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 70).isActive                             = true
-		
-		
+		buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
+		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
+		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		buttonNewTaskWidthAnchor?.isActive = true
+		buttonNewTaskHeightAnchor?.isActive = true
 	}
 	
 	

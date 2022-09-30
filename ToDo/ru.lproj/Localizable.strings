@@ -1,0 +1,103 @@
+/* 
+  Localizable.strings
+  ToDo
+
+  Created by Антон on 29.09.2022.
+  
+*/
+//MARK: - MAIN
+"my tasks" = "мои задачи";
+
+
+
+//MARK: - NewTask
+"...write something here" = "...напишите что-нибудь";
+"create your note" = "создайте заметку";
+"Set the date and time of the reminder" = "установите дату и время напоминания";
+"Choose a repeat rate" = "выберете переодичность повтора";
+"Monthly reminders at set times" = "каждый месяц в установленные даты";
+"Set the repeat time" = "установите переодичность повтора";
+"Weekly reminders at set times" = "еженедельные повторы";
+"Daily reminders at set times" = "ежедневные повторы";
+"repeat every day at %@" = "ежедневные повторы в %@";
+
+"new task" = "новая задача";
+"repeat every selected day of the week at %@" = "еженедельные повторы в %@";
+"repeat every selected day of the month at %@" = "ежемесячные повторы в %@";
+"the reminder will be set for\n %@ %@" = "уведомление будет установленно:\n %@ %@";
+
+"hours" = "ч.";
+"hour" = "ч.";
+"minutes" = "мин.";
+"minute" = "мин.";
+
+"repeat every %@ %@" = "повтор с переодичностью %@ %@";
+"repeat every %@ %@ %@ %@" = "повтор с переодичностью %@ %@ %@ %@";
+
+"day" = "день";
+"week" = "неделя";
+"month" = "месяц";
+"set time" = "время";
+
+"sun" = "вс";
+"mon" = "пн";
+"tue" = "вт";
+"wed" = "ср";
+"thu" = "чт";
+"fri" = "пт";
+"sat" = "сб";
+
+//"вс" = "sun";
+//"пн" = "mon";
+//"вт" = "tue";
+//"ср" = "wed";
+//"чт" = "thu";
+//"пт" = "fri";
+//"сб" = "sat";
+
+
+"Sunday" = "Воскресенье";
+"Monday" = "Понедельник";
+"Tuesday" = "Вторник";
+"Wednesday" = "Среда";
+"Thursday" = "Четверг";
+"Friday" = "Пятница";
+"Saturday" = "Суббота";
+
+
+//MARK: - Mian/CoreDataMhetods
+
+"current tasks" = "текущее";
+"overdue tasks" = "просроченно";
+"completed tasks" = "выполненно";
+
+
+"every day" = "каждый день";
+"every week" = "каждую неделю";
+"every month" = "каждый месяц";
+
+//MARK: - TabBar
+
+"all tasks" = "все";
+"today" = "сегодня";
+"settings" = "настройки";
+
+//MARK: - SettingVC
+"System" = "Системная";
+"Light" = "Темная";
+"Dark" = "Светлая";
+
+//MARK: - DescriptionVC
+"you can add a description and create a voice note" = "вы можете добавить описание а так же создать голосовую заметку";
+
+//MARK: - infoAlertDetail
+"status: %@" = "статус: %@";
+"creation time: %@" = "время создания: %@";
+"alert time: %@" = "напоминание: %@";
+"is overdue: %@" = "просрочено: %@";
+
+"No" = "Нет";
+"Yes" = "Да";
+"Without time" = "Без времени";
+"Completed" = "Выполненно";
+"Not completed" = "Не выполненно";

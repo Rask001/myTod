@@ -68,8 +68,8 @@
 //MARK: - Mian/CoreDataMhetods
 
 "current tasks" = "текущее";
-"overdue tasks" = "просроченно";
-"completed tasks" = "выполненно";
+"overdue tasks" = "просрочено";
+"completed tasks" = "выполнено";
 
 
 "every day" = "каждый день";
@@ -84,8 +84,8 @@
 
 //MARK: - SettingVC
 "System" = "Системная";
-"Light" = "Темная";
-"Dark" = "Светлая";
+"Light" = "Светлая";
+"Dark" = "Темная";
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "вы можете добавить описание а так же создать голосовую заметку";

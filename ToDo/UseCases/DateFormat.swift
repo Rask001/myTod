@@ -9,7 +9,16 @@ import Foundation
 
 
 final class DateFormat {
-	class func formatDate(textFormat: String, date: Date) -> String {
+	enum Errors: Error {
+		case containsNumberCharecters
+	}
+	
+	class func formatDate(textFormat: String, date: Date) throws -> String {
+		let textFormat = textFormat
+			let numberCharacters = NSCharacterSet.decimalDigits
+
+		guard textFormat.rangeOfCharacter(from: numberCharacters) == nil else { throw Errors.containsNumberCharecters }
+		
 		let date = date
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = textFormat

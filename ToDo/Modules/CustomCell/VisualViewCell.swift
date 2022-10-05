@@ -100,7 +100,7 @@ final class VisualViewCell {
 		case "weekRepeatType":
 			cell.weekLabel.isHidden = false
 			cell.taskDate.text = NSLocalizedString("every week", comment: "")
-			let weekDaysString = Helper.arrayToStringWeekDay(array: items.weekDays!)
+			let weekDaysString = try? Helper.arrayToStringWeekDay(array: items.weekDays!)
 			cell.weekLabel.text = weekDaysString
 			switch check {
 			case true:

@@ -196,9 +196,9 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 	
 	private func visualViewVoiceCell(indexPath: IndexPath, cell: VoiceCell) {
 		let date = UserDefaults.standard.object(forKey: "\(String(indexPath.row + 1)).m4a")
-		let text = "№ \(String(indexPath.row + 1)) \(DateFormat.formatDate(textFormat: "HH:mm:ss, MMM d", date: date as? Date ?? Date.now))"
+		let text = "№ \(String(indexPath.row + 1)) \(try! DateFormat.formatDate(textFormat: "HH:mm:ss, MMM d", date: date as? Date ?? Date.now))"
 		cell.textFieldLabel.text = text
-		cell.taskDateLabel.text = DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now)
+		cell.taskDateLabel.text = try? DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now)
 		cell.buttonAction = { [weak self] in
 			guard let self = self else { return }
 			guard let path = FileAdmin.getFileUrl(nameFolder: "\(self.id)", name: "\(indexPath.row + 1).m4a") else { return }

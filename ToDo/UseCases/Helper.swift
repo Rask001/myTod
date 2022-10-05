@@ -12,10 +12,10 @@ final class Helper {
 	enum Errors: Error {
 		case emptyString
 		case invalidCharacters
+		case emptyArray
 	}
-
-	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) throws -> Int {
-		
+	
+		class func createShortIntWithoutStrChar(fromItemsId itemsId: String) throws -> Int {
 		var resultInt = 0
 		var resultString = ""
 		guard !itemsId.isEmpty else {
@@ -78,21 +78,13 @@ final class Helper {
 //	}
 	
 	
-	class func arrayToStringWeekDay(array: [String]) -> String {
+	class func arrayToStringWeekDay(array: [String]) throws -> String {
 		var string = ""
 		var dayWeekDef = array
-		//var dayWeek = EnToRuToEn(araay: array)
+		guard !array.isEmpty else { throw Errors.emptyArray}
 		var week: [String] = []
 		let locale = NSLocale.preferredLanguages.first!
-		if locale.hasPrefix("en") {
-			week = [NSLocalizedString("sun", comment: ""),
-							NSLocalizedString("mon", comment: ""),
-						  NSLocalizedString("tue", comment: ""),
-						  NSLocalizedString("wed", comment: ""),
-						  NSLocalizedString("thu", comment: ""),
-						  NSLocalizedString("fri", comment: ""),
-						  NSLocalizedString("sat", comment: "")]
-		} else if locale.hasPrefix("ru") {
+		if locale.hasPrefix("ru") {
 			week = [NSLocalizedString("mon", comment: ""),
 							NSLocalizedString("tue", comment: ""),
 							NSLocalizedString("wed", comment: ""),
@@ -100,12 +92,20 @@ final class Helper {
 							NSLocalizedString("fri", comment: ""),
 							NSLocalizedString("sat", comment: ""),
 							NSLocalizedString("sun", comment: "")]
+		
+		} else {
+			week = [NSLocalizedString("sun", comment: ""),
+							NSLocalizedString("mon", comment: ""),
+							NSLocalizedString("tue", comment: ""),
+							NSLocalizedString("wed", comment: ""),
+							NSLocalizedString("thu", comment: ""),
+							NSLocalizedString("fri", comment: ""),
+							NSLocalizedString("sat", comment: "")]
 		}
 		
 		//print("dayWeek: \(dayWeek), dayWeekDef: \(dayWeekDef), week: \(week)")
 		
 		dayWeekDef.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
-		//dayWeek.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
 		
 		
 		for i in dayWeekDef {

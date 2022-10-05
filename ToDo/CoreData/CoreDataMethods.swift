@@ -251,7 +251,7 @@ final class CoreDataMethods {
 		
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if tag == itemsId {
 				items.voiceImage = true
 				items.voiceImage = isVisible
@@ -271,7 +271,7 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				items.descript = description
 				items.descriptSize = descriptionSize
@@ -299,7 +299,7 @@ final class CoreDataMethods {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				items.taskTitle = newText
 			}
@@ -335,9 +335,10 @@ final class CoreDataMethods {
 		LocalNotification.shared.deleteLocalNotification(taskTitle)
 		context.delete(task as NSManagedObject)
 		
-		let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
-		print(idInt)
-		FileAdmin.deleteFolder(name: "\(idInt)")
+		let idInt = try? Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
+		guard let idIntNoNil = idInt else { return }
+		print(idIntNoNil)
+		FileAdmin.deleteFolder(name: "\(idIntNoNil)")
 		
 		var index = 0
 		for item in currentArray {

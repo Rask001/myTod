@@ -47,8 +47,9 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	//MARK: - Settings
 	private func settings() {
-		let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
-		self.id = idInt
+		let idInt = try? Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
+		guard let idIntNotNil = idInt else { return }
+		self.id = idIntNotNil
 		switch AVAudioSession.sharedInstance().recordPermission {
 		case AVAudioSession.RecordPermission.granted:
 			isAudioRecordingGranted = true

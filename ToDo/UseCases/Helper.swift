@@ -9,9 +9,19 @@ import Foundation
 
 final class Helper {
 	
-	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) -> Int {
+	enum Errors: Error {
+		case emptyString
+		case invalidCharacters
+	}
+
+	class func createShortIntWithoutStrChar(fromItemsId itemsId: String) throws -> Int {
+		
 		var resultInt = 0
 		var resultString = ""
+		guard !itemsId.isEmpty else {
+			throw Errors.emptyString
+		}
+		
 		for num in itemsId {
 			if resultString.count < 7 {
 				if let chr = Int(String(num)) {
@@ -19,7 +29,11 @@ final class Helper {
 				}
 			}
 		}
-		resultInt = Int(resultString) ?? 777
+		
+		resultInt = Int(resultString) ?? 0
+		guard resultInt != 0 else {
+			throw Errors.invalidCharacters
+		}
 		return resultInt
 	}
 	
@@ -111,3 +125,4 @@ final class Counter {
 final class CurrentTabBar {
 	static var number = 0
 }
+

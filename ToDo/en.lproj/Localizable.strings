@@ -84,7 +84,7 @@
 //MARK: - SettingVC
 "System" = "System";
 "Light" = "Light";
-"Dark" = "Light";
+"Dark" = "Dark";
 
 
 //MARK: - DescriptionVC
@@ -101,3 +101,7 @@
 "Without time" = "Without time";
 "Completed" = "Completed";
 "Not completed" = "Not сompleted";
+
+
+"Russian" = "Русский";
+"English" = "English";

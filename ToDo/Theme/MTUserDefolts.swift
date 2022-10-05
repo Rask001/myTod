@@ -17,8 +17,16 @@ struct MTUserDefaults {
 			UserDefaults.standard.set(newValue.rawValue, forKey: "selectedTheme")
 		}
 	}
+	
+	var language: LanguageEnum {
+		get {
+			LanguageEnum(rawValue: UserDefaults.standard.integer(forKey: "selectedLanguage"))!
+		} set {
+			UserDefaults.standard.set(newValue.rawValue, forKey: "selectedLanguage")
+		}
+	}
 }
-
+//let locale = NSLocale.preferredLanguages.first!
 enum ThemeEnum: Int {
 	case system
 	case lightTheme
@@ -33,6 +41,21 @@ enum ThemeEnum: Int {
 			return .light
 		case .darkTheme:
 			return .dark
+		}
+	}
+}
+
+enum LanguageEnum: Int {
+	case english
+	case russian
+	
+	func getUserIntefaceStyle() {
+		
+		switch self {
+		case .english:
+			break
+		case .russian:
+			break
 		}
 	}
 }

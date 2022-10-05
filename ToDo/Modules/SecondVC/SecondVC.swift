@@ -101,7 +101,7 @@ final class SecondVC: UIViewController {
 		CoreDataMethods.shared.fetchRequest()
 		let model = CoreDataMethods.shared.coreDataModel
 		for items in model {
-			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if cellTag == itemsId {
 				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
 				localTaskStruct.taskStruct.createdAt     = items.createdAt

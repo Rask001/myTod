@@ -43,7 +43,6 @@
 		3AC7E34C28E5D4CB00B6F5DF /* String + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7E34B28E5D4CB00B6F5DF /* String + ext.swift */; };
 		3AC7E35628E72BB100B6F5DF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3AC7E35828E72BB100B6F5DF /* Localizable.strings */; };
 		3AC7E35B28E7B72600B6F5DF /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7E35A28E7B72600B6F5DF /* Language.swift */; };
-		3AC7E37928ECFEE600B6F5DF /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7E37828ECFEE600B6F5DF /* HelperTests.swift */; };
 		3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8554627EFBBA700A7891D /* CustomCell.swift */; };
 		3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */; };
 		3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */; };
@@ -119,7 +118,6 @@
 		3AC7E35728E72BB100B6F5DF /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3AC7E35928E72BB900B6F5DF /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3AC7E35A28E7B72600B6F5DF /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
-		3AC7E37828ECFEE600B6F5DF /* HelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperTests.swift; sourceTree = "<group>"; };
 		3AC8554627EFBBA700A7891D /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3AC8555327EFCE7500A7891D /* Tasks+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataClass.swift"; sourceTree = "<group>"; };
 		3AC8555427EFCE7500A7891D /* Tasks+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tasks+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -345,7 +343,6 @@
 				3A1FD7A228DA076900F6953D /* FileAdmin.swift */,
 				3A9722DB28D8D3F5003BB436 /* DateFormat.swift */,
 				3A3E17C628CE369500C025D2 /* Helper.swift */,
-				3AC7E37828ECFEE600B6F5DF /* HelperTests.swift */,
 				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
 				3AC261A728C1323B000A0285 /* NavigationController.swift */,
 				3A9B533328E26A4B002F0E95 /* Animations.swift */,
@@ -492,7 +489,6 @@
 				3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
 				3A5B2D4328CB3EB30041C4AB /* Theme.swift in Sources */,
-				3AC7E37928ECFEE600B6F5DF /* HelperTests.swift in Sources */,
 				3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */,
 				3AF3FBF028C213770002063B /* CustomHeader.swift in Sources */,
 				3A3E17C428CBBC0100C025D2 /* MTUserDefolts.swift in Sources */,

@@ -16,8 +16,7 @@ final class VoiceCell: UITableViewCell {
 	
 	static let identifier = "VoiceCell"
 	internal var audioPlayer: AVAudioPlayer!
-	internal var meterTimer: Timer!
-	
+	internal var meterTimer: Timer!	
 	lazy var backgroundViewCell = makeBackgroundViewCell()
 	lazy var textFieldLabel = makeTextField()
 	lazy var taskTitle = makeTaskTitle()

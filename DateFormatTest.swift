@@ -9,7 +9,6 @@ import XCTest
 @testable import ToDo
 
 final class DateFormatTests: XCTestCase {
-	
 	func testWhenDateFormatContainsNumberCharecters() {
 		let input = "hh: MM4"
 		let date = Date.now

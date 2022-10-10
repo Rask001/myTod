@@ -85,7 +85,7 @@
 "System" = "System";
 "Light" = "Light";
 "Dark" = "Dark";
-
+"Change language" = "Change language";
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "you can add a description and create a voice note";

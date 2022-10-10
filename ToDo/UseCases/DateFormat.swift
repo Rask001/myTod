@@ -18,7 +18,6 @@ final class DateFormat {
 			let numberCharacters = NSCharacterSet.decimalDigits
 
 		guard textFormat.rangeOfCharacter(from: numberCharacters) == nil else { throw Errors.containsNumberCharecters }
-		
 		let date = date
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = textFormat

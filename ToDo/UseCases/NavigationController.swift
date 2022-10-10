@@ -23,7 +23,6 @@ struct NavigationController {
 				navBarAppearance.titleTextAttributes = textAttributes
 			  navBarAppearance.backgroundColor = backgroundColor
 			  navBarAppearance.shadowColor = backgroundColor
-			//navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
 
 			control.navigationController?.navigationBar.standardAppearance = navBarAppearance
 			control.navigationController?.navigationBar.compactAppearance = navBarAppearance

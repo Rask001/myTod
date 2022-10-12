@@ -82,7 +82,7 @@ extension MainViewModel: MainViewModelProtocol {
 	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		let buttonCell = cell.buttonCell
-		buttonCell.tag = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+		buttonCell.tag = try! Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 		sectionIndex = buttonCell.tag
 		buttonCell.addTarget(self, action: #selector(saveCheckmark(sender:)), for: .touchUpInside)
 	}
@@ -129,7 +129,7 @@ extension MainViewModel: MainViewModelProtocol {
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = coreDataModel
 		for items in model {
-			let itemsId = Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
 			if sender.tag == itemsId {
 				items.check.toggle()
 			}

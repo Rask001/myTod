@@ -84,8 +84,8 @@
 //MARK: - SettingVC
 "System" = "System";
 "Light" = "Light";
-"Dark" = "Light";
-
+"Dark" = "Dark";
+"Change language" = "Change language";
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "you can add a description and create a voice note";
@@ -101,3 +101,7 @@
 "Without time" = "Without time";
 "Completed" = "Completed";
 "Not completed" = "Not сompleted";
+
+
+"Russian" = "Русский";
+"English" = "English";

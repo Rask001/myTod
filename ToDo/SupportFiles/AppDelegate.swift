@@ -11,7 +11,7 @@ import UserNotifications
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
-	
+	//let currentLanguage = "ru"
 
 	var window: UIWindow?
 	private let assembly = Assembly()
@@ -21,6 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
+		 
+//		 
+//		 UserDefaults.standard.set(currentLanguage, forKey: "AppleLanguage")
+//		 Bundle.swizzleLocalization()
 		 
 
 		 //запрос у пользователя на отправку локал нотификейшн

@@ -12,6 +12,10 @@
 		3A149E7C28ED161B00B2D464 /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A149E7B28ED161B00B2D464 /* HelperTests.swift */; };
 		3A149E7E28ED1E4100B2D464 /* DateFormatTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A149E7D28ED1E4100B2D464 /* DateFormatTest.swift */; };
 		3A1FD7A328DA076A00F6953D /* FileAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1FD7A228DA076900F6953D /* FileAdmin.swift */; };
+		3A3AE0C528F6508E00618442 /* SettingIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C128F6508E00618442 /* SettingIO.swift */; };
+		3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C228F6508E00618442 /* SettingViewModel.swift */; };
+		3A3AE0C728F6508E00618442 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C328F6508E00618442 /* SettingVC.swift */; };
+		3A3AE0C828F6508E00618442 /* SettingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */; };
 		3A3B0E8E28E07DD500D1F057 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B0E8D28E07DD500D1F057 /* InfoAlert.swift */; };
 		3A3E17C428CBBC0100C025D2 /* MTUserDefolts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17C328CBBC0100C025D2 /* MTUserDefolts.swift */; };
 		3A3E17C728CE369500C025D2 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17C628CE369500C025D2 /* Helper.swift */; };
@@ -61,9 +65,6 @@
 		3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F428BB5181002C0C52 /* SecondVC.swift */; };
 		3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F728BB5297002C0C52 /* SecondIO.swift */; };
 		3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */; };
-		3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FC28BB835B002C0C52 /* SettingVC.swift */; };
-		3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FD28BB835B002C0C52 /* SettingIO.swift */; };
-		3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */; };
 		3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFC0A0228BD34AD002C0C52 /* SectionStruct.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,10 @@
 		3A149E7B28ED161B00B2D464 /* HelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperTests.swift; sourceTree = SOURCE_ROOT; };
 		3A149E7D28ED1E4100B2D464 /* DateFormatTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatTest.swift; sourceTree = SOURCE_ROOT; };
 		3A1FD7A228DA076900F6953D /* FileAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAdmin.swift; sourceTree = "<group>"; };
+		3A3AE0C128F6508E00618442 /* SettingIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingIO.swift; sourceTree = "<group>"; };
+		3A3AE0C228F6508E00618442 /* SettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		3A3AE0C328F6508E00618442 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
+		3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModelProtocol.swift; sourceTree = "<group>"; };
 		3A3B0E8D28E07DD500D1F057 /* InfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAlert.swift; sourceTree = "<group>"; };
 		3A3E17C328CBBC0100C025D2 /* MTUserDefolts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MTUserDefolts.swift; sourceTree = "<group>"; };
 		3A3E17C628CE369500C025D2 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
@@ -136,9 +141,6 @@
 		3AFC09F428BB5181002C0C52 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
 		3AFC09F728BB5297002C0C52 /* SecondIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondIO.swift; sourceTree = "<group>"; };
 		3AFC09F928BB52FA002C0C52 /* SecondViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewModel.swift; sourceTree = "<group>"; };
-		3AFC09FC28BB835B002C0C52 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
-		3AFC09FD28BB835B002C0C52 /* SettingIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingIO.swift; sourceTree = "<group>"; };
-		3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		3AFC0A0228BD34AD002C0C52 /* SectionStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionStruct.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -372,9 +374,10 @@
 		3AFC09FB28BB835B002C0C52 /* SettingVC */ = {
 			isa = PBXGroup;
 			children = (
-				3AFC09FC28BB835B002C0C52 /* SettingVC.swift */,
-				3AFC09FD28BB835B002C0C52 /* SettingIO.swift */,
-				3AFC09FE28BB835B002C0C52 /* SettingViewModel.swift */,
+				3A3AE0C128F6508E00618442 /* SettingIO.swift */,
+				3A3AE0C328F6508E00618442 /* SettingVC.swift */,
+				3A3AE0C228F6508E00618442 /* SettingViewModel.swift */,
+				3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */,
 			);
 			name = SettingVC;
 			path = ToDo/Modules/SettingVC;
@@ -483,8 +486,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AC7E34C28E5D4CB00B6F5DF /* String + ext.swift in Sources */,
+				3A3AE0C728F6508E00618442 /* SettingVC.swift in Sources */,
 				3AFC09FA28BB52FA002C0C52 /* SecondViewModel.swift in Sources */,
-				3AFC0A0128BB835B002C0C52 /* SettingViewModel.swift in Sources */,
 				3A9B533428E26A4B002F0E95 /* Animations.swift in Sources */,
 				3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */,
 				3AD1FF7B2827FB25002ECA67 /* UIFont + ext.swift in Sources */,
@@ -500,10 +503,8 @@
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,
-				3AFC09FF28BB835B002C0C52 /* SettingVC.swift in Sources */,
 				3A0995D128E296D60060921A /* CAGradientLayer+ext.swift in Sources */,
 				3A6A9EA628C80A7F00A60E2F /* GradientView.swift in Sources */,
-				3AFC0A0028BB835B002C0C52 /* SettingIO.swift in Sources */,
 				3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */,
 				3A11204C28D2952F0092990F /* DateFormatter.swift in Sources */,
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,
@@ -512,6 +513,7 @@
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
 				3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */,
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
+				3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,
 				3A3E17C728CE369500C025D2 /* Helper.swift in Sources */,
@@ -521,7 +523,9 @@
 				3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */,
 				3A1FD7A328DA076A00F6953D /* FileAdmin.swift in Sources */,
 				3A3B0E8E28E07DD500D1F057 /* InfoAlert.swift in Sources */,
+				3A3AE0C828F6508E00618442 /* SettingViewModelProtocol.swift in Sources */,
 				3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */,
+				3A3AE0C528F6508E00618442 /* SettingIO.swift in Sources */,
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,
 				3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */,
 				3AC7E35B28E7B72600B6F5DF /* Language.swift in Sources */,

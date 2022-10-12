@@ -31,7 +31,7 @@ final class Coordinator: NewTaskOutput {
 		mainView = assembly.makeMain(output: self)
 		seconvVC = assembly.makeSecondVC(output: self)
 		settingVC = assembly.makeSettingVC(output: self)
-		detailVC = assembly.makeDetailVC(output: self)
+		//detailVC = assembly.makeDetailVC(output: self)
 		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
 		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
@@ -41,25 +41,28 @@ final class Coordinator: NewTaskOutput {
 
 extension Coordinator: MainOutput {
 	
+	
 	func goToNewTask() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
 		mainView.showDetailViewController(newTaskVC, sender: self)
 	}
-	func goToDetail() {
-		let detailVC = assembly.makeDetailVC(output: self)
-		mainView.show(detailVC, sender: self)
-		print("goToDetail")
-	}
+//	func goToDetail() {
+//		let detailVC = assembly.makeDetailVC(output: self)
+//		mainView.show(detailVC, sender: self)
+//		print("goToDetail")
+//	}
 }
 
 extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
 	
-	func goToDetailSecond() {
-		let detailVC = assembly.makeDetailVC(output: self)
-		seconvVC.show(detailVC, sender: self)
+//	func goToDetailSecond() {
+//		let detailVC = assembly.makeDetailVC(output: self)
+//		seconvVC.show(detailVC, sender: self)
+//		print("goToNewTaskSecond")
+//	}
+	func goToDetail() {
 		print("goToNewTaskSecond")
 	}
-	
 	func goToNewTaskSecond() {
 		let newTaskVC = assembly.makeNewTaskVC(output: self)
 		seconvVC.showDetailViewController(newTaskVC, sender: self)

@@ -27,16 +27,16 @@ final class Assembly {
 	func makeSettingVC(output: SettingOutput) -> UIViewController {
 		let viewModel = SettingViewModel(output: output)
 		let view = SettingVC(viewModel: viewModel)
-		viewModel.view = view
+		//viewModel.view = view
 		return view
 	}
 	
-	func makeDetailVC(output: DetailOutput) -> UIViewController {
-		let viewModel = DetailViewModel(output: output)
-		let view = DetailVC(viewModel: viewModel)
-		viewModel.view = view
-		return view 
-	}
+//	func makeDetailVC(output: DetailOutput) -> UIViewController {
+//		let viewModel = DetailViewModel(output: output)
+//		let view = DetailVC(viewModel: viewModel)
+//		viewModel.view = view
+//		return view 
+//	}
 	
 	func makeNewTaskVC(output: NewTaskOutput) -> UIViewController {
 		let view = NewTask()

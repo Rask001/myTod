@@ -177,6 +177,7 @@ final class Main: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
+	
 	@objc func goToDetail(notification: NSNotification) {
 		guard let userInfo = notification.userInfo else { return }
 		guard let buttonTag = userInfo["buttonTag"] else { return }
@@ -233,7 +234,6 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		
 		return 30
 	}
 	

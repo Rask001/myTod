@@ -12,34 +12,30 @@ extension CustomCell {
 	
 	internal func makeBackgroundViewCell() -> UIView {
 		let view = UIView()
-		view.backgroundColor = .systemBackground
+		view.backgroundColor = .cellColor
 		view.layer.cornerRadius = 10
 		return view
 	}
 	
-	internal func makeTextField() -> UITextField {
-		let tf = UITextField()
-		tf.isHidden = true
-		tf.backgroundColor = .systemYellow
-		tf.text = "text filed"
-		tf.textAlignment = .left
-		tf.adjustsFontSizeToFitWidth = true
-		return tf
+	internal func backgroundViewCellShadow() {
+		backgroundViewCell.layer.shadowColor = UIColor.black.cgColor
+		backgroundViewCell.layer.shadowRadius = 4
+		backgroundViewCell.layer.shadowOpacity = 0.2
+		backgroundViewCell.layer.shadowOffset = CGSize(width: 0, height: 3 )
 	}
 	
-	internal func makeTaskTitle() -> UILabel {
-		let label = UILabel()
+	internal func makeTaskTitle() -> UITextField {
+		let label = UITextField()
 		label.isHidden = false
-		label.backgroundColor = .green
 		label.text = "New Task"
 		label.textAlignment = .left
 		label.adjustsFontSizeToFitWidth = true
+		label.isEnabled = false
 		return label
 	}
 	
 	internal func makeTaskTime() -> UILabel {
 		let label = UILabel()
-		label.backgroundColor = .blue
 		label.text = "13:25"
 		label.textAlignment = .right
 		label.adjustsFontSizeToFitWidth = true
@@ -48,7 +44,6 @@ extension CustomCell {
 	
 	internal func makeTaskDate() -> UILabel {
 		let label = UILabel()
-		label.backgroundColor = .orange
 		label.text = "every week"
 		label.textAlignment = .right
 		label.adjustsFontSizeToFitWidth = true
@@ -57,7 +52,6 @@ extension CustomCell {
 	
 	internal func makeWeekLabel() -> UILabel {
 		let label = UILabel()
-		label.backgroundColor = .green
 		label.text = "sun,mon,tue,wed,thu,fri,sat"
 		label.textAlignment = .right
 		label.adjustsFontSizeToFitWidth = true
@@ -66,13 +60,15 @@ extension CustomCell {
 
 	internal func makeButtonCell() -> UIButton {
 		let button = UIButton()
-		button.backgroundColor = .lightGray
 		button.layer.cornerRadius = 20
-		
 		return button
 	}
 	internal func makeButtonOk() -> UIButton {
 		let button = UIButton()
+		button.backgroundColor = .cellColor
+		button.isHidden = true
+		button.setImage(UIImage(named: "ok")?.withTintColor(.backgroundColor ?? .label), for: .normal)
+		button.addTarget(self, action: #selector(tapButtonOk), for: .touchUpInside)
 		return button
 	}
 	
@@ -123,14 +119,38 @@ extension CustomCell {
 		NotificationCenter.default.post(name: Notification.Name("tap"), object: nil, userInfo: buttonTag)
 	}
 	
+	@objc func tapButtonOk() {
+		taskTitleTF.isEnabled = false
+		buttonOk.isHidden = true
+		isHidden(false)
+		self.endEditing(true)
+	}
+	
+	private func isHidden(_ bool: Bool) {
+		stackViewImage.isHidden = bool
+		taskDate.isHidden = bool
+		weekLabel.isHidden = bool
+		taskTime.isHidden = bool
+	}
+	
+	
 	@objc func longTap() {
-		
+		guard Counter.count == 0 else { return }
+		TapticFeedback.shared.soft
+		taskTitleTF.isEnabled = true
+		buttonOk.isHidden = false
+		isHidden(true)
+		taskTitleTF.becomeFirstResponder()
+		print(#function)
+		Counter.count = 1
+		DispatchQueue.main.asyncAfter(deadline: .now() + 2 ) {
+			Counter.count = 0
+		}
 	}
 	
 	internal func createStackView() -> UIStackView {
 		let stackView = UIStackView(arrangedSubviews: [voiceImageView, descriptImageView, repeatImageView, alarmImageView])
 		stackView.axis = .horizontal
-		stackView.backgroundColor = .red
 		stackView.distribution = .fillEqually
 		return stackView
 	}
@@ -139,15 +159,14 @@ extension CustomCell {
 	//MARK: - addSubviewAndConfigure
 	func addSubviewAndConfigure() {
 		self.backgroundColor = .clear
-		self.addSubview(backgroundViewCell)
+		self.contentView.addSubview(backgroundViewCell)
 		self.backgroundViewCell.addSubview(self.stackViewImage)
-		self.backgroundViewCell.addSubview(self.textFieldLabel)
-		self.backgroundViewCell.addSubview(self.taskTitle)
+		self.backgroundViewCell.addSubview(self.taskTitleTF)
 		self.backgroundViewCell.addSubview(self.taskTime)
 		self.backgroundViewCell.addSubview(self.taskDate)
 		self.backgroundViewCell.addSubview(self.weekLabel)
-		self.backgroundViewCell.addSubview(self.buttonCell)
 		self.backgroundViewCell.addSubview(self.buttonOk)
+		self.backgroundViewCell.addSubview(self.buttonCell)
 	}
 
 	//MARK: - setConstraints
@@ -155,13 +174,14 @@ extension CustomCell {
 		backgroundViewCell.translatesAutoresizingMaskIntoConstraints = false
 		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
 		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
-		backgroundViewCell.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
 		
 		taskTime.translatesAutoresizingMaskIntoConstraints = false
 		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 3).isActive = true
 		taskTime.heightAnchor.constraint(equalToConstant: 18).isActive = true
 		taskTime.widthAnchor.constraint(equalToConstant: 60).isActive = true
-		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -4).isActive = true
+		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -5).isActive = true
 		
 		stackViewImage.translatesAutoresizingMaskIntoConstraints = false
 		stackViewImage.topAnchor.constraint(equalTo: backgroundViewCell.topAnchor, constant: 4).isActive = true
@@ -169,23 +189,11 @@ extension CustomCell {
 		stackViewImage.heightAnchor.constraint(equalToConstant: 18).isActive = true
 		stackViewImage.widthAnchor.constraint(lessThanOrEqualToConstant: 80).isActive = true
 		
-		buttonCell.translatesAutoresizingMaskIntoConstraints = false
-		buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10).isActive = true
-		buttonCell.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
-		buttonCell.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
-		buttonCell.widthAnchor.constraint(equalToConstant: 40).isActive = true
-		
-		taskTitle.translatesAutoresizingMaskIntoConstraints = false
-		taskTitle.leadingAnchor.constraint(equalTo: self.buttonCell.trailingAnchor, constant: 10).isActive = true
-		taskTitle.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
-		taskTitle.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
-		taskTitle.trailingAnchor.constraint(equalTo: self.stackViewImage.leadingAnchor, constant: 0).isActive = true
-		
-		textFieldLabel.translatesAutoresizingMaskIntoConstraints = false
-		textFieldLabel.leadingAnchor.constraint(equalTo: self.buttonCell.trailingAnchor, constant: 10).isActive = true
-		textFieldLabel.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
-		textFieldLabel.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
-		textFieldLabel.trailingAnchor.constraint(equalTo: self.stackViewImage.leadingAnchor, constant: 0).isActive = true
+		taskTitleTF.translatesAutoresizingMaskIntoConstraints = false
+		taskTitleTF.leadingAnchor.constraint(equalTo: self.buttonCell.trailingAnchor, constant: 10).isActive = true
+		taskTitleTF.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
+		taskTitleTF.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
+		taskTitleTF.trailingAnchor.constraint(equalTo: self.stackViewImage.leadingAnchor, constant: 0).isActive = true
 		
 		taskDate.translatesAutoresizingMaskIntoConstraints = false
 		taskDate.topAnchor.constraint(equalTo: self.taskTime.bottomAnchor, constant: 0).isActive = true
@@ -196,7 +204,19 @@ extension CustomCell {
 		weekLabel.topAnchor.constraint(equalTo: self.taskDate.bottomAnchor, constant: 0).isActive = true
 		weekLabel.heightAnchor.constraint(equalToConstant: 18).isActive = true
 		weekLabel.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -4).isActive = true
-		weekLabel.leadingAnchor.constraint(equalTo: taskTitle.trailingAnchor).isActive = true
+		weekLabel.leadingAnchor.constraint(equalTo: taskTitleTF.trailingAnchor).isActive = true
+		
+		buttonCell.translatesAutoresizingMaskIntoConstraints = false
+		buttonCell.leadingAnchor.constraint(equalTo: self.backgroundViewCell.leadingAnchor, constant: 10).isActive = true
+		buttonCell.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
+		buttonCell.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
+		buttonCell.widthAnchor.constraint(equalToConstant: 40).isActive = true
+		
+		buttonOk.translatesAutoresizingMaskIntoConstraints = false
+		buttonOk.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -10).isActive = true
+		buttonOk.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
+		buttonOk.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
+		buttonOk.widthAnchor.constraint(equalToConstant: 40).isActive = true
 		
 	}
 }

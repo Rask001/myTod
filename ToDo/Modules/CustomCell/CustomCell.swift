@@ -8,18 +8,17 @@ final class CustomCell: UITableViewCell {
 	static let identifier = "CustomCell"
 	
 	lazy var backgroundViewCell = makeBackgroundViewCell()
-	lazy var textFieldLabel = makeTextField()
-	lazy var taskTitle = makeTaskTitle()
+	lazy var taskTitleTF = makeTaskTitle()
 	lazy var taskTime = makeTaskTime()
 	lazy var taskDate = makeTaskDate()
 	lazy var weekLabel = makeWeekLabel()
-	lazy var buttonCell = makeButtonCell()
-	lazy var buttonOk = makeButtonOk()
 	lazy var alarmImageView = makeAlarmImageView()
 	lazy var repeatImageView = makeRepeatImageView()
 	lazy var descriptImageView = makeDescriptImageView()
 	lazy var voiceImageView = makeVoiceImageView()
 	lazy var stackViewImage = createStackView()
+	lazy var buttonCell = makeButtonCell()
+	lazy var buttonOk = makeButtonOk()
 	var taskDateDate: Date? = nil
 	var id: String = ""
 	
@@ -28,6 +27,7 @@ final class CustomCell: UITableViewCell {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		addSubviewAndConfigure()
 		setConstraintsCell()
+		backgroundViewCellShadow()
 		gestureRecognizerLongTap()
 		gestureRecognizerTap()
 	}

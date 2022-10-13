@@ -14,7 +14,7 @@ fileprivate enum Constants {
 	static var buttonTitleColor = UIColor.blackWhite
 	static var buttonBackgroundColor = UIColor.newTaskButtonColor
 	static var buttonCornerRadius: CGFloat { 35 }
-	static var tableViewRowHeight: CGFloat { 60 }
+	static var tableViewRowHeight: CGFloat { 65 }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
 	static var backgroundColorView: UIColor { .backgroundColor! }
 }

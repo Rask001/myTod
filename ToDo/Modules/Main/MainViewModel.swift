@@ -125,6 +125,7 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	
 	@objc private func saveCheckmark(sender: UIButton) {
+		print(#function)
 		taptic.soft
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = coreDataModel

@@ -118,6 +118,7 @@
 //
 //	internal func record() {
 //		TapticFeedback.shared.soft
+//    стоило бы перевести анимации на глобал .userinteractive
 //		animations.animateImageView(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: differenceInSize) //animateImageView()
 //		animations.curtain(color: .red, superView: self.view, upDown: .down, curtainView: curtainView)
 //		let session = AVAudioSession.sharedInstance()

@@ -2,45 +2,120 @@
 //  DetailVC.swift
 //  ToDo
 //
-//  Created by Антон on 12.10.2022.
+//  Created by Антон on 07.11.2022.
 //
-//import UIKit
-//import Foundation
-//
-//final class DetailVC: UIViewController {
-//	
-//	let data = localTaskStruct.taskStruct
-//	lazy var dataShortID = shortInt()
-//	lazy var infoLaber = createInfoLabel()
-//	//	lazy var titleLabel = createLabel()
-//	//	lazy var createdAt = createLabel()
-//	//	lazy var statusLabel = createLabel()
-//	//	lazy var isOverdue = createLabel()
-//	lazy var textView = createTextView()
-//	lazy var stepper = createStepper()
-//	lazy var voiceButton = createVoiceButton()
-//	var rightButtonItem = UIBarButtonItem()
-//	//lazy var navInfoButton = createNavInfo()
-//
-//	//MARK: - liveCycles
-//override func viewDidLoad() {
-//	super.viewDidLoad()
-//}
-//
-//		try! Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
-//	
-//	
-//	private func createNavInfo()  {
-//		rightButtonItem = UIBarButtonItem(image:  UIImage(systemName: "info.circle"),
-//																						 style: .plain, target: <#T##Any?#>
-//
-//	private func createTextView() -> UITextView {
-//		let textView = UITextView()
-//		textView.backgroundColor = UIColor(named: "textView")
-//
-//	
-//-
-//	//MARK: - SetConstraits
-//			private func setConstraits() {
-//				self.textView.translatesAutoresizingMaskIntoConstraints = false
-//			}
+
+import Foundation
+import UIKit
+
+private enum Constants {
+	static var recordButtonColor: UIColor = .white
+	static var config: UIImage.SymbolConfiguration { UIImage.SymbolConfiguration(pointSize: 40, weight: .bold, scale: .medium) }
+}
+
+//MARK: - VIEW
+class DetailVC: UIViewController {
+	
+	//MARK: - PROPERTY
+	private let data = localTaskStruct.taskStruct
+	private let textView = UITextView()
+	private	var infoLaber = UILabel()
+	private let infoAllert = InfoAlert()
+	private let stepper = UIStepper()
+	private let voiceButton = UIButton(type: .system)
+	private	var rightButtonItem = UIBarButtonItem()
+	private let navigationBar = UINavigationBar()
+	private let gradient = CAGradientLayer()
+	var viewModel: DetailViewModel!
+	
+	//MARK: - LIVECYCLE
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		setupTextView()
+		setupInfoLaber()
+		createNavInfo()
+		setupButton()
+		addSubview()
+		layout()
+	}
+	
+	//MARK: - SETUP
+	private func setupTextView() {
+		textView.backgroundColor = .white
+		textView.layer.cornerRadius = 8
+	}
+	
+	private func setupInfoLaber() {
+		infoLaber.backgroundColor = .clear
+		infoLaber.numberOfLines = 0
+		infoLaber.textAlignment = .center
+		infoLaber.text = NSLocalizedString("you can add a description and create a voice note", comment: "")
+	}
+	
+	private func createNavInfo()  {
+		rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"),
+																			style: .plain,
+																			target: self,
+																			action: #selector(goToInfo))
+		navigationItem.rightBarButtonItem = rightButtonItem
+		navigationBar.items               = [navigationItem]
+		
+	}
+																			
+	@objc func goToInfo() {
+		present(infoAllert, animated: true)
+	}
+																				
+																				
+	private func setupStepper() {
+		
+	}
+	
+	private func setupButton() {
+		voiceButton.backgroundColor = .clear
+		voiceButton.setImage(UIImage(systemName: "mic", withConfiguration: Constants.config)?.withTintColor(Constants.recordButtonColor, renderingMode: .alwaysOriginal), for: .normal)
+		voiceButton.contentMode = .scaleToFill
+		voiceButton.layer.shadowColor = UIColor.black.cgColor
+		voiceButton.layer.shadowRadius = 3
+		voiceButton.layer.shadowOpacity = 0.2
+		voiceButton.layer.shadowOffset = CGSize(width: 0, height: 3 )
+		voiceButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+	}
+	
+	@objc func startRecord() {
+		print(1)
+	}
+	
+	//MARK: - LAYOUT
+	private func addSubview() {
+		view.addSubview(textView)
+		view.addSubview(infoLaber)
+		view.addSubview(stepper)
+		view.addSubview(voiceButton)
+	}
+	
+	private func layout() {
+		textView.translatesAutoresizingMaskIntoConstraints = false
+		textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+		textView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+		textView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150).isActive = true
+		
+		stepper.translatesAutoresizingMaskIntoConstraints = false
+		stepper.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 0).isActive = true
+		stepper.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -10).isActive = true
+		
+		infoLaber.translatesAutoresizingMaskIntoConstraints = false
+		infoLaber.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
+		infoLaber.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -30).isActive = true
+		infoLaber.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+		infoLaber.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -120).isActive = true
+		
+		voiceButton.translatesAutoresizingMaskIntoConstraints = false
+		voiceButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+		voiceButton.leadingAnchor.constraint(equalTo: infoLaber.trailingAnchor, constant: 30).isActive = true
+		voiceButton.bottomAnchor.constraint(equalTo: stepper.topAnchor, constant: -10).isActive = true
+		voiceButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
+	}
+}

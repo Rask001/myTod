@@ -35,6 +35,7 @@ final class SettingVC: UIViewController {
 	//MARK: - liveCycles
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 		viewModel.createNavController(view: self)
 		segmentedControllerSetup()
 		languageControllerSetup()

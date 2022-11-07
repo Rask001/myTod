@@ -100,7 +100,7 @@ final class Main: UIViewController {
 		self.tableView.isScrollEnabled  = true // скроллинг
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-		self.tableView.allowsSelection  = true
+		self.tableView.allowsSelection  = false
 	}
 
 	
@@ -121,11 +121,10 @@ final class Main: UIViewController {
 	@objc private func goToNewTaskVCDown() {
 		TapticFeedback.shared.soft
 		print(buttonNewTaskHeightAnchor?.isActive as Any)
-		buttonNewTaskHeightAnchor?.isActive = false
-		buttonNewTaskWidthAnchor?.isActive = false
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
-
+		self.buttonNewTaskHeightAnchor?.isActive = false
+		self.buttonNewTaskWidthAnchor?.isActive = false
+		self.buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
+		self.buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
 		self.buttonNewTask.layer.cornerRadius = 40
 		UIView.animate(withDuration: 0.1) { [weak self] in
 			self?.view.layoutIfNeeded()
@@ -133,10 +132,10 @@ final class Main: UIViewController {
 	}
 	
 	@objc private func goToNewTaskVC() {
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor?.isActive = true
-		buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskHeightAnchor?.isActive = true
+		self.buttonNewTaskWidthAnchor?.isActive = true
 		self.buttonNewTask.layer.cornerRadius = 35
 		UIView.animate(withDuration: 0.1) { [weak self] in
 			self?.view.layoutIfNeeded()
@@ -153,21 +152,20 @@ final class Main: UIViewController {
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
-		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
-		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
+		self.tableView.translatesAutoresizingMaskIntoConstraints                                             = false
+		self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
+		self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
+		self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
+		self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
-		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
-		buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor?.isActive = true
-		buttonNewTaskHeightAnchor?.isActive = true
+		self.buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
+		self.buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
+		self.buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
+		self.buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTaskHeightAnchor?.isActive = true
 	}
-	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
 	private func notification() {

@@ -16,9 +16,9 @@ final class CustomCell: UITableViewCell {
 	lazy var repeatImageView = makeRepeatImageView()
 	lazy var descriptImageView = makeDescriptImageView()
 	lazy var voiceImageView = makeVoiceImageView()
-	lazy var stackViewImage = createStackView()
 	lazy var buttonCell = makeButtonCell()
 	lazy var buttonOk = makeButtonOk()
+	lazy var stackViewImage = createStackView()
 	var taskDateDate: Date? = nil
 	var id: String = ""
 	

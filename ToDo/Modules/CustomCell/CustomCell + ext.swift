@@ -75,27 +75,27 @@ extension CustomCell {
 	
 	internal func makeAlarmImageView() -> UIImageView {
 		let imageView = UIImageView()
-		imageView.image = UIImage(systemName: "alarm")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+		imageView.image = UIImage(systemName: "alarm")?.withTintColor(UIColor(white: 0.5, alpha: 1), renderingMode: .automatic)
 		imageView.contentMode = .scaleAspectFit
 		imageView.isHidden = false
 		return imageView
 	}
 	internal func makeRepeatImageView() -> UIImageView {
 		let imageView = UIImageView()
-		imageView.image = UIImage(systemName: "repeat")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+		imageView.image = UIImage(systemName: "repeat")?.withTintColor(UIColor(white: 0.5, alpha: 1), renderingMode: .automatic)
 		imageView.contentMode = .scaleAspectFit
 		return imageView
 	}
 	internal func makeDescriptImageView() -> UIImageView {
 		let imageView = UIImageView()
-		imageView.image = UIImage(systemName: "square.text.square")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+		imageView.image = UIImage(systemName: "square.text.square")?.withTintColor(UIColor(white: 0.5, alpha: 1), renderingMode: .automatic)
 		imageView.isHidden = false
 		imageView.contentMode = .scaleAspectFit
 		return imageView
 	}
 	internal func makeVoiceImageView() -> UIImageView {
 		let imageView = UIImageView()
-		imageView.image = UIImage(systemName: "mic")?.withTintColor(.label, renderingMode: .alwaysOriginal)
+		imageView.image = UIImage(systemName: "mic")?.withTintColor(UIColor(white: 0.5, alpha: 1), renderingMode: .automatic)
 		imageView.contentMode = .scaleAspectFit
 		return imageView
 	}
@@ -108,10 +108,11 @@ extension CustomCell {
 	}
 	
 	func gestureRecognizerLongTap() {
-		let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
-		tapGesture.minimumPressDuration = 0.8
-		self.addGestureRecognizer(tapGesture)
-		tapGesture.delegate = self
+		//guard alloLongTap == true else { TapticFeedback.shared.warning; return }
+			let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
+			tapGesture.minimumPressDuration = 0.8
+			self.addGestureRecognizer(tapGesture)
+			tapGesture.delegate = self
 	}
 	
 	@objc func tap() {
@@ -120,9 +121,11 @@ extension CustomCell {
 	}
 	
 	@objc func tapButtonOk() {
+		guard let text = taskTitleTF.text, text != "" else { TapticFeedback.shared.warning; return }
 		taskTitleTF.isEnabled = false
 		buttonOk.isHidden = true
 		isHidden(false)
+		CoreDataMethods.shared.editingCell(cellTag: buttonCell.tag, newText: text)
 		self.endEditing(true)
 	}
 	
@@ -175,13 +178,13 @@ extension CustomCell {
 		backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
 		backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
 		backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+		backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
 		
 		taskTime.translatesAutoresizingMaskIntoConstraints = false
 		taskTime.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 3).isActive = true
 		taskTime.heightAnchor.constraint(equalToConstant: 18).isActive = true
 		taskTime.widthAnchor.constraint(equalToConstant: 60).isActive = true
-		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -5).isActive = true
+		taskTime.trailingAnchor.constraint(equalTo: self.backgroundViewCell.trailingAnchor, constant: -4).isActive = true
 		
 		stackViewImage.translatesAutoresizingMaskIntoConstraints = false
 		stackViewImage.topAnchor.constraint(equalTo: backgroundViewCell.topAnchor, constant: 4).isActive = true
@@ -217,6 +220,5 @@ extension CustomCell {
 		buttonOk.topAnchor.constraint(equalTo: self.backgroundViewCell.topAnchor, constant: 10).isActive = true
 		buttonOk.bottomAnchor.constraint(equalTo: self.backgroundViewCell.bottomAnchor, constant: -10).isActive = true
 		buttonOk.widthAnchor.constraint(equalToConstant: 40).isActive = true
-		
 	}
 }

@@ -15,7 +15,7 @@
 		3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C228F6508E00618442 /* SettingViewModel.swift */; };
 		3A3AE0C728F6508E00618442 /* SettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C328F6508E00618442 /* SettingVC.swift */; };
 		3A3AE0C828F6508E00618442 /* SettingViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */; };
-		3A3AE0CA28F6F23200618442 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C928F6F23200618442 /* DetailVC.swift */; };
+		3A3AE0CA28F6F23200618442 /* DetailVCold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0C928F6F23200618442 /* DetailVCold.swift */; };
 		3A3AE0CC28F6F96B00618442 /* CustomCell + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0CB28F6F96B00618442 /* CustomCell + ext.swift */; };
 		3A3AE0F528F736CA00618442 /* VoiceCell + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3AE0F428F736CA00618442 /* VoiceCell + extension.swift */; };
 		3A3B0E8E28E07DD500D1F057 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3B0E8D28E07DD500D1F057 /* InfoAlert.swift */; };
@@ -23,6 +23,7 @@
 		3A3E17C728CE369500C025D2 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17C628CE369500C025D2 /* Helper.swift */; };
 		3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17D028CE515100C025D2 /* DetailViewModel.swift */; };
 		3A3E17D428CE515100C025D2 /* DetailIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17D128CE515100C025D2 /* DetailIO.swift */; };
+		3A45E26A29191C9100676C7C /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E26929191C9100676C7C /* DetailVC.swift */; };
 		3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F560E27EF947F00ECF06B /* AppDelegate.swift */; };
 		3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F561727EF947F00ECF06B /* ToDo.xcdatamodeld */; };
 		3A4F561B27EF948300ECF06B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561A27EF948300ECF06B /* Assets.xcassets */; };
@@ -87,7 +88,7 @@
 		3A3AE0C228F6508E00618442 /* SettingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		3A3AE0C328F6508E00618442 /* SettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingVC.swift; sourceTree = "<group>"; };
 		3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewModelProtocol.swift; sourceTree = "<group>"; };
-		3A3AE0C928F6F23200618442 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
+		3A3AE0C928F6F23200618442 /* DetailVCold.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVCold.swift; sourceTree = "<group>"; };
 		3A3AE0CB28F6F96B00618442 /* CustomCell + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CustomCell + ext.swift"; sourceTree = "<group>"; };
 		3A3AE0F428F736CA00618442 /* VoiceCell + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoiceCell + extension.swift"; sourceTree = "<group>"; };
 		3A3B0E8D28E07DD500D1F057 /* InfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAlert.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		3A3E17C628CE369500C025D2 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		3A3E17D028CE515100C025D2 /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		3A3E17D128CE515100C025D2 /* DetailIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailIO.swift; sourceTree = "<group>"; };
+		3A45E26929191C9100676C7C /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		3A4F560B27EF947F00ECF06B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4F560E27EF947F00ECF06B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4F561827EF947F00ECF06B /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
@@ -166,8 +168,9 @@
 			isa = PBXGroup;
 			children = (
 				3A11204B28D2952F0092990F /* DateFormatter.swift */,
-				3A3AE0C928F6F23200618442 /* DetailVC.swift */,
+				3A3AE0C928F6F23200618442 /* DetailVCold.swift */,
 				3A3B0E8D28E07DD500D1F057 /* InfoAlert.swift */,
+				3A45E26929191C9100676C7C /* DetailVC.swift */,
 				3A3E17D028CE515100C025D2 /* DetailViewModel.swift */,
 				3A3E17D128CE515100C025D2 /* DetailIO.swift */,
 			);
@@ -498,6 +501,7 @@
 				3AD1FF7E28280FC7002ECA67 /* CoreDataMethods.swift in Sources */,
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
+				3A45E26A29191C9100676C7C /* DetailVC.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
@@ -520,7 +524,7 @@
 				3AC261A828C1323B000A0285 /* NavigationController.swift in Sources */,
 				3AD1FF8428284092002ECA67 /* NewTask.swift in Sources */,
 				3A9722DE28D92B8C003BB436 /* VoiceCell.swift in Sources */,
-				3A3AE0CA28F6F23200618442 /* DetailVC.swift in Sources */,
+				3A3AE0CA28F6F23200618442 /* DetailVCold.swift in Sources */,
 				3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */,
 				3A1FD7A328DA076A00F6953D /* FileAdmin.swift in Sources */,
 				3A3B0E8E28E07DD500D1F057 /* InfoAlert.swift in Sources */,

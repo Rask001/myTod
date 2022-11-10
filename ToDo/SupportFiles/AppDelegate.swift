@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	//let currentLanguage = "ru"
 
 	var window: UIWindow?
-	private let assembly = Assembly()
+	private let assembly = Builder()
 	private lazy var cootdinator = Coordinator(assembly: assembly)
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

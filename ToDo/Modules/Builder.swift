@@ -8,12 +8,21 @@
 import Foundation
 import UIKit
 
-final class Assembly {
+final class Builder {
 	
 	func makeMain(output: MainOutput) -> UIViewController {
-		let viewModel = MainViewModel(output: output)
-		let view = Main(viewModel: viewModel)
-		viewModel.view = view
+		let view = Main()
+		let coreDataMethods = CoreDataMethods()
+		let visualViewCell = VisualViewCell()
+		let navController = NavigationController()
+		let taptic = TapticFeedback()
+		
+		let viewModel = MainViewModel(coreDataMethods: coreDataMethods,
+																	visualViewCell: visualViewCell,
+																	navController: navController,
+																	taptic: taptic,
+																	output: output)
+			view.viewModel = viewModel
 		return view
 	}
 	

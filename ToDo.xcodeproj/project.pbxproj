@@ -24,6 +24,7 @@
 		3A3E17D328CE515100C025D2 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17D028CE515100C025D2 /* DetailViewModel.swift */; };
 		3A3E17D428CE515100C025D2 /* DetailIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A3E17D128CE515100C025D2 /* DetailIO.swift */; };
 		3A45E26A29191C9100676C7C /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E26929191C9100676C7C /* DetailVC.swift */; };
+		3A45E28C291D71E100676C7C /* MainViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A45E28B291D71E100676C7C /* MainViewModelProtocol.swift */; };
 		3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F560E27EF947F00ECF06B /* AppDelegate.swift */; };
 		3A4F561927EF947F00ECF06B /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A4F561727EF947F00ECF06B /* ToDo.xcdatamodeld */; };
 		3A4F561B27EF948300ECF06B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A4F561A27EF948300ECF06B /* Assets.xcassets */; };
@@ -58,7 +59,7 @@
 		3ADB459C2888269F00427BD8 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB459B2888269F00427BD8 /* MainViewModel.swift */; };
 		3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB459D288827FF00427BD8 /* MainIO.swift */; };
 		3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB459F28882C1F00427BD8 /* Coordinator.swift */; };
-		3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A128882C9100427BD8 /* Assembly.swift */; };
+		3ADB45A228882C9100427BD8 /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A128882C9100427BD8 /* Builder.swift */; };
 		3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */; };
 		3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADB45A82888389500427BD8 /* NewTaskIO.swift */; };
 		3ADBF4D62827F316000BA06B /* Main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ADBF4D52827F316000BA06B /* Main.swift */; };
@@ -97,6 +98,7 @@
 		3A3E17D028CE515100C025D2 /* DetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		3A3E17D128CE515100C025D2 /* DetailIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailIO.swift; sourceTree = "<group>"; };
 		3A45E26929191C9100676C7C /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
+		3A45E28B291D71E100676C7C /* MainViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelProtocol.swift; sourceTree = "<group>"; };
 		3A4F560B27EF947F00ECF06B /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4F560E27EF947F00ECF06B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A4F561827EF947F00ECF06B /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
@@ -135,7 +137,7 @@
 		3ADB459B2888269F00427BD8 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		3ADB459D288827FF00427BD8 /* MainIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainIO.swift; sourceTree = "<group>"; };
 		3ADB459F28882C1F00427BD8 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
-		3ADB45A128882C9100427BD8 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
+		3ADB45A128882C9100427BD8 /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
 		3ADB45A6288837BE00427BD8 /* NewTaskPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskPresenter.swift; sourceTree = "<group>"; };
 		3ADB45A82888389500427BD8 /* NewTaskIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskIO.swift; sourceTree = "<group>"; };
 		3ADBF4D52827F316000BA06B /* Main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main.swift; sourceTree = "<group>"; };
@@ -223,7 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				3ADB459F28882C1F00427BD8 /* Coordinator.swift */,
-				3ADB45A128882C9100427BD8 /* Assembly.swift */,
+				3ADB45A128882C9100427BD8 /* Builder.swift */,
 				3A9722E128D92BFF003BB436 /* VoiceCell */,
 				3A9722D628D8BDFD003BB436 /* recordSheet */,
 				3A3E17C828CE4FEE00C025D2 /* Detail */,
@@ -262,6 +264,7 @@
 			children = (
 				3ADBF4D52827F316000BA06B /* Main.swift */,
 				3ADB459B2888269F00427BD8 /* MainViewModel.swift */,
+				3A45E28B291D71E100676C7C /* MainViewModelProtocol.swift */,
 				3ADB459D288827FF00427BD8 /* MainIO.swift */,
 			);
 			path = Main;
@@ -503,6 +506,7 @@
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3A45E26A29191C9100676C7C /* DetailVC.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
+				3A45E28C291D71E100676C7C /* MainViewModelProtocol.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
@@ -535,7 +539,7 @@
 				3AD1FF772827FA41002ECA67 /* UILabel+ext.swift in Sources */,
 				3ADB45A92888389500427BD8 /* NewTaskIO.swift in Sources */,
 				3AC7E35B28E7B72600B6F5DF /* Language.swift in Sources */,
-				3ADB45A228882C9100427BD8 /* Assembly.swift in Sources */,
+				3ADB45A228882C9100427BD8 /* Builder.swift in Sources */,
 				3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */,
 				3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */,
 				3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */,

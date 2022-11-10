@@ -7,17 +7,6 @@
 import CoreData
 import UIKit
 import Foundation
-//MARK: - enum Constants
-
-fileprivate enum Constants {
-	static var buttonTitle: String { "+" }
-	static var buttonTitleColor = UIColor.blackWhite
-	static var buttonBackgroundColor = UIColor.newTaskButtonColor
-	static var buttonCornerRadius: CGFloat { 35 }
-	static var tableViewRowHeight: CGFloat { 65 }
-	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
-	static var backgroundColorView: UIColor { .backgroundColor! }
-}
 
 final class localTaskStruct {
 static var taskStruct = TaskStruct()
@@ -27,51 +16,44 @@ static var taskStruct = TaskStruct()
 final class Main: UIViewController {
 	
 	//MARK: - Properties
-	internal var tableView = UITableView()
-	internal let buttonNewTask = UIButton()//CustomButtonNewTask
-	internal let navController = UINavigationController()
-	internal let taptic = TapticFeedback()
-	internal let helper = Helper()
+	var tableView = UITableView()
+	internal let buttonNewTask = UIButton()
+	//var navController: UINavigationController?
+//	internal let taptic = TapticFeedback()
+	//internal let helper = Helper()
 	internal let gradient = CAGradientLayer()
-	internal var viewModel: MainViewModelProtocol
-	static let shared = MainViewModel.self
+	//static let shared = MainViewModel.self
 	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
 	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
 	
-	init(viewModel: MainViewModelProtocol) {
-		self.viewModel = viewModel
-		super.init(nibName: nil, bundle: nil)
-	}
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
+	var viewModel: MainViewModelProtocol!
 	
 	//MARK: - liveCycles
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		print(NSHomeDirectory())
-		
 		confugureTableView()
 		notification()
 		setupButton()
 		setConstraits()
-		viewModel.createNavController()
+		viewModel.createNavController(self)
+		
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	@objc func scrollUp(notification: NSNotification) {
-		self.buttonNewTask.isHidden = true
+		buttonNewTask.isHidden = true
 		guard let userInfo = notification.userInfo else { return }
 		guard let height = (userInfo["height"]) else { return }
-		UIView.animate(withDuration: 0.3, delay: 0) {
-			self.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
 		}
 	}
 
 	@objc func keyboardWillHide(sender: NSNotification) {
-			 self.tableView.frame.origin.y = 0 // Move view to original position
-		self.buttonNewTask.isHidden = false
+			 tableView.frame.origin.y = 0 // Move view to original position
+		buttonNewTask.isHidden = false
 	}
 	
 	
@@ -107,7 +89,7 @@ final class Main: UIViewController {
 	private func setupButton() {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
-		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
+		self.buttonNewTask.setImage(UIImage(systemName: Constants.buttonNewTaskImage, withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVCDown), for: .touchDown)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
@@ -182,7 +164,7 @@ final class Main: UIViewController {
 		let tag: Int = buttonTag as! Int
 	  print(tag)
 		passData(cellTag: tag)
-		self.viewModel.goToDetail()
+		viewModel.goToDetail()
 	}
 	
 	
@@ -207,11 +189,10 @@ final class Main: UIViewController {
 	
 	
 	@objc func tableViewReloadData(notification: NSNotification) {
-		self.viewModel.coreDataMethods.fetchRequest()
-		self.viewModel.reloadTable()
+		viewModel.coreDataMethods.fetchRequest()
+		tableView.reloadData()
 	}
 }
-
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
@@ -237,7 +218,7 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		viewModel.editingStyleBody(indexPath: indexPath) //
+		viewModel.editingStyleBody(indexPath: indexPath, view: self) //
 	}
 	
 	//MARK: CellForRowAt
@@ -251,3 +232,14 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	}
 }
 
+//MARK: - enum Constants
+fileprivate enum Constants {
+	static var buttonTitle: String { "+" }
+	static var buttonTitleColor = UIColor.blackWhite
+	static var buttonBackgroundColor = UIColor.newTaskButtonColor
+	static var buttonCornerRadius: CGFloat { 35 }
+	static var tableViewRowHeight: CGFloat { 65 }
+	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
+	static var backgroundColorView: UIColor { .backgroundColor! }
+	static var buttonNewTaskImage = "plus"
+}

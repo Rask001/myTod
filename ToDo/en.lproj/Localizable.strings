@@ -47,14 +47,6 @@
 "fri" = "fri";
 "sat" = "sat";
 
-//"вс" = "sun";
-//"пн" = "mon";
-//"вт" = "tue";
-//"ср" = "wed";
-//"чт" = "thu";
-//"пт" = "fri";
-//"сб" = "sat";
-
 "Sunday" = "Sunday";
 "Monday" = "Monday";
 "Tuesday" = "Tuesday";
@@ -68,7 +60,8 @@
 "current tasks" = "current tasks";
 "overdue tasks" = "overdue tasks";
 "completed tasks" = "completed tasks";
-
+"Yes, delete" = "Yes, delete";
+"Delete" = "Delete";
 
 "every day" = "every day";
 "every week" = "every week";

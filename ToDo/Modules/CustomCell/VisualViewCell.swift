@@ -15,7 +15,7 @@ final class VisualViewCell {
 		cell.id                         = items.id
 		cell.taskDateDate               = items.taskDateDate
 		cell.taskTime.text              = items.taskTime
-		cell.taskTitleTF.text             = items.taskTitle
+		cell.taskTitleTF.text           = items.taskTitle
 		cell.taskTime.isHidden          = !items.alarmImage
 		cell.alarmImageView.isHidden    = !items.alarmImage
 		cell.repeatImageView.isHidden   = !items.repeatImage
@@ -148,7 +148,7 @@ final class VisualViewCell {
 			cell.taskTime.textColor          = color
 			cell.taskDate.textColor          = color
 			cell.weekLabel.textColor         = color
-			cell.taskTitleTF.textColor         = colorTwo
+			cell.taskTitleTF.textColor       = colorTwo
 		}
 	}
 }

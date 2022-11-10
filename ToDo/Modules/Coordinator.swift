@@ -11,9 +11,9 @@ import UIKit
 final class Coordinator: NewTaskOutput {
 	
 	
-	private let assembly: Assembly
+	private let assembly: Builder
 
-	init(assembly: Assembly) {
+	init(assembly: Builder) {
 		self.assembly = assembly
 	}
 	
@@ -51,7 +51,6 @@ extension Coordinator: MainOutput {
 		mainView.show(detailVC, sender: self)
 		print("goToDetail")
 	}
-	
 }
 
 extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {

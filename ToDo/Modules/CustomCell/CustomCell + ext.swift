@@ -57,7 +57,7 @@ extension CustomCell {
 		label.adjustsFontSizeToFitWidth = true
 		return label
 	}
-
+	
 	internal func makeButtonCell() -> UIButton {
 		let button = UIButton()
 		button.layer.cornerRadius = 20
@@ -109,10 +109,10 @@ extension CustomCell {
 	
 	func gestureRecognizerLongTap() {
 		//guard alloLongTap == true else { TapticFeedback.shared.warning; return }
-			let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
-			tapGesture.minimumPressDuration = 0.8
-			self.addGestureRecognizer(tapGesture)
-			tapGesture.delegate = self
+		let tapGesture = UILongPressGestureRecognizer(target: self, action: #selector(longTap))
+		tapGesture.minimumPressDuration = 0.8
+		self.addGestureRecognizer(tapGesture)
+		tapGesture.delegate = self
 	}
 	
 	@objc func tap() {
@@ -157,9 +157,12 @@ extension CustomCell {
 		stackView.distribution = .fillEqually
 		return stackView
 	}
+}
+
+
+//MARK: - Layout
+	extension CustomCell {
 	
-	
-	//MARK: - addSubviewAndConfigure
 	func addSubviewAndConfigure() {
 		self.backgroundColor = .clear
 		self.contentView.addSubview(backgroundViewCell)

@@ -55,7 +55,7 @@ final class InfoAlert: UIViewController{
 		} else {
 			isOver = NSLocalizedString("Without time", comment: "")
 		}
-
+		
 		self.statusLabel.text = String.localizedStringWithFormat(NSLocalizedString("status: %@", comment: ""), check)
 		self.createdAt.text = String.localizedStringWithFormat(NSLocalizedString("creation time: %@", comment: ""), dateForm.format(data: data.createdAt))
 		self.dateLabel.text = String.localizedStringWithFormat(NSLocalizedString("alert time: %@", comment: ""), taskDate)
@@ -65,8 +65,10 @@ final class InfoAlert: UIViewController{
 	@objc func dismissView() {
 		dismiss(animated: true)
 	}
+}
 	
-	
+	extension InfoAlert {
+		
 	private func addSubviewAndConfigure() {
 		self.view.backgroundColor = .clear
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))

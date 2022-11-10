@@ -45,7 +45,15 @@ final class Builder {
 		let data = localTaskStruct.taskStruct
 		let infoAllert = InfoAlert()
 		let viewModel = DetailViewModel(data: data,
-																		infoAlert: infoAllert)
+																		infoAlert: infoAllert,
+																		output: output)
+		view.viewModel = viewModel
+		return view
+	}
+	
+	func makeRecordSheetVC(output: DetailOutput) -> UIViewController {
+		let view = RecordSheetVC()
+		let viewModel = RecordSheetViewModel()
 		view.viewModel = viewModel
 		return view
 	}

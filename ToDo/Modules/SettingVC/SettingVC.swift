@@ -21,7 +21,7 @@ final class SettingVC: UIViewController {
 	private var segmentedControllerTheme = UISegmentedControl()
 	private var buttonChangeLanguage = UIButton()
 	private var gradient = CAGradientLayer()
-	let viewModel: SettingViewModelProtocol
+	var viewModel: SettingViewModelProtocol
 	
 	//MARK: - Init
 	init(viewModel: SettingViewModelProtocol) {

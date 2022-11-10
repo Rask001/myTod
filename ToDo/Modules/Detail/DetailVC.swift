@@ -110,6 +110,7 @@ final class DetailVC: UIViewController {
 	}
 	
 	@objc func goToRecord() {
+		viewModel.goToRecord()
 	}
 	
 }

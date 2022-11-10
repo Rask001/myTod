@@ -14,8 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	//let currentLanguage = "ru"
 
 	var window: UIWindow?
-	private let assembly = Builder()
-	private lazy var cootdinator = Coordinator(assembly: assembly)
+	private let builder = Builder()
+	private lazy var cootdinator = Coordinator(builder: builder)
 	
 	 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)

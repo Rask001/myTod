@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 
 final class localTaskStruct {
-static var taskStruct = TaskStruct()
+	static var taskStruct = TaskStruct()
 }
 
 //MARK: - Main
@@ -18,28 +18,21 @@ final class Main: UIViewController {
 	//MARK: - Properties
 	var tableView = UITableView()
 	internal let buttonNewTask = UIButton()
-	//var navController: UINavigationController?
-//	internal let taptic = TapticFeedback()
-	//internal let helper = Helper()
 	internal let gradient = CAGradientLayer()
-	//static let shared = MainViewModel.self
 	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
 	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
-	
 	var viewModel: MainViewModelProtocol!
 	
-	//MARK: - liveCycles
 	
+	//MARK: - liveCycles
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		print(NSHomeDirectory())
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 		confugureTableView()
 		notification()
 		setupButton()
 		setConstraits()
 		viewModel.createNavController(self)
-		
-		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
 	@objc func scrollUp(notification: NSNotification) {
@@ -50,15 +43,15 @@ final class Main: UIViewController {
 			self?.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
 		}
 	}
-
+	
 	@objc func keyboardWillHide(sender: NSNotification) {
-			 tableView.frame.origin.y = 0 // Move view to original position
+		tableView.frame.origin.y = 0 // Move view to original position
 		buttonNewTask.isHidden = false
 	}
 	
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-			super.traitCollectionDidChange(previousTraitCollection)
+		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
@@ -67,7 +60,7 @@ final class Main: UIViewController {
 		viewModel.coreDataMethods.fetchRequest()
 		CurrentTabBar.number = 1
 	}
-
+	
 	
 	//MARK: - Configure
 	
@@ -79,12 +72,12 @@ final class Main: UIViewController {
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
-		self.tableView.isScrollEnabled  = true // скроллинг
+		self.tableView.isScrollEnabled  = true
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
 		self.tableView.allowsSelection  = false
 	}
-
+	
 	
 	private func setupButton() {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
@@ -126,8 +119,8 @@ final class Main: UIViewController {
 			TapticFeedback.shared.light
 			Counter.count += 1
 		}
-			self.viewModel.goToNewTaskVC()
-			Counter.count = 0
+		self.viewModel.goToNewTaskVC()
+		Counter.count = 0
 	}
 	
 	
@@ -162,7 +155,7 @@ final class Main: UIViewController {
 		guard let userInfo = notification.userInfo else { return }
 		guard let buttonTag = userInfo["buttonTag"] else { return }
 		let tag: Int = buttonTag as! Int
-	  print(tag)
+		print(tag)
 		passData(cellTag: tag)
 		viewModel.goToDetail()
 	}

@@ -8,7 +8,6 @@ import UIKit
 import Foundation
 
 //MARK: - MainViewModel
-
 final class MainViewModel {
 	private weak var output: MainOutput?
 	let coreDataMethods: CoreDataMethods
@@ -45,7 +44,7 @@ extension MainViewModel: MainViewModelProtocol {
 			coreDataMethods.sectionIndex = newValue
 		}
 	}
-
+	
 	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)
 		let buttonCell = cell.buttonCell
@@ -194,7 +193,6 @@ extension MainViewModel: MainViewModelProtocol {
 		return items
 	}
 }
-
 
 
 fileprivate enum Constants {

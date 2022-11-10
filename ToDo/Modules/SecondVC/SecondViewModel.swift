@@ -26,9 +26,6 @@ protocol SecondViewModelProtocol {
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 }
 
-
-
-
 //MARK: - MainViewModel
 
 final class SecondViewModel {

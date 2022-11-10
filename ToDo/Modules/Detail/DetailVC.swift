@@ -63,7 +63,7 @@ final class DetailVC: UIViewController {
 	}
 	
 	@objc func goToInfo() {
-		present(viewModel.infoAllert, animated: true)
+		present(viewModel.infoAlert, animated: true)
 	}
 	
 	
@@ -93,8 +93,7 @@ final class DetailVC: UIViewController {
 	}
 	
 	@objc func okAction() {
-		CoreDataMethods.shared.saveDescription(cellTag: viewModel.shortInt(), description: textView.text, descriptionSize: stepper.value)
-		view.endEditing(true)
+		viewModel.saveDescription(description: textView.text, descriptionSize: stepper.value, view: view)
 	}
 	
 	private func setupButton() {
@@ -163,7 +162,7 @@ fileprivate enum Constants {
 }
 
 fileprivate enum Title{
-	static var leftNumToolBar = "Отмена"
-	static var rightNumToolBar = "Продолжить"
+	static var leftNumToolBar = NSLocalizedString("cancel", comment: "")
+	static var rightNumToolBar = NSLocalizedString("save", comment: "")
 	static var infoLabelText = NSLocalizedString("you can add a description and create a voice note", comment: "")
 }

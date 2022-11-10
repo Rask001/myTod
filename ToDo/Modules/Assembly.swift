@@ -33,7 +33,10 @@ final class Assembly {
 	
 	func makeDetailVC(output: DetailOutput) -> UIViewController {
 		let view = DetailVC()
-		let viewModel = DetailViewModel()
+		let data = localTaskStruct.taskStruct
+		let infoAllert = InfoAlert()
+		let viewModel = DetailViewModel(data: data,
+																		infoAlert: infoAllert)
 		view.viewModel = viewModel
 		return view
 	}

@@ -90,6 +90,9 @@
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "you can add a description and create a voice note";
 
+//MARK: - DetailVC
+"cancel" = "cancel";
+"save" = "save";
 
 //MARK: - infoAlertDetail
 "status: %@" = "status: %@";

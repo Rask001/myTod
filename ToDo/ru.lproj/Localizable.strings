@@ -91,6 +91,10 @@
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "вы можете добавить описание а так же создать голосовую заметку";
 
+//MARK: - DetailVC
+"cancel" = "отмена";
+"save" = "продолжить";
+
 //MARK: - infoAlertDetail
 "status: %@" = "статус: %@";
 "creation time: %@" = "время создания: %@";

@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 //MARK: - VIEW
-final class DetailVC: UIViewController {
-	
+class DetailVC: UIViewController {
+	static var shared = DetailVC()
 	//MARK: - PROPERTY
 	private let textView = UITextView()
 	private	var infoLaber = UILabel()
@@ -21,6 +21,8 @@ final class DetailVC: UIViewController {
 	private let navigationBar = UINavigationBar()
 	private let gradient = CAGradientLayer()
 	var viewModel: DetailViewModelProtocol!
+	
+
 	
 	//MARK: - LIVECYCLE
 	override func viewDidLoad() {
@@ -44,7 +46,7 @@ final class DetailVC: UIViewController {
 		textView.font = UIFont(name: Constants.descriptionFont, size: viewModel.data.descriptSize)
 		textView.text = viewModel.data.descript
 	}
-
+	
 	
 	private func setupInfoLaber() {
 		infoLaber.backgroundColor = .clear
@@ -65,6 +67,7 @@ final class DetailVC: UIViewController {
 	@objc func goToInfo() {
 		present(viewModel.infoAlert, animated: true)
 	}
+	
 	
 	
 	private func setupStepper() {
@@ -111,10 +114,11 @@ final class DetailVC: UIViewController {
 	
 	@objc func goToRecord() {
 		viewModel.goToRecord()
+		super.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 	}
 	
 }
-	
+
 
 //MARK: - LAYOUT
 extension DetailVC {

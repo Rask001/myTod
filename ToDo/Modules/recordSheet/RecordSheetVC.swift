@@ -22,11 +22,11 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	private var id = 0
 	private var numberOfRecord = 0
 	private var isAudioRecordingGranted = true
-
+	
 	lazy var recordButton = makeStartButton()
 	lazy var timeLabel = makeTimeLabel()
 	lazy var tableView = makeTableView()
-
+	var completion: ((String) -> Void)?
 
 	//MARK: - Animation Property
 	lazy var bigLabel = makeTimeBigLabel()
@@ -48,6 +48,7 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 
 	deinit {
 		print("deinit")
+		NotificationCenter.default.post(name: Notification.Name("interactivePopGestureRecognizerON"), object: nil)
 	}
 	
 	//MARK: - Settings

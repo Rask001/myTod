@@ -14,7 +14,6 @@ final class localTaskStruct {
 
 //MARK: - Main
 final class Main: UIViewController {
-	
 	//MARK: - Properties
 	var tableView = UITableView()
 	internal let buttonNewTask = UIButton()
@@ -22,7 +21,6 @@ final class Main: UIViewController {
 	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
 	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
 	var viewModel: MainViewModelProtocol!
-	
 	
 	//MARK: - liveCycles
 	override func viewDidLoad() {
@@ -33,6 +31,11 @@ final class Main: UIViewController {
 		setupButton()
 		setConstraits()
 		viewModel.createNavController(self)
+		navigationSetup()
+	}
+	private func navigationSetup() {
+		self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+		self.navigationController?.delegate = self
 	}
 	
 	@objc func scrollUp(notification: NSNotification) {
@@ -144,11 +147,17 @@ final class Main: UIViewController {
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
 	private func notification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(popGestureRecognizer), name: Notification.Name("interactivePopGestureRecognizerON"), object: nil)
+		
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	@objc func popGestureRecognizer() {
+		navigationController?.interactivePopGestureRecognizer?.isEnabled = true
 	}
 	
 	@objc func goToDetail(notification: NSNotification) {
@@ -222,6 +231,13 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		let itemsResult = viewModel.cellForRowAtBody(items: items, key: key, indexPath: indexPath)
 		viewModel.visualViewCell(items: itemsResult, cell: cell, indexPath: indexPath)
 		return cell
+	}
+}
+
+//MARK: UIGestureRecognizerDelegate
+extension Main: UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+	func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+		self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
 	}
 }
 

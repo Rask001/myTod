@@ -18,6 +18,7 @@ final class VoiceCell: UITableViewCell {
 	internal var audioPlayer: AVAudioPlayer!
 	internal var meterTimer: Timer!
 	lazy var backgroundViewCell = makeBackgroundViewCell()
+	lazy var bottomBgViewCell = makeBottomBgViewCell()
 	lazy var textFieldLabel = makeTextField()
 	lazy var taskTitle = makeTaskTitle()
 	lazy var taskTime = makeTaskTime()
@@ -38,6 +39,8 @@ final class VoiceCell: UITableViewCell {
 		addSubviewAndConfigure()
 		setConstraintsCell()
 		togglePlayback()
+		backgroundViewCellShadowLayer()
+		animate()
 	}
 
 	required init?(coder: NSCoder) {

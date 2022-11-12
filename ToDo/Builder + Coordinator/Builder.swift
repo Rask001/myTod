@@ -53,7 +53,8 @@ final class Builder {
 	
 	func makeRecordSheetVC(output: DetailOutput) -> UIViewController {
 		let view = RecordSheetVC()
-		let viewModel = RecordSheetViewModel()
+		let animations = Animations()
+		let viewModel = RecordSheetViewModel(animations: animations)
 		view.viewModel = viewModel
 		return view
 	}

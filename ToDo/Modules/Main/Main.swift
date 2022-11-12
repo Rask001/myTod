@@ -22,6 +22,7 @@ final class Main: UIViewController {
 	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
 	var viewModel: MainViewModelProtocol!
 	
+	
 	//MARK: - liveCycles
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -33,25 +34,11 @@ final class Main: UIViewController {
 		viewModel.createNavController(self)
 		navigationSetup()
 	}
+	
 	private func navigationSetup() {
 		self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 		self.navigationController?.delegate = self
 	}
-	
-	@objc func scrollUp(notification: NSNotification) {
-		buttonNewTask.isHidden = true
-		guard let userInfo = notification.userInfo else { return }
-		guard let height = (userInfo["height"]) else { return }
-		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-			self?.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
-		}
-	}
-	
-	@objc func keyboardWillHide(sender: NSNotification) {
-		tableView.frame.origin.y = 0 // Move view to original position
-		buttonNewTask.isHidden = false
-	}
-	
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
@@ -148,10 +135,8 @@ final class Main: UIViewController {
 	//MARK: - Notification, RELOAD TABLE VIEW
 	private func notification() {
 		NotificationCenter.default.addObserver(self, selector: #selector(popGestureRecognizer), name: Notification.Name("interactivePopGestureRecognizerON"), object: nil)
-		
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
-		
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
@@ -169,6 +154,24 @@ final class Main: UIViewController {
 		viewModel.goToDetail()
 	}
 	
+	@objc func tableViewReloadData(notification: NSNotification) {
+		viewModel.coreDataMethods.fetchRequest()
+		tableView.reloadData()
+	}
+	
+	@objc func scrollUp(notification: NSNotification) {
+		buttonNewTask.isHidden = true
+		guard let userInfo = notification.userInfo else { return }
+		guard let height = (userInfo["height"]) else { return }
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
+		}
+	}
+	
+	@objc func keyboardWillHide(sender: NSNotification) {
+		tableView.frame.origin.y = 0 // Move view to original position
+		buttonNewTask.isHidden = false
+	}
 	
 	
 	private func passData(cellTag: Int) {
@@ -186,13 +189,6 @@ final class Main: UIViewController {
 				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
 			}
 		}
-	}
-	
-	
-	
-	@objc func tableViewReloadData(notification: NSNotification) {
-		viewModel.coreDataMethods.fetchRequest()
-		tableView.reloadData()
 	}
 }
 

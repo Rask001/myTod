@@ -45,6 +45,7 @@ extension CustomCell {
 	internal func makeTaskDate() -> UILabel {
 		let label = UILabel()
 		label.text = "every week"
+		label.font = UIFont(name: "Futura", size: 12)
 		label.textAlignment = .right
 		label.adjustsFontSizeToFitWidth = true
 		return label

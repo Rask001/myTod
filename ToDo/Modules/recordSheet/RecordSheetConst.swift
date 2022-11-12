@@ -34,7 +34,7 @@ extension RecordSheetVC {
 		recordButton.layer.shadowOpacity = 0.2
 		recordButton.layer.shadowOffset = CGSize(width: 0, height: 3 )
 		recordButton.backgroundColor = Constants.recordButtonBackgroundColor
-		recordButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+		recordButton.addTarget(self, action: #selector(startStop), for: .touchUpInside)
 		return recordButton
 	}
 
@@ -67,11 +67,14 @@ extension RecordSheetVC {
 	}
 
 	internal func makeTableView() -> UITableView {
-		let tV = UITableView()
-		tV.delegate = self
-		tV.dataSource = self
-		tV.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-		return tV
+		let tableView = UITableView()
+		tableView.register(VoiceCell.self, forCellReuseIdentifier: VoiceCell.identifier)
+		tableView.delegate = self
+		tableView.dataSource = self
+		tableView.backgroundColor = .clear
+		tableView.separatorStyle = .none
+		tableView.allowsSelection  = true
+		return tableView
 	}
 
 

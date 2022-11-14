@@ -52,7 +52,8 @@ extension Coordinator: MainOutput {
 	}
 }
 
-extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
+
+extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput, RecordSheetOutput {
 	
 	func goToRecordSheet() {
 		let recordSheetVC = builder.makeRecordSheetVC(output: self)
@@ -60,13 +61,12 @@ extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput
 			sheet.detents = [.medium(), .large()]
 		}
 		mainView.present(recordSheetVC, animated: true)
-		print("goToRecordSheetVC")
 	}
 	
-	func goToDetailSecond() {
+	func goToDetailFromSecond() {
 		let detailVC = builder.makeDetailVC(output: self)
 		seconvVC.show(detailVC, sender: self)
-		print("goToNewTaskSecond")
+		print(#function)
 	}
 	
 	func goToNewTaskSecond() {

@@ -76,7 +76,7 @@ final class SecondVC: UIViewController {
 		let tag: Int = buttonTag as! Int
 		print(tag)
 		passData(cellTag: tag)
-		viewModel.goToNewTaskSecond()
+		//viewModel.goToNewTaskSecond()
 	}
 	
 	private func passData(cellTag: Int) {

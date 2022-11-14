@@ -102,7 +102,11 @@ extension MainViewModel: MainViewModelProtocol {
 	}
 	
 	internal func goToDetail() {
-		output?.goToDetail()
+		if CurrentTabBar.number == 1 {
+			output?.goToDetail()
+		} else {
+			output?.goToDetailFromSecond()
+		}
 	}
 	
 	

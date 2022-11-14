@@ -21,6 +21,7 @@ protocol MainViewModelProtocol {
 	var completedArray: [Tasks] { get }
 	var sectionIndex: Int { get set }
 	var selectionStructArray: [SectionStruct] { get }
+	func passData(cellTag: Int)
 	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
 	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
 	func editingStyleBody(indexPath: IndexPath, view: UIViewController)

@@ -37,6 +37,7 @@
 		3A6A9EA628C80A7F00A60E2F /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6A9EA528C80A7F00A60E2F /* GradientView.swift */; };
 		3A6D658C28D2740A00FEF24B /* CustomCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D658B28D2740A00FEF24B /* CustomCellVM.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
+		3A958B6629228F2800F51606 /* VoiceCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6529228F2800F51606 /* VoiceCellViewModel.swift */; };
 		3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */; };
 		3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */; };
 		3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DB28D8D3F5003BB436 /* DateFormat.swift */; };
@@ -115,6 +116,7 @@
 		3A6A9EA528C80A7F00A60E2F /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		3A6D658B28D2740A00FEF24B /* CustomCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellVM.swift; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
+		3A958B6529228F2800F51606 /* VoiceCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCellViewModel.swift; sourceTree = "<group>"; };
 		3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetVC.swift; sourceTree = "<group>"; };
 		3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetConst.swift; sourceTree = "<group>"; };
 		3A9722DB28D8D3F5003BB436 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			children = (
 				3A9722DD28D92B8A003BB436 /* VoiceCell.swift */,
 				3A3AE0F428F736CA00618442 /* VoiceCell + extension.swift */,
+				3A958B6529228F2800F51606 /* VoiceCellViewModel.swift */,
 			);
 			path = VoiceCell;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
 				3A45E291291D7F0700676C7C /* RecordSheetViewModel.swift in Sources */,
 				3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */,
+				3A958B6629228F2800F51606 /* VoiceCellViewModel.swift in Sources */,
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,

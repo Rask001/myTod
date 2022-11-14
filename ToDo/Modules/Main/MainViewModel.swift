@@ -44,6 +44,22 @@ extension MainViewModel: MainViewModelProtocol {
 			coreDataMethods.sectionIndex = newValue
 		}
 	}
+	func passData(cellTag: Int) {
+		CoreDataMethods.shared.fetchRequest()
+		let model = CoreDataMethods.shared.coreDataModel
+		for items in model {
+			let itemsId = try? Helper.createShortIntWithoutStrChar(fromItemsId: items.id)
+			if cellTag == itemsId {
+				localTaskStruct.taskStruct.taskTitle     = items.taskTitle
+				localTaskStruct.taskStruct.createdAt     = items.createdAt
+				localTaskStruct.taskStruct.check         = items.check
+				localTaskStruct.taskStruct.taskDateDate  = items.taskDateDate
+				localTaskStruct.taskStruct.id            = items.id
+				localTaskStruct.taskStruct.descript      = items.descript
+				localTaskStruct.taskStruct.descriptSize  = items.descriptSize
+			}
+		}
+	}
 	
 	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
 		visualViewCell.visualViewCell(items: items, cell: cell)

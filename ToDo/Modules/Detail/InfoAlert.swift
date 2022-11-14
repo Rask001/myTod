@@ -11,6 +11,15 @@ import UIKit
 
 final class InfoAlert: UIViewController{
 	
+	private enum CTitle {
+		static var labelFont: UIFont { UIFont(name: "Helvetica Neue", size: 15)! }
+		static var dataCheckCompleted = NSLocalizedString("Completed", comment: "")
+		static var dataCheckNotCompleted = NSLocalizedString("Not completed", comment: "")
+		static var withoutTime = NSLocalizedString("Without time", comment: "")
+		static var no = NSLocalizedString("No", comment: "")
+		static var yes = NSLocalizedString("Yes", comment: "")
+	}
+	
 	private let infoViewAllert = UIView()
 	private let data = localTaskStruct.taskStruct
 	
@@ -20,14 +29,12 @@ final class InfoAlert: UIViewController{
 	lazy var isOverdue = createLabel()
 	lazy var viewAlert = createViewAlert()
 	
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		getData()
 		addSubviewAndConfigure()
 		setConstraints()
 	}
-	
 	
 	private func createViewAlert() -> UIView {
 		let view = UIView()
@@ -39,7 +46,7 @@ final class InfoAlert: UIViewController{
 	private func createLabel() -> UILabel {
 		let label = UILabel()
 		label.textAlignment = .left
-		label.font          = UIFont(name: "Helvetica Neue", size: 15)
+		label.font          = CTitle.labelFont
 		label.textColor     = .blackWhite
 		label.backgroundColor = .clear
 		return label
@@ -47,13 +54,13 @@ final class InfoAlert: UIViewController{
 	
 	private func getData() {
 		let dateForm = DateForm()
-		let check = data.check ? NSLocalizedString("Completed", comment: "") : NSLocalizedString("Not completed", comment: "")
-		let taskDate = data.taskDateDate == nil ? NSLocalizedString("Without time", comment: "") : dateForm.format(data: data.taskDateDate!)
+		let check = data.check ? CTitle.dataCheckCompleted : CTitle.dataCheckNotCompleted
+		let taskDate = data.taskDateDate == nil ? CTitle.withoutTime : dateForm.format(data: data.taskDateDate!)
 		let isOver: String
 		if data.taskDateDate != nil {
-			isOver = data.taskDateDate! > Date.now ? NSLocalizedString("No", comment: "") : NSLocalizedString("Yes", comment: "")
+			isOver = data.taskDateDate! > Date.now ? CTitle.no : CTitle.yes
 		} else {
-			isOver = NSLocalizedString("Without time", comment: "")
+			isOver = CTitle.withoutTime
 		}
 		
 		self.statusLabel.text = String.localizedStringWithFormat(NSLocalizedString("status: %@", comment: ""), check)
@@ -66,14 +73,16 @@ final class InfoAlert: UIViewController{
 		dismiss(animated: true)
 	}
 }
-	
+
+
+	//MARK: - Layout
 	extension InfoAlert {
 		
 	private func addSubviewAndConfigure() {
-		self.view.backgroundColor = .clear
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
 		tapGesture.numberOfTapsRequired = 1
 		self.view.addGestureRecognizer(tapGesture)
+		self.view.backgroundColor = .clear
 		self.view.addSubview(viewAlert)
 		self.viewAlert.addSubview(dateLabel)
 		self.viewAlert.addSubview(createdAt)

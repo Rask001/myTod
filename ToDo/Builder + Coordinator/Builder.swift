@@ -27,16 +27,27 @@ final class Builder {
 	}
 	
 	func makeSecondVC(output: SecondVCOutput) -> UIViewController {
-		let viewModel = SecondViewModel(output: output)
-		let view = SecondVC(viewModel: viewModel)
-		viewModel.view = view
+		let view = SecondVC()
+		let taptic = TapticFeedback()
+		let navController = NavigationController()
+		let visualViewCell = VisualViewCell()
+		let coreDataMethods = CoreDataMethods()
+		
+		let viewModel = SecondViewModel(navController: navController,
+																		coreDataMethods: coreDataMethods,
+																		taptic: taptic,
+																    output: output,
+																		visualViewCell: visualViewCell
+		)
+		
+		view.viewModel = viewModel
 		return view
 	}
 	
 	func makeSettingVC(output: SettingOutput) -> UIViewController {
 		let viewModel = SettingViewModel(output: output)
 		let view = SettingVC(viewModel: viewModel)
-		//viewModel.view = view
+		view.viewModel = viewModel
 		return view
 	}
 	

@@ -16,9 +16,10 @@ fileprivate enum Constants {
 //MARK: - SecondViewModelProtocol
 
 protocol SecondViewModelProtocol {
-	func reloadTable()
+	//func reloadTable()
 	func goToNewTaskSecond()
-	func createNavController()
+	func createNavController(_ viewController: UIViewController)
+	var taptic: TapticFeedback! { get }
 	var coreDataModel: [Tasks] { get }
 	var todayTasksArray: [Tasks] { get }
 	var coreDataMethods: CoreDataMethods { get }
@@ -30,33 +31,35 @@ protocol SecondViewModelProtocol {
 
 final class SecondViewModel {
 	private weak var output: SecondVCOutput?
-	internal let coreDataMethods = CoreDataMethods()
-	private let NavController = NavigationController()
-	private let visualViewCell = VisualViewCell()
-	private let taptic = TapticFeedback()
-	weak var view: SecondVC?
-	init(output: SecondVCOutput) {
+	let navController: NavigationController!
+	var coreDataMethods: CoreDataMethods
+	let visualViewCell: VisualViewCell!
+	let taptic: TapticFeedback!
+	
+	required init(navController: NavigationController,
+								coreDataMethods: CoreDataMethods,
+								taptic: TapticFeedback,
+								output: SecondVCOutput,
+								visualViewCell: VisualViewCell) {
+		self.navController = navController
+		self.coreDataMethods = coreDataMethods
+		self.taptic = taptic
 		self.output = output
+		self.visualViewCell = visualViewCell
 	}
 }
 
 extension SecondViewModel: SecondViewModelProtocol {
 	
-	internal func createNavController() {
-		NavController.createNavigationController(viewController: view!, title: Constants.navigationTitle, font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
-	}
-	
-	
-	
-	internal func tableViewReload() {
-		DispatchQueue.main.async { [weak self]  in
-			guard let self = self else { return }
-			self.reloadTable()
-		}
-	}
-	
-	internal func reloadTable() {
-		view?.tableView.reloadData()
+	func createNavController(_ viewController: UIViewController) {
+		navController.createNavigationController(viewController: viewController,
+																						 title: Constants.navigationTitle,
+																						 font: Constants.navigationTitleFont,
+																						 textColor: .blackWhite!,
+																						 backgroundColor: .backgroundColor!,
+																						 leftItemText: "",
+																						 rightItemText: "",
+																						 itemColor: .blackWhite!)
 	}
 	
 	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {

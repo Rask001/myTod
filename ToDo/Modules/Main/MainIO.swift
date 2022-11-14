@@ -10,6 +10,7 @@ import Foundation
 protocol MainOutput: AnyObject {
 	func goToNewTask()
 	func goToDetail()
+	func goToDetailFromSecond()
 }
 
 protocol MainInput: AnyObject { }

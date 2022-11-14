@@ -7,58 +7,35 @@
 import UIKit
 import Foundation
 
-fileprivate enum Constants {
-	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
-	static var title: String { NSLocalizedString("my tasks", comment: "") }
-	static var currentTasks: String { NSLocalizedString("current tasks", comment: "") }
-	static var overdueTasks: String { NSLocalizedString("overdue tasks", comment: "") }
-	static var completedTasks: String { NSLocalizedString("completed tasks", comment: "") }
-}
-
-//MARK: - MainViewModelProtocol
-
-protocol MainViewModelProtocol {
-	func reloadTable()
-	func goToNewTaskVC()
-	func goToDetail()
-	func createNavController()
-	var coreDataMethods: CoreDataMethods { get }
-	var coreDataModel: [Tasks] { get }
-	var todayTasksArray: [Tasks] { get }
-	var overdueArray: [Tasks] { get }
-	var currentArray: [Tasks] { get }
-	var completedArray: [Tasks] { get }
-	var sectionIndex: Int { get set }
-	var selectionStructArray: [SectionStruct] { get }
-	func coreDataDeleteCell(indexPath: IndexPath, presentedViewController: UIViewController, taskModel: [Tasks])
-	func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath)
-	func editingStyleBody(indexPath: IndexPath)
-	func cellForRowAtBody(items: Tasks, key: Int, indexPath: IndexPath) -> Tasks
-}
-
-
-
-
 //MARK: - MainViewModel
-
 final class MainViewModel {
 	private weak var output: MainOutput?
-	internal let coreDataMethods = CoreDataMethods()
-	private let visualViewCell = VisualViewCell()
-	private let navController = NavigationController()
-	private let taptic = TapticFeedback()
-	weak var view: Main?
-	init(output: MainOutput) {
+	let coreDataMethods: CoreDataMethods
+	let visualViewCell: VisualViewCell!
+	let navController: NavigationController!
+	let taptic: TapticFeedback!
+	
+	required init(coreDataMethods: CoreDataMethods, visualViewCell: VisualViewCell, navController: NavigationController, taptic: TapticFeedback, output: MainOutput) {
+		self.coreDataMethods = coreDataMethods
+		self.visualViewCell = visualViewCell
+		self.navController = navController
+		self.taptic = taptic
 		self.output = output
 	}
 }
 
 extension MainViewModel: MainViewModelProtocol {
-
-	internal func createNavController() {
-		navController.createNavigationController(viewController: view!, title: Constants.title, font: Constants.navigationTitleFont, textColor: .blackWhite!, backgroundColor: .backgroundColor!, leftItemText: "", rightItemText: "", itemColor: .blackWhite!)
-	}
 	
+	internal func createNavController(_ viewController: UIViewController) {
+		navController.createNavigationController(viewController:  viewController,
+																						 title:           Constants.title,
+																						 font:            Constants.navigationTitleFont,
+																						 textColor:       .blackWhite!,
+																						 backgroundColor: .backgroundColor!,
+																						 leftItemText:    "",
+																						 rightItemText:   "",
+																						 itemColor:       .blackWhite!)
+	}
 	
 	var sectionIndex: Int {
 		get {
@@ -66,17 +43,6 @@ extension MainViewModel: MainViewModelProtocol {
 		} set {
 			coreDataMethods.sectionIndex = newValue
 		}
-	}
-	
-	private func tableViewReload() {
-		DispatchQueue.main.async { [weak self] in
-				guard let self = self else { return }
-			self.reloadTable()
-		}
-	}
-	
-	internal func reloadTable() {
-		view?.tableView.reloadData()
 	}
 	
 	internal func visualViewCell(items: Tasks, cell: CustomCell, indexPath: IndexPath) {
@@ -125,6 +91,7 @@ extension MainViewModel: MainViewModelProtocol {
 	
 	
 	@objc private func saveCheckmark(sender: UIButton) {
+		print(#function)
 		taptic.soft
 		let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 		let model = coreDataModel
@@ -143,33 +110,33 @@ extension MainViewModel: MainViewModelProtocol {
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
 	}
 	
-	internal func editingStyleBody(indexPath: IndexPath) {
+	internal func editingStyleBody(indexPath: IndexPath, view: UIViewController) {
 		taptic.warning
 		coreDataMethods.fetchRequest()
 		switch indexPath.section {
 		case 0:
 			if  coreDataMethods.selectionStructArray[0].header == Constants.currentTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: currentArray)
 			} else if coreDataMethods.selectionStructArray[0].header == Constants.overdueTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: overdueArray)
 			} else if coreDataMethods.selectionStructArray[0].header == Constants.completedTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: completedArray)
 			}
 		case 1:
 			if coreDataMethods.selectionStructArray[1].header == Constants.currentTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: currentArray)
 			} else if coreDataMethods.selectionStructArray[1].header == Constants.overdueTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: overdueArray)
 			} else if coreDataMethods.selectionStructArray[1].header == Constants.completedTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: completedArray)
 			}
 		case 2:
 			if coreDataMethods.selectionStructArray[2].header == Constants.currentTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: currentArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: currentArray)
 			} else if coreDataMethods.selectionStructArray[2].header == Constants.overdueTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: overdueArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: overdueArray)
 			} else if coreDataMethods.selectionStructArray[2].header == Constants.completedTasks {
-				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view!, taskModel: completedArray)
+				coreDataDeleteCell(indexPath: indexPath, presentedViewController: view, taskModel: completedArray)
 			}
 		default:
 			break
@@ -225,6 +192,13 @@ extension MainViewModel: MainViewModelProtocol {
 		}
 		return items
 	}
-	
-	
+}
+
+
+fileprivate enum Constants {
+	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var title: String { NSLocalizedString("my tasks", comment: "") }
+	static var currentTasks: String { NSLocalizedString("current tasks", comment: "") }
+	static var overdueTasks: String { NSLocalizedString("overdue tasks", comment: "") }
+	static var completedTasks: String { NSLocalizedString("completed tasks", comment: "") }
 }

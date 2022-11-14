@@ -10,7 +10,7 @@ import UIKit
 
 
 struct NavigationController {
-	 
+	
 	 func createNavigationController(viewController: UIViewController, title: String?, font: UIFont, textColor: UIColor, backgroundColor: UIColor, leftItemText: String, rightItemText: String, itemColor: UIColor) {
 		let control = viewController
 		control.navigationItem.title = title
@@ -27,7 +27,6 @@ struct NavigationController {
 			control.navigationController?.navigationBar.standardAppearance = navBarAppearance
 			control.navigationController?.navigationBar.compactAppearance = navBarAppearance
 			control.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-
 			control.navigationController?.navigationBar.prefersLargeTitles = false
 			control.navigationController?.navigationBar.isTranslucent = false
 
@@ -39,7 +38,6 @@ struct NavigationController {
 		let rightButtonItem = UIBarButtonItem(title: rightItemText, style: .plain, target: nil, action: nil)
 		rightButtonItem.tintColor = itemColor
 		control.navigationItem.rightBarButtonItems = [rightButtonItem]
-		
 		
 	}
 }

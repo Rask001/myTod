@@ -21,7 +21,7 @@ private enum Constants {
 }
 
 extension RecordSheetVC {
-	
+
 	internal func makeStartButton() -> UIButton {
 		let recordButton = UIButton()
 		recordButton.layer.cornerRadius = Constants.recordButtonCornerRadius
@@ -34,16 +34,16 @@ extension RecordSheetVC {
 		recordButton.layer.shadowOpacity = 0.2
 		recordButton.layer.shadowOffset = CGSize(width: 0, height: 3 )
 		recordButton.backgroundColor = Constants.recordButtonBackgroundColor
-		recordButton.addTarget(self, action: #selector(startRecord), for: .touchUpInside)
+		recordButton.addTarget(self, action: #selector(startStop), for: .touchUpInside)
 		return recordButton
 	}
-	
+
 	internal func makeTimeLabel() -> UILabel {
 		let lbl = UILabel()
 		lbl.textAlignment = .center
 		lbl.font = Constants.timeLabelFont
 		lbl.text = "00:00:00"
-		
+
 		lbl.layer.shadowColor = UIColor.black.cgColor
 		lbl.layer.shadowRadius = 2
 		lbl.layer.shadowOpacity = 0.4
@@ -51,13 +51,13 @@ extension RecordSheetVC {
 		lbl.backgroundColor = .clear//
 		return lbl
 	}
-	
+
 	internal func makeTimeBigLabel() -> UILabel {
 		let lbl = UILabel()
 		lbl.textAlignment = .center
 		lbl.font = Constants.bigLabelFont
 		lbl.text = "00:00:00"
-		
+
 		lbl.layer.shadowColor = UIColor.black.cgColor
 		lbl.layer.shadowRadius = 2
 		lbl.layer.shadowOpacity = 0.4
@@ -65,16 +65,19 @@ extension RecordSheetVC {
 		lbl.backgroundColor = .clear//
 		return lbl
 	}
-	
+
 	internal func makeTableView() -> UITableView {
-		let tV = UITableView()
-		tV.delegate = self
-		tV.dataSource = self
-		tV.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-		return tV
+		let tableView = UITableView()
+		tableView.register(VoiceCell.self, forCellReuseIdentifier: VoiceCell.identifier)
+		tableView.delegate = self
+		tableView.dataSource = self
+		tableView.backgroundColor = .clear
+		tableView.separatorStyle = .none
+		tableView.allowsSelection  = true
+		return tableView
 	}
-	
-	
+
+
 	//MARK: - SetupConstraints
 	internal func addSubview() {
 		self.view.backgroundColor = .secondarySystemBackground
@@ -84,7 +87,7 @@ extension RecordSheetVC {
 		self.view.addSubview(timeLabel)
 		self.view.addSubview(bigLabel)
 	}
-	
+
 	internal func setupConstraints() {
 		bigLabel.translatesAutoresizingMaskIntoConstraints = false
 		bigLabel.centerXAnchor.constraint(equalTo: self.timeLabel.centerXAnchor).isActive = true
@@ -92,19 +95,19 @@ extension RecordSheetVC {
 		bigLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
 		bigLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 		bigLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-		
+
 		timeLabel.translatesAutoresizingMaskIntoConstraints = false
 		timeLabel.centerYAnchor.constraint(equalTo: self.recordButton.centerYAnchor).isActive = true
 		timeLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 50).isActive = true
 		timeLabel.widthAnchor.constraint(equalToConstant: 200).isActive = true
 		timeLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-		
+
 		recordButton.translatesAutoresizingMaskIntoConstraints = false
 		recordButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -50).isActive = true
 		recordButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50).isActive = true
 		recordButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
 		recordButton.heightAnchor.constraint(equalToConstant: 70).isActive = true
-		
+
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
 		tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true

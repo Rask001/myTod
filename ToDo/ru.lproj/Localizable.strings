@@ -8,8 +8,6 @@
 //MARK: - MAIN
 "my tasks" = "мои задачи";
 
-
-
 //MARK: - NewTask
 "...write something here" = "...напишите что-нибудь";
 "create your note" = "создайте заметку";
@@ -47,15 +45,6 @@
 "fri" = "пт";
 "sat" = "сб";
 
-//"вс" = "sun";
-//"пн" = "mon";
-//"вт" = "tue";
-//"ср" = "wed";
-//"чт" = "thu";
-//"пт" = "fri";
-//"сб" = "sat";
-
-
 "Sunday" = "Воскресенье";
 "Monday" = "Понедельник";
 "Tuesday" = "Вторник";
@@ -64,13 +53,13 @@
 "Friday" = "Пятница";
 "Saturday" = "Суббота";
 
-
 //MARK: - Mian/CoreDataMhetods
 
 "current tasks" = "текущее";
 "overdue tasks" = "просрочено";
 "completed tasks" = "выполнено";
-
+"Yes, delete" = "Да, удалить";
+"Delete" = "Удалить";
 
 "every day" = "каждый день";
 "every week" = "каждую неделю";
@@ -90,6 +79,10 @@
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "вы можете добавить описание а так же создать голосовую заметку";
+
+//MARK: - DetailVC
+"cancel" = "отмена";
+"save" = "продолжить";
 
 //MARK: - infoAlertDetail
 "status: %@" = "статус: %@";

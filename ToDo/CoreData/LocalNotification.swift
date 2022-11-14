@@ -55,7 +55,7 @@ final class LocalNotification {
 		}
 	}
 	
-	func sendDaylyReminderWeekDayNotification(_ title: String, _ body: String, _ taskDateDate: Date, _ weekDay: [String]) {
+		func sendDaylyReminderWeekDayNotification(_ title: String, _ body: String, _ taskDateDate: Date, _ weekDay: [String]) {
 		self.content.title = title
 		self.content.sound = .default
 		self.content.body  = body

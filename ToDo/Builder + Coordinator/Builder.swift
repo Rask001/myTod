@@ -8,12 +8,21 @@
 import Foundation
 import UIKit
 
-final class Assembly {
+final class Builder {
 	
 	func makeMain(output: MainOutput) -> UIViewController {
-		let viewModel = MainViewModel(output: output)
-		let view = Main(viewModel: viewModel)
-		viewModel.view = view
+		let view = Main()
+		let coreDataMethods = CoreDataMethods()
+		let visualViewCell = VisualViewCell()
+		let navController = NavigationController()
+		let taptic = TapticFeedback()
+		
+		let viewModel = MainViewModel(coreDataMethods: coreDataMethods,
+																	visualViewCell: visualViewCell,
+																	navController: navController,
+																	taptic: taptic,
+																	output: output)
+			view.viewModel = viewModel
 		return view
 	}
 	
@@ -27,15 +36,27 @@ final class Assembly {
 	func makeSettingVC(output: SettingOutput) -> UIViewController {
 		let viewModel = SettingViewModel(output: output)
 		let view = SettingVC(viewModel: viewModel)
-		viewModel.view = view
+		//viewModel.view = view
 		return view
 	}
 	
 	func makeDetailVC(output: DetailOutput) -> UIViewController {
-		let viewModel = DetailViewModel(output: output)
-		let view = DetailVC(viewModel: viewModel)
-		viewModel.view = view
-		return view 
+		let view = DetailVC()
+		let data = localTaskStruct.taskStruct
+		let infoAllert = InfoAlert()
+		let viewModel = DetailViewModel(data: data,
+																		infoAlert: infoAllert,
+																		output: output)
+		view.viewModel = viewModel
+		return view
+	}
+	
+	func makeRecordSheetVC(output: DetailOutput) -> UIViewController {
+		let view = RecordSheetVC()
+		let animations = Animations()
+		let viewModel = RecordSheetViewModel(animations: animations)
+		view.viewModel = viewModel
+		return view
 	}
 	
 	func makeNewTaskVC(output: NewTaskOutput) -> UIViewController {

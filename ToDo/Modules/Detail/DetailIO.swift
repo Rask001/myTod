@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol DetailOutput: AnyObject { }
+protocol DetailOutput: AnyObject {
+	func goToRecordSheet()
+}
 
 protocol DetailInput: AnyObject { }

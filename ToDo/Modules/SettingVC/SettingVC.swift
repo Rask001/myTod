@@ -21,7 +21,7 @@ final class SettingVC: UIViewController {
 	private var segmentedControllerTheme = UISegmentedControl()
 	private var buttonChangeLanguage = UIButton()
 	private var gradient = CAGradientLayer()
-	let viewModel: SettingViewModelProtocol
+	var viewModel: SettingViewModelProtocol
 	
 	//MARK: - Init
 	init(viewModel: SettingViewModelProtocol) {
@@ -35,6 +35,7 @@ final class SettingVC: UIViewController {
 	//MARK: - liveCycles
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 		viewModel.createNavController(view: self)
 		segmentedControllerSetup()
 		languageControllerSetup()

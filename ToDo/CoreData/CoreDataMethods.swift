@@ -317,9 +317,9 @@ final class CoreDataMethods {
 	public func deleteCell(indexPath: IndexPath, presentedViewController: UIViewController, tasksModel: [Tasks]) {
 		let task             = tasksModel[indexPath.row]
 		let taskTitle        = task.taskTitle
-		let areYouSureAllert = UIAlertController(title: "Delete \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
-		let noAction         = UIAlertAction(title: "cancel", style: .cancel)
-		let yesAction        = UIAlertAction(title: "Yes, delete \"\(taskTitle)\"", style: .destructive) {_ in
+		let areYouSureAllert = UIAlertController(title: "\(NSLocalizedString("Delete", comment: "")) \"\(taskTitle)\"?", message: nil, preferredStyle: .actionSheet)
+		let noAction         = UIAlertAction(title: NSLocalizedString("cancel", comment: ""), style: .cancel)
+		let yesAction        = UIAlertAction(title: "\(NSLocalizedString("Yes, delete", comment: "")) \"\(taskTitle)\"", style: .destructive) {_ in
 			self.deleteFromContext(indexPath: indexPath, taskTitle: taskTitle, task: task)
 			//			let idInt = Helper.createShortIntWithoutStrChar(fromItemsId: task.id)
 			//			print(idInt)

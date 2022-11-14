@@ -7,76 +7,41 @@
 import CoreData
 import UIKit
 import Foundation
-//MARK: - enum Constants
-
-fileprivate enum Constants {
-	static var buttonTitle: String { "+" }
-	static var buttonTitleColor = UIColor.blackWhite
-	static var buttonBackgroundColor = UIColor.newTaskButtonColor
-	static var buttonCornerRadius: CGFloat { 35 }
-	static var tableViewRowHeight: CGFloat { 60 }
-	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
-	static var backgroundColorView: UIColor { .backgroundColor! }
-}
 
 final class localTaskStruct {
-static var taskStruct = TaskStruct()
+	static var taskStruct = TaskStruct()
 }
 
 //MARK: - Main
 final class Main: UIViewController {
-	
 	//MARK: - Properties
-	internal var tableView = UITableView()
-	internal let buttonNewTask = UIButton()//CustomButtonNewTask
-	internal let navController = UINavigationController()
-	internal let taptic = TapticFeedback()
-	internal let helper = Helper()
+	var tableView = UITableView()
+	internal let buttonNewTask = UIButton()
 	internal let gradient = CAGradientLayer()
-	internal var viewModel: MainViewModelProtocol
-	static let shared = MainViewModel.self
 	var buttonNewTaskWidthAnchor: NSLayoutConstraint?
 	var buttonNewTaskHeightAnchor: NSLayoutConstraint?
+	var viewModel: MainViewModelProtocol!
 	
-	init(viewModel: MainViewModelProtocol) {
-		self.viewModel = viewModel
-		super.init(nibName: nil, bundle: nil)
-	}
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
 	
 	//MARK: - liveCycles
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		print(NSHomeDirectory())
-		
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 		confugureTableView()
 		notification()
 		setupButton()
 		setConstraits()
-		viewModel.createNavController()
-		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		viewModel.createNavController(self)
+		navigationSetup()
 	}
 	
-	@objc func scrollUp(notification: NSNotification) {
-		self.buttonNewTask.isHidden = true
-		guard let userInfo = notification.userInfo else { return }
-		guard let height = (userInfo["height"]) else { return }
-		UIView.animate(withDuration: 0.3, delay: 0) {
-			self.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
-		}
+	private func navigationSetup() {
+		self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+		self.navigationController?.delegate = self
 	}
-
-	@objc func keyboardWillHide(sender: NSNotification) {
-			 self.tableView.frame.origin.y = 0 // Move view to original position
-		self.buttonNewTask.isHidden = false
-	}
-	
 	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-			super.traitCollectionDidChange(previousTraitCollection)
+		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
 	}
 	
@@ -85,7 +50,7 @@ final class Main: UIViewController {
 		viewModel.coreDataMethods.fetchRequest()
 		CurrentTabBar.number = 1
 	}
-
+	
 	
 	//MARK: - Configure
 	
@@ -97,17 +62,17 @@ final class Main: UIViewController {
 		self.tableView.bounces          = true //если много ячеек прокрутка on. по дефолту off
 		self.tableView.separatorStyle   = .none
 		self.tableView.rowHeight        = Constants.tableViewRowHeight
-		self.tableView.isScrollEnabled  = true // скроллинг
+		self.tableView.isScrollEnabled  = true
 		self.tableView.delegate         = self
 		self.tableView.dataSource       = self
-		self.tableView.allowsSelection  = true
+		self.tableView.allowsSelection  = false
 	}
-
+	
 	
 	private func setupButton() {
 		self.buttonNewTask.layer.cornerRadius = Constants.buttonCornerRadius
 		let config = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
-		self.buttonNewTask.setImage(UIImage(systemName: "plus", withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
+		self.buttonNewTask.setImage(UIImage(systemName: Constants.buttonNewTaskImage, withConfiguration: config)?.withTintColor(.backgroundColor!, renderingMode: .alwaysOriginal), for: .normal)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVCDown), for: .touchDown)
 		self.buttonNewTask.addTarget(self, action: #selector(goToNewTaskVC), for: .touchUpInside)
 		self.buttonNewTask.layer.shadowColor = UIColor.black.cgColor
@@ -121,11 +86,10 @@ final class Main: UIViewController {
 	@objc private func goToNewTaskVCDown() {
 		TapticFeedback.shared.soft
 		print(buttonNewTaskHeightAnchor?.isActive as Any)
-		buttonNewTaskHeightAnchor?.isActive = false
-		buttonNewTaskWidthAnchor?.isActive = false
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
-
+		self.buttonNewTaskHeightAnchor?.isActive = false
+		self.buttonNewTaskWidthAnchor?.isActive = false
+		self.buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
+		self.buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
 		self.buttonNewTask.layer.cornerRadius = 40
 		UIView.animate(withDuration: 0.1) { [weak self] in
 			self?.view.layoutIfNeeded()
@@ -133,10 +97,10 @@ final class Main: UIViewController {
 	}
 	
 	@objc private func goToNewTaskVC() {
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor?.isActive = true
-		buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskHeightAnchor?.isActive = true
+		self.buttonNewTaskWidthAnchor?.isActive = true
 		self.buttonNewTask.layer.cornerRadius = 35
 		UIView.animate(withDuration: 0.1) { [weak self] in
 			self?.view.layoutIfNeeded()
@@ -145,47 +109,69 @@ final class Main: UIViewController {
 			TapticFeedback.shared.light
 			Counter.count += 1
 		}
-			self.viewModel.goToNewTaskVC()
-			Counter.count = 0
+		self.viewModel.goToNewTaskVC()
+		Counter.count = 0
 	}
 	
 	
 	//MARK: - Set Constraits
 	
 	private func setConstraits() {
-		tableView.translatesAutoresizingMaskIntoConstraints                                             = false
-		tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
-		tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
-		tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
-		tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
+		self.tableView.translatesAutoresizingMaskIntoConstraints                                             = false
+		self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive                     = true
+		self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5).isActive   = true
+		self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive                           = true
+		self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5).isActive      = true
 		
-		buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
-		buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor?.isActive = true
-		buttonNewTaskHeightAnchor?.isActive = true
+		self.buttonNewTask.translatesAutoresizingMaskIntoConstraints                                         = false
+		self.buttonNewTask.centerYAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -135).isActive = true
+		self.buttonNewTask.centerXAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -66).isActive = true
+		self.buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
+		self.buttonNewTaskWidthAnchor?.isActive = true
+		self.buttonNewTaskHeightAnchor?.isActive = true
 	}
-	
 	
 	//MARK: - Notification, RELOAD TABLE VIEW
 	private func notification() {
+		NotificationCenter.default.addObserver(self, selector: #selector(popGestureRecognizer), name: Notification.Name("interactivePopGestureRecognizerON"), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(tableViewReloadData), name: Notification.Name("TableViewReloadData"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(goToDetail), name: Notification.Name("tap"), object: .none)
-		
 		NotificationCenter.default.addObserver(self, selector: #selector(scrollUp), name: Notification.Name("scrollUp"), object: .none)
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
+	
+	@objc func popGestureRecognizer() {
+		navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+	}
+	
 	@objc func goToDetail(notification: NSNotification) {
 		guard let userInfo = notification.userInfo else { return }
 		guard let buttonTag = userInfo["buttonTag"] else { return }
 		let tag: Int = buttonTag as! Int
-	  print(tag)
+		print(tag)
 		passData(cellTag: tag)
-		self.viewModel.goToDetail()
+		viewModel.goToDetail()
 	}
 	
+	@objc func tableViewReloadData(notification: NSNotification) {
+		viewModel.coreDataMethods.fetchRequest()
+		tableView.reloadData()
+	}
+	
+	@objc func scrollUp(notification: NSNotification) {
+		buttonNewTask.isHidden = true
+		guard let userInfo = notification.userInfo else { return }
+		guard let height = (userInfo["height"]) else { return }
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.tableView.frame.origin.y = -(height.self as? CGFloat ?? 011)
+		}
+	}
+	
+	@objc func keyboardWillHide(sender: NSNotification) {
+		tableView.frame.origin.y = 0 // Move view to original position
+		buttonNewTask.isHidden = false
+	}
 	
 	
 	private func passData(cellTag: Int) {
@@ -204,15 +190,7 @@ final class Main: UIViewController {
 			}
 		}
 	}
-	
-	
-	
-	@objc func tableViewReloadData(notification: NSNotification) {
-		self.viewModel.coreDataMethods.fetchRequest()
-		self.viewModel.reloadTable()
-	}
 }
-
 
 //MARK: - Extension
 extension Main: UITableViewDelegate, UITableViewDataSource {
@@ -233,13 +211,12 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		
 		return 30
 	}
 	
 	//MARK: Delete Cell
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		viewModel.editingStyleBody(indexPath: indexPath) //
+		viewModel.editingStyleBody(indexPath: indexPath, view: self) //
 	}
 	
 	//MARK: CellForRowAt
@@ -253,3 +230,21 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 	}
 }
 
+//MARK: UIGestureRecognizerDelegate
+extension Main: UIGestureRecognizerDelegate, UINavigationControllerDelegate {
+	func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+		self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+	}
+}
+
+//MARK: - enum Constants
+fileprivate enum Constants {
+	static var buttonTitle: String { "+" }
+	static var buttonTitleColor = UIColor.blackWhite
+	static var buttonBackgroundColor = UIColor.newTaskButtonColor
+	static var buttonCornerRadius: CGFloat { 35 }
+	static var tableViewRowHeight: CGFloat { 65 }
+	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
+	static var backgroundColorView: UIColor { .backgroundColor! }
+	static var buttonNewTaskImage = "plus"
+}

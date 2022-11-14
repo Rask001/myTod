@@ -11,10 +11,10 @@ import UIKit
 final class Coordinator: NewTaskOutput {
 	
 	
-	private let assembly: Assembly
-
-	init(assembly: Assembly) {
-		self.assembly = assembly
+	private let builder: Builder
+	
+	init(builder: Builder) {
+		self.builder = builder
 	}
 	
 	private var newTaskView = UIViewController()
@@ -22,17 +22,16 @@ final class Coordinator: NewTaskOutput {
 	private var seconvVC = UIViewController()
 	private var settingVC = UIViewController()
 	private var detailVC = UIViewController()
+	private var recordSheetVC = UIViewController()
 	private var tabBarVC = UITabBarController()
 	
-
-	
-
 	func start(window: UIWindow) {
-		mainView = assembly.makeMain(output: self)
-		seconvVC = assembly.makeSecondVC(output: self)
-		settingVC = assembly.makeSettingVC(output: self)
-		detailVC = assembly.makeDetailVC(output: self)
-		tabBarVC = assembly.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
+		mainView = builder.makeMain(output: self)
+		seconvVC = builder.makeSecondVC(output: self)
+		settingVC = builder.makeSettingVC(output: self)
+		detailVC = builder.makeDetailVC(output: self)
+		recordSheetVC = builder.makeRecordSheetVC(output: self)
+		tabBarVC = builder.makeTabBarVC(output: self, rootVC1: mainView, rootVC2: seconvVC, rootVC3: settingVC)
 		window.rootViewController = tabBarVC
 		window.makeKeyAndVisible()
 		window.overrideUserInterfaceStyle = MTUserDefaults.shared.theme.getUserIntefaceStyle() //определение пользовательской темы
@@ -42,11 +41,12 @@ final class Coordinator: NewTaskOutput {
 extension Coordinator: MainOutput {
 	
 	func goToNewTask() {
-		let newTaskVC = assembly.makeNewTaskVC(output: self)
+		let newTaskVC = builder.makeNewTaskVC(output: self)
 		mainView.showDetailViewController(newTaskVC, sender: self)
 	}
+	
 	func goToDetail() {
-		let detailVC = assembly.makeDetailVC(output: self)
+		let detailVC = builder.makeDetailVC(output: self)
 		mainView.show(detailVC, sender: self)
 		print("goToDetail")
 	}
@@ -54,14 +54,23 @@ extension Coordinator: MainOutput {
 
 extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput {
 	
+	func goToRecordSheet() {
+		let recordSheetVC = builder.makeRecordSheetVC(output: self)
+		if let sheet = recordSheetVC.sheetPresentationController {
+			sheet.detents = [.medium(), .large()]
+		}
+		mainView.present(recordSheetVC, animated: true)
+		print("goToRecordSheetVC")
+	}
+	
 	func goToDetailSecond() {
-		let detailVC = assembly.makeDetailVC(output: self)
+		let detailVC = builder.makeDetailVC(output: self)
 		seconvVC.show(detailVC, sender: self)
 		print("goToNewTaskSecond")
 	}
 	
 	func goToNewTaskSecond() {
-		let newTaskVC = assembly.makeNewTaskVC(output: self)
+		let newTaskVC = builder.makeNewTaskVC(output: self)
 		seconvVC.showDetailViewController(newTaskVC, sender: self)
 	}
 }

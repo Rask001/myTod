@@ -15,8 +15,7 @@ final class VisualViewCell {
 		cell.id                         = items.id
 		cell.taskDateDate               = items.taskDateDate
 		cell.taskTime.text              = items.taskTime
-		cell.taskTitle.text             = items.taskTitle
-		cell.textFieldLabel.text        = items.taskTitle
+		cell.taskTitleTF.text           = items.taskTitle
 		cell.taskTime.isHidden          = !items.alarmImage
 		cell.alarmImageView.isHidden    = !items.alarmImage
 		cell.repeatImageView.isHidden   = !items.repeatImage
@@ -28,8 +27,8 @@ final class VisualViewCell {
 		var typeTask: String { items.type }
 		var check: Bool { items.check }
 		var isOverdue: Bool { items.taskDateDate ?? Date.now < Date.now }
-		let strikethrough = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
-		let notStrikethrough = NSAttributedString(string: "\(cell.taskTitle.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
+		let strikethrough = NSAttributedString(string: "\(cell.taskTitleTF.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+		let notStrikethrough = NSAttributedString(string: "\(cell.taskTitleTF.text!)", attributes: [NSAttributedString.Key.strikethroughStyle: nil ?? ""])
 		
 		
 		switch typeTask {
@@ -39,13 +38,13 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				cell.taskDate.text = ""
 			case false:
 				button.setImage(nil, for: .normal)
 				button.backgroundColor = .backgroundColor
 				painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .blackWhite!)
-				cell.taskTitle.attributedText = notStrikethrough
+				cell.taskTitleTF.attributedText = notStrikethrough
 				cell.taskDate.text = ""
 
 			}
@@ -56,7 +55,7 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 				switch isOverdue { //просрочено ли?
@@ -64,7 +63,7 @@ final class VisualViewCell {
 					button.backgroundColor = .backgroundColor
 					button.setImage(nil, for: .normal)
 					painting(cell: cell, color: UIColor(named: "SoftRed")!, colorTwo: UIColor(named: "SoftRed")!)
-					cell.taskTitle.attributedText = notStrikethrough
+					cell.taskTitleTF.attributedText = notStrikethrough
 				case false:
 					standart()
 				}
@@ -78,7 +77,7 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 				standart()
@@ -91,7 +90,7 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 					standart()
@@ -106,7 +105,7 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 					standart()
@@ -118,7 +117,7 @@ final class VisualViewCell {
 			case true:
 				checkLight()
 				painting(cell: cell, color: .lightGray, colorTwo: .lightGray)
-				cell.taskTitle.attributedText = strikethrough
+				cell.taskTitleTF.attributedText = strikethrough
 				LocalNotification.shared.deleteLocalNotification(items.taskTitle)
 			case false:
 					standart()
@@ -138,7 +137,7 @@ final class VisualViewCell {
 			button.backgroundColor = .backgroundColor
 			button.setImage(nil, for: .normal)
 			painting(cell: cell, color: UIColor(white: 0.5, alpha: 1), colorTwo: .blackWhite!)
-			cell.taskTitle.attributedText = notStrikethrough
+			cell.taskTitleTF.attributedText = notStrikethrough
 		}
 		
 		func painting(cell: CustomCell, color: UIColor, colorTwo: UIColor) {
@@ -149,7 +148,7 @@ final class VisualViewCell {
 			cell.taskTime.textColor          = color
 			cell.taskDate.textColor          = color
 			cell.weekLabel.textColor         = color
-			cell.taskTitle.textColor         = colorTwo
+			cell.taskTitleTF.textColor       = colorTwo
 		}
 	}
 }

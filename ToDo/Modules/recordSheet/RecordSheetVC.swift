@@ -9,27 +9,17 @@ import Foundation
 import UIKit
 import AVFoundation
 
-
 final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	
 	//MARK: - Property
-	private var recordingSession: AVAudioSession!
-	private var audioRecorder: AVAudioRecorder!
-	private var meterTimerRecord: Timer!
+	var viewModel: RecordSheetViewModelProtocol!
 	private var cellVoice: VoiceCell?
-	private let data = localTaskStruct.taskStruct
-	private var id = 0
-	private var numberOfRecord = 0
-	private var isAudioRecordingGranted = true
-	
 	lazy var recordButton = makeStartButton()
 	lazy var timeLabel = makeTimeLabel()
 	lazy var tableView = makeTableView()
 	
-	
 	//MARK: - Animation Property
 	lazy var bigLabel = makeTimeBigLabel()
-	lazy var animations = Animations()
 	lazy var curtainView = UIView()
 	lazy var differenceInSize = CGFloat()
 	
@@ -37,89 +27,51 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 	//MARK: - ViewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		setupTableView()
-		settings()
-		setupRecording()
+		//		setupTableView()
+		viewModel.settings()
+		viewModel.setupRecording()
 		addSubview()
 		setupConstraints()
-		animations.animSet(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: &differenceInSize)
+		viewModel.animations.animSet(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: &differenceInSize)
 	}
 	
-	//MARK: - Settings
-	private func settings() {
-		let idInt = try? Helper.createShortIntWithoutStrChar(fromItemsId: data.id)
-		guard let idIntNotNil = idInt else { return }
-		self.id = idIntNotNil
-		switch AVAudioSession.sharedInstance().recordPermission {
-		case AVAudioSession.RecordPermission.granted:
-			isAudioRecordingGranted = true
-			break
-		case AVAudioSession.RecordPermission.denied:
-			isAudioRecordingGranted = false
-			break
-		case AVAudioSession.RecordPermission.undetermined:
-			AVAudioSession.sharedInstance().requestRecordPermission() { [unowned self] allowed in
-				DispatchQueue.main.async { [weak self]  in
-					guard let self = self else { return }
-					switch allowed {
-					case true:
-						self.isAudioRecordingGranted = true
-					case false:
-						self.isAudioRecordingGranted = false
-					}
-				}
-			}
-			break
-		default:
-			break
-		}
-	}
-	
-	private func setupTableView() {
-		tableView.register(VoiceCell.self, forCellReuseIdentifier: VoiceCell.identifier)
-		tableView.delegate = self
-		tableView.dataSource = self
-		tableView.backgroundColor = .clear
-		tableView.separatorStyle = .none
-		tableView.allowsSelection  = true
-	}
-	
-	private func setupRecording() {
-		recordingSession = AVAudioSession.sharedInstance()
-		AVAudioSession.sharedInstance().requestRecordPermission { hasPermission in
-			if hasPermission {
-				print("Accepted")
-			}
-		}
-		if let number: Int = UserDefaults.standard.object(forKey: "\(id)") as? Int {
-			numberOfRecord = number
-		} else {
-			UserDefaults.standard.set(0, forKey: "\(id)")
-		}
+	deinit {
+		print("RecordSheetVC Deinit")
+		NotificationCenter.default.post(name: Notification.Name("interactivePopGestureRecognizerON"), object: nil)
 	}
 	
 	
 	//MARK: - Methods
-	@objc func startRecord() {
-		let number = UserDefaults.standard.object(forKey: "\(id)")
+	@objc func startStop() {
+		let number = UserDefaults.standard.object(forKey: "\(viewModel.id)")
 		if number as? Int == 0 {
-			FileAdmin.createFolder(name: "\(id)")
-			CoreDataMethods.shared.saveVoiceImage(tag: id)
+			FileAdmin.createFolder(name: "\(viewModel.id)")
+			CoreDataMethods.shared.saveVoiceImage(tag: viewModel.id)
 		}
 		toggleRecordOrStop()
 	}
 	
-	internal func toggleRecordOrStop() {
-		switch isAudioRecordingGranted {
-		case true: record()
-		case false: stop()
+	private func toggleRecordOrStop() {
+		switch viewModel.isAudioRecordingGranted {
+		case true: startRecord()
+		case false: stopRecord()
 		}
 	}
 	
-	internal func record() {
+	private func startAnimation() {
 		TapticFeedback.shared.soft
-		animations.animateImageView(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: differenceInSize) //animateImageView()
-		animations.curtain(color: .red, superView: self.view, upDown: .down, curtainView: curtainView)
+		viewModel.animations.animateImageView(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: differenceInSize)
+		//viewModel.animations.curtain(color: .red, superView: view, upDown: .down, curtainView: curtainView)
+	}
+	
+	private func stopAnimation() {
+		TapticFeedback.shared.soft
+		viewModel.animations.animateDownImageView(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: differenceInSize)
+		//viewModel.animations.curtain(color: .red, superView: view, upDown: .up, curtainView: curtainView)
+	}
+	
+	private func startRecord() {
+		startAnimation()
 		let session = AVAudioSession.sharedInstance()
 		do {
 			try session.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
@@ -130,60 +82,58 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 				AVNumberOfChannelsKey: 2,
 				AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
 			]
-			numberOfRecord += 1
-			guard let audioFileUrl = FileAdmin.createFile(nameFolder: "\(id)", name: "\(numberOfRecord).m4a", contents: nil) else { return }
+			viewModel.numberOfRecord += 1
+			guard let audioFileUrl = FileAdmin.createFile(nameFolder: "\(viewModel.id)", name: "\(viewModel.numberOfRecord).m4a", contents: nil) else { return }
 			
 			//Create the audio recording, and assign ourselves as the delegate
-			audioRecorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
-			audioRecorder.isMeteringEnabled = true
-			audioRecorder.delegate = self
-			audioRecorder.record()
-			meterTimerRecord = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioRecordMeter(timer:)), userInfo:nil, repeats:true)
+			viewModel.audioRecorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
+			viewModel.audioRecorder.isMeteringEnabled = true
+			viewModel.audioRecorder.delegate = self
+			viewModel.audioRecorder.record()
+			viewModel.meterTimerRecord = Timer.scheduledTimer(timeInterval: 0.1, target:self, selector:#selector(self.updateAudioRecordMeter(timer:)), userInfo:nil, repeats:true)
 			recordButton.setImage(UIImage(systemName: Constants.stopButtonImage,
 																		withConfiguration: Constants.config)?.withTintColor(Constants.recordButtonColor,
-																																							renderingMode: .alwaysOriginal), for: .normal)
-			UserDefaults.standard.set(numberOfRecord, forKey: "\(id)")
-			UserDefaults.standard.set(Date.now, forKey: "\(numberOfRecord).m4a")
+																																												renderingMode: .alwaysOriginal), for: .normal)
+			UserDefaults.standard.set(viewModel.numberOfRecord, forKey: "\(viewModel.id)")
+			UserDefaults.standard.set(Date.now, forKey: "\(viewModel.numberOfRecord).m4a")
 		}
 		catch let error {
 			print("Error for start audio recording: \(error.localizedDescription)")
 		}
-		isAudioRecordingGranted = false
+		viewModel.isAudioRecordingGranted = false
 	}
 	
-	internal func stop() {
-		TapticFeedback.shared.soft
-		animations.animateDownImageView(smallLb: timeLabel, bigLb: bigLabel, differenceInSize: differenceInSize)
-		animations.curtain(color: .red, superView: self.view, upDown: .up, curtainView: curtainView)
-		audioRecorder.stop()
-		audioRecorder = nil
+	private func stopRecord() {
+		stopAnimation()
+		viewModel.audioRecorder.stop()
+		viewModel.audioRecorder = nil
 		timeLabel.text = "00:00:00"
 		bigLabel.text = "00:00:00"
-		meterTimerRecord.invalidate()
+		viewModel.meterTimerRecord.invalidate()
 		recordButton.setImage(UIImage(systemName: Constants.recordButtonImage,
 																	withConfiguration: Constants.config)?.withTintColor(Constants.recordButtonColor,
-																																						renderingMode: .alwaysOriginal), for: .normal)
-		isAudioRecordingGranted = true
+																																											renderingMode: .alwaysOriginal), for: .normal)
+		viewModel.isAudioRecordingGranted = true
 		tableView.reloadData()
 	}
 	
 	@objc func updateAudioRecordMeter(timer: Timer) {
-		if audioRecorder.isRecording {
-			let hr = Int((audioRecorder.currentTime / 60) / 60)
-			let min = Int(audioRecorder.currentTime / 60)
-			let sec = Int(audioRecorder.currentTime.truncatingRemainder(dividingBy: 60))
+		if viewModel.audioRecorder.isRecording {
+			let hr = Int((viewModel.audioRecorder.currentTime / 60) / 60)
+			let min = Int(viewModel.audioRecorder.currentTime / 60)
+			let sec = Int(viewModel.audioRecorder.currentTime.truncatingRemainder(dividingBy: 60))
 			let totalTimeString = String(format: "%02d:%02d:%02d", hr, min, sec)
 			timeLabel.text = totalTimeString
 			bigLabel.text = totalTimeString
-			audioRecorder.updateMeters()
+			viewModel.audioRecorder.updateMeters()
 		}
 	}
-
-//	private func displayAlert(title: String, message: String) {
-//		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//		alert.addAction(UIAlertAction(title: "dismiss", style: .default, handler: nil))
-//		present(alert, animated: true, completion: nil)
-//	}
+	
+	//	private func displayAlert(title: String, message: String) {
+	//		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+	//		alert.addAction(UIAlertAction(title: "dismiss", style: .default, handler: nil))
+	//		present(alert, animated: true, completion: nil)
+	//	}
 }
 
 
@@ -191,7 +141,14 @@ final class RecordSheetVC: UIViewController, AVAudioRecorderDelegate {
 extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 	
 	internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return numberOfRecord
+		return viewModel.numberOfRecord
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		viewModel.selectedIndex = indexPath
+		tableView.beginUpdates()
+		tableView.reloadRows(at: [viewModel.selectedIndex], with: .none)
+		tableView.endUpdates()
 	}
 	
 	private func visualViewVoiceCell(indexPath: IndexPath, cell: VoiceCell) {
@@ -201,7 +158,7 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 		cell.taskDateLabel.text = try? DateFormat.formatDate(textFormat: "HH:mm:ss EEEE, MMM d", date: date as? Date ?? Date.now)
 		cell.buttonAction = { [weak self] in
 			guard let self = self else { return }
-			guard let path = FileAdmin.getFileUrl(nameFolder: "\(self.id)", name: "\(indexPath.row + 1).m4a") else { return }
+			guard let path = FileAdmin.getFileUrl(nameFolder: "\(self.viewModel.id)", name: "\(indexPath.row + 1).m4a") else { return }
 			self.cellVoice = cell
 			cell.audioPlayer = try AVAudioPlayer(contentsOf: path)
 			cell.togglePlayback()
@@ -215,28 +172,31 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 	internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: VoiceCell.identifier, for: indexPath) as! VoiceCell
 		visualViewVoiceCell(indexPath: indexPath, cell: cell)
+		cell.selectionStyle = .none
+		cell.animate()
 		return cell
 	}
 	
 	internal func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 152
+		if viewModel.selectedIndex == indexPath { return 162 }
+		return 60
 	}
 	
 	internal func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		
-		guard let fileURL = FileAdmin.getFileUrl(nameFolder: "\(id)", name: "\(indexPath.row + 1).m4a") else { return }
+		guard let fileURL = FileAdmin.getFileUrl(nameFolder: "\(viewModel.id)", name: "\(indexPath.row + 1).m4a") else { return }
 		do {
 			try FileManager.default.removeItem(at: fileURL)
 			print("file is removed")
-			numberOfRecord -= 1
-			UserDefaults.standard.set(numberOfRecord, forKey: "\(id)") //"myNumber"
+			viewModel.numberOfRecord -= 1
+			UserDefaults.standard.set(viewModel.numberOfRecord, forKey: "\(viewModel.id)") //"myNumber"
 			self.tableView.deleteRows(at: [indexPath], with: .automatic)
 			self.tableView.reloadData()
 			UserDefaults.standard.removeObject(forKey: "\(String(indexPath.row + 1)).m4a")
 			timeLabel.text = "00:00:00"
-			if numberOfRecord == 0 {
+			if viewModel.numberOfRecord == 0 {
 				print("zero records")
-				CoreDataMethods.shared.saveVoiceImage(tag: id, isVisible: false)
+				CoreDataMethods.shared.saveVoiceImage(tag: viewModel.id, isVisible: false)
 			}
 		} catch {
 			print(error.localizedDescription)
@@ -245,7 +205,6 @@ extension RecordSheetVC: UITableViewDelegate, UITableViewDataSource {
 		self.tableView.reloadData()
 	}
 }
-
 
 fileprivate enum Constants {
 	static var recordButtonColor: UIColor { UIColor(named: "SoftRed") ?? .red}

@@ -37,47 +37,6 @@ final class Helper {
 		return resultInt
 	}
 	
-//	class func EnToRuToEn(araay: [String]) -> [String] {
-//		let array1 = araay
-//		var newArray: [String] = []
-//		for day in array1 {
-//			switch day {
-//			case "sun":
-//				newArray.append("вс")
-//			case "mon":
-//				newArray.append("пн")
-//			case "tue":
-//				newArray.append("вт")
-//			case "wed":
-//				newArray.append("ср")
-//			case "thu":
-//				newArray.append("чт")
-//			case "fri":
-//				newArray.append("пт")
-//			case "sat":
-//				newArray.append("сб")
-//			case "вс":
-//				newArray.append("sun")
-//			case "пн":
-//				newArray.append("mon")
-//			case "вт":
-//				newArray.append("tue")
-//			case "ср":
-//				newArray.append("wed")
-//			case "чт":
-//				newArray.append("thu")
-//			case "пт":
-//				newArray.append("fri")
-//			case "сб":
-//				newArray.append("sat")
-//			default:
-//				break
-//			}
-//		}
-//		return newArray
-//	}
-	
-	
 	class func arrayToStringWeekDay(array: [String]) throws -> String {
 		var string = ""
 		var dayWeekDef = array
@@ -105,7 +64,7 @@ final class Helper {
 		
 		//print("dayWeek: \(dayWeek), dayWeekDef: \(dayWeekDef), week: \(week)")
 		
-		dayWeekDef.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}
+		dayWeekDef.sort { week.firstIndex(of: $0)! < week.firstIndex(of: $1)!}  //FIX
 		
 		
 		for i in dayWeekDef {

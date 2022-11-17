@@ -30,6 +30,7 @@ myProject (in progress..)
 10. редактирование задачи с главного экрана
 11. Полная локализация на Русский и Английский языки
 12. В процессе UNIT тестирования
+13. FaceID, TouchID, Password Auth
 
 **в планах:**
 1. создание папок
@@ -48,6 +49,7 @@ myProject (in progress..)
 4. CoreAnimation
 5. AVPlayer, AVRecorder
 6. UserNotifications
+7. LocalAuthentication
 
 
 

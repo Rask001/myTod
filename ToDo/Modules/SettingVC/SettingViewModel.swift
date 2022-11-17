@@ -30,6 +30,10 @@ final class SettingViewModel {
 }
 
 extension SettingViewModel: SettingViewModelProtocol {
+	func goToChangePassword() {
+		output?.goToChangePassword()
+	}
+	
 
 	func changeLanguage() {
 		UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)

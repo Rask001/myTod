@@ -51,11 +51,7 @@ final class PasswordVCViewModel: PasswordVCViewModelProtocol {
 	}
 }
 
-
-
 extension PasswordVCViewModel {
-	
-	
 	private func noAccessAlert(error: NSError, view: UIViewController) {
 		let allert = createAlert(title: NSLocalizedString("No access", comment: ""), message: "\(error.localizedDescription)")
 		view.present(allert, animated: true)

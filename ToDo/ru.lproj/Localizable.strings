@@ -96,6 +96,14 @@
 "Completed" = "Выполненно";
 "Not completed" = "Не выполненно";
 
+//MARK: - PasswordVC
+"No access" = "Нет доступа";
+"I don't recognize you" = "Не могу тебя узнать";
+"Try again" = "Попробуйте снова";
+"Error" = "Ошибка";
+"Pleace autorize with Face/Touch ID" = "Используйте FaceID или TouchID";
+"Success" = "Успешно";
+"wrong password" = "неверный пароль";
 
 "Russian" = "Русский";
 "English" = "English";

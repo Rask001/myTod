@@ -93,22 +93,6 @@ final class PasswordVC: UIViewController {
 		buttonZero.tag = 0
 		buttonZero.addTarget(self, action: #selector(touchButtonMonth(sender:)), for: .touchUpInside)
 	}
-	
-	private func goToMainViewPassword() {
-		guard password.text?.count == 4 else { return }
-		guard password.text == "4565" else {
-			TapticFeedback.shared.error
-			statusPassword.text = Constants.statusWrongPasswordLabel
-			password.text = ""
-			viewModel.animations.shake(text: statusPassword, duration: 0.5)
-			return
-		}
-		viewModel.goToMainViewPassword()
-	}
-	
-	private func goToMainViewFaceId() {
-		viewModel.checkFaceId(view: self)
-	}
 }
 
 
@@ -186,8 +170,12 @@ extension PasswordVC {
 		guard password.text!.count < 4 else { return }
 		statusPassword.text = Constants.statusPasswordLabel
 		TapticFeedback.shared.soft
-		let button = sender
-		switch button.tag {
+		addNumbersToPassword(sender.tag)
+		goToMainViewPassword()
+	}
+	
+	private func addNumbersToPassword(_ tag: Int) {
+		switch tag {
 		case 0: password.text! += "0"
 		case 1: password.text! += "1"
 		case 2: password.text! += "2"
@@ -202,7 +190,22 @@ extension PasswordVC {
 		default:
 			break
 		}
-		goToMainViewPassword()
+	}
+	
+	private func goToMainViewFaceId() {
+		viewModel.checkFaceId(view: self)
+	}
+	
+	private func goToMainViewPassword() {
+		guard password.text?.count == 4 else { return }
+		guard password.text == "4565" else {
+			TapticFeedback.shared.error
+			statusPassword.text = Constants.statusWrongPasswordLabel
+			password.text = ""
+			viewModel.animations.shake(text: statusPassword, duration: 0.5)
+			return
+		}
+		viewModel.goToMainViewPassword()
 	}
 }
 

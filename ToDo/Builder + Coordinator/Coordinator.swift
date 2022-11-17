@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class Coordinator: NewTaskOutput {
+final class Coordinator: NewTaskOutput, PasswordSettingsVCOutput {
 	
 	
 	private let builder: Builder
@@ -21,6 +21,7 @@ final class Coordinator: NewTaskOutput {
 	private var mainView = UIViewController()
 	private var seconvVC = UIViewController()
 	private var settingVC = UIViewController()
+	private var passwordSettingsVC = UIViewController()
 	private var detailVC = UIViewController()
 	private var recordSheetVC = UIViewController()
 	private var tabBarVC = UITabBarController()
@@ -59,6 +60,10 @@ extension Coordinator: MainOutput {
 
 
 extension Coordinator: TabBarOutput, SecondVCOutput, SettingOutput, DetailOutput, RecordSheetOutput, PasswordVCOutput {
+	func goToChangePassword() {
+		let passwordSettingsVC = builder.makePasswordSettingsVC(output: self)
+		settingVC.show(passwordSettingsVC, sender: self)
+	}
 	
 	func goToMainView() {
 		tabBarVC.modalPresentationStyle = .fullScreen

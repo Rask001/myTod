@@ -70,6 +70,13 @@ final class Builder {
 		return view
 	}
 	
+	func makePasswordSettingsVC(output: PasswordSettingsVCOutput) -> UIViewController {
+		let view = PasswordSettingsVC()
+		let viewModel = PasswordSettingsVCViewModel(output: output)
+		view.viewModel = viewModel
+		return view
+	}
+	
 	func makeRecordSheetVC(output: DetailOutput) -> UIViewController {
 		let view = RecordSheetVC()
 		let animations = Animations()

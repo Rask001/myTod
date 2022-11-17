@@ -7,6 +7,8 @@
 
 import Foundation
 
-protocol SettingOutput: AnyObject { }
+protocol SettingOutput: AnyObject {
+	func goToChangePassword()
+}
 
 protocol SettingInput: AnyObject { }

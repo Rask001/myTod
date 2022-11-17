@@ -10,6 +10,14 @@ import UIKit
 
 final class Builder {
 	
+	func makePasswordVC(output: PasswordVCOutput) -> UIViewController {
+		let view = PasswordVC()
+		let animations = Animations()
+		let viewModel = PasswordVCViewModel(output: output, animations: animations)
+		view.viewModel = viewModel
+		return view
+	}
+	
 	func makeMain(output: MainOutput) -> UIViewController {
 		let view = Main()
 		let coreDataMethods = CoreDataMethods()

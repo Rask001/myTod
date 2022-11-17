@@ -38,6 +38,9 @@
 		3A6D658C28D2740A00FEF24B /* CustomCellVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6D658B28D2740A00FEF24B /* CustomCellVM.swift */; };
 		3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */; };
 		3A958B6629228F2800F51606 /* VoiceCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6529228F2800F51606 /* VoiceCellViewModel.swift */; };
+		3A958B6A29239B8E00F51606 /* PasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6929239B8E00F51606 /* PasswordVC.swift */; };
+		3A958B6C29251B4A00F51606 /* PasswordVCIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6B29251B4A00F51606 /* PasswordVCIO.swift */; };
+		3A958B6F29251CB900F51606 /* PasswordVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6E29251CB900F51606 /* PasswordVCViewModel.swift */; };
 		3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */; };
 		3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */; };
 		3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DB28D8D3F5003BB436 /* DateFormat.swift */; };
@@ -117,6 +120,9 @@
 		3A6D658B28D2740A00FEF24B /* CustomCellVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellVM.swift; sourceTree = "<group>"; };
 		3A7FFA5D28661EE500A7CC27 /* NewTask+ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewTask+ext.swift"; sourceTree = "<group>"; };
 		3A958B6529228F2800F51606 /* VoiceCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCellViewModel.swift; sourceTree = "<group>"; };
+		3A958B6929239B8E00F51606 /* PasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVC.swift; sourceTree = "<group>"; };
+		3A958B6B29251B4A00F51606 /* PasswordVCIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVCIO.swift; sourceTree = "<group>"; };
+		3A958B6E29251CB900F51606 /* PasswordVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVCViewModel.swift; sourceTree = "<group>"; };
 		3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetVC.swift; sourceTree = "<group>"; };
 		3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetConst.swift; sourceTree = "<group>"; };
 		3A9722DB28D8D3F5003BB436 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
@@ -237,6 +243,7 @@
 		3A4F562627EF966C00ECF06B /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3A958B6D29251B7600F51606 /* PasswordVC */,
 				3A9722E128D92BFF003BB436 /* VoiceCell */,
 				3A9722D628D8BDFD003BB436 /* recordSheet */,
 				3A3E17C828CE4FEE00C025D2 /* Detail */,
@@ -302,6 +309,16 @@
 				3AF3FBEF28C213770002063B /* CustomHeader.swift */,
 			);
 			path = CustomCell;
+			sourceTree = "<group>";
+		};
+		3A958B6D29251B7600F51606 /* PasswordVC */ = {
+			isa = PBXGroup;
+			children = (
+				3A958B6929239B8E00F51606 /* PasswordVC.swift */,
+				3A958B6E29251CB900F51606 /* PasswordVCViewModel.swift */,
+				3A958B6B29251B4A00F51606 /* PasswordVCIO.swift */,
+			);
+			path = PasswordVC;
 			sourceTree = "<group>";
 		};
 		3A9722D628D8BDFD003BB436 /* recordSheet */ = {
@@ -529,6 +546,7 @@
 				3A0995D128E296D60060921A /* CAGradientLayer+ext.swift in Sources */,
 				3A6A9EA628C80A7F00A60E2F /* GradientView.swift in Sources */,
 				3AC8554727EFBBA700A7891D /* CustomCell.swift in Sources */,
+				3A958B6F29251CB900F51606 /* PasswordVCViewModel.swift in Sources */,
 				3A11204C28D2952F0092990F /* DateFormatter.swift in Sources */,
 				3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */,
 				3A3E17D428CE515100C025D2 /* DetailIO.swift in Sources */,
@@ -536,6 +554,7 @@
 				3A606D53287790910036635B /* TaskStruct.swift in Sources */,
 				3A45E291291D7F0700676C7C /* RecordSheetViewModel.swift in Sources */,
 				3ADB45A7288837BE00427BD8 /* NewTaskPresenter.swift in Sources */,
+				3A958B6A29239B8E00F51606 /* PasswordVC.swift in Sources */,
 				3A958B6629228F2800F51606 /* VoiceCellViewModel.swift in Sources */,
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */,
@@ -557,6 +576,7 @@
 				3AC7E35B28E7B72600B6F5DF /* Language.swift in Sources */,
 				3ADB45A228882C9100427BD8 /* Builder.swift in Sources */,
 				3AFC09F828BB5297002C0C52 /* SecondIO.swift in Sources */,
+				3A958B6C29251B4A00F51606 /* PasswordVCIO.swift in Sources */,
 				3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */,
 				3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */,
 				3ADB45A028882C1F00427BD8 /* Coordinator.swift in Sources */,
@@ -736,6 +756,9 @@
 				DEVELOPMENT_TEAM = H6Q7NMAZAW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ToDo/SupportFiles/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "allow microphone access?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -764,6 +787,9 @@
 				DEVELOPMENT_TEAM = H6Q7NMAZAW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ToDo/SupportFiles/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "allow microphone access?";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

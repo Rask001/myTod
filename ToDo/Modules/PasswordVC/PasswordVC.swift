@@ -80,7 +80,7 @@ final class PasswordVC: UIViewController {
 													cornerRaadius: 0)
 		button.setTitleColor(UIColor.systemGray, for: .normal)
 		button.tag = tag
-		button.addTarget(self, action: #selector(touchButtonMonth(sender:)), for: .touchUpInside)
+		button.addTarget(self, action: #selector(addNumbersToPassword(sender:)), for: .touchUpInside)
 		button.setImage(UIImage(systemName: imageSystemName,
 														withConfiguration: Constants.config)?.withTintColor(color,
 																																								renderingMode: .alwaysOriginal), for: .normal)
@@ -91,13 +91,23 @@ final class PasswordVC: UIViewController {
 		buttonZero = UIButton(backrounColor: .clear, title: "0", isShadow: true, font: Constants.buttonsNumberFont, cornerRaadius: 0)
 		buttonZero.setTitleColor(Constants.buttonsNumberColor, for: .normal)
 		buttonZero.tag = 0
-		buttonZero.addTarget(self, action: #selector(touchButtonMonth(sender:)), for: .touchUpInside)
+		buttonZero.addTarget(self, action: #selector(addNumbersToPassword(sender:)), for: .touchUpInside)
 	}
+	
+	deinit {
+		print("deinit")
+	}
+	
 }
 
 
 //MARK: - CREATE BUTTONS
 extension PasswordVC {
+	
+	private enum SettingKeys: Int {
+		case delete = 11
+		case faceID = 10
+	}
 	
 	private func createMonthButton() {
 		var monthButtonArray = [Int]()
@@ -112,7 +122,7 @@ extension PasswordVC {
 			buttonNumber.tag = buttonTag
 			buttonNumber.setTitleColor(Constants.buttonsNumberColor, for: .normal)
 			buttonNumber.backgroundColor = .clear
-			buttonNumber.addTarget(self, action: #selector(touchButtonMonth(sender:)), for: .touchUpInside)
+			buttonNumber.addTarget(self, action: #selector(addNumbersToPassword(sender:)), for: .touchUpInside)
 			buttonNumber.heightAnchor.constraint(equalTo: buttonNumber.widthAnchor).isActive = true
 			addMonthButtonInStackView(buttonNumber)
 		}
@@ -161,34 +171,24 @@ extension PasswordVC {
 		buttonStackBottom.addArrangedSubview(buttonZero)
 		buttonStackBottom.addArrangedSubview(buttonDelete)
 	}
+
 	
-	@objc func touchButtonMonth(sender: UIButton) {
-		if sender.tag == 11 {
-			guard password.text != "" else { return }
-			password.text?.removeLast()
-		}
-		guard password.text!.count < 4 else { return }
+	@objc func addNumbersToPassword(sender: UIButton) {
+		guard var text = password.text else { return }
+		guard text.count < 4 else { return }
 		statusPassword.text = Constants.statusPasswordLabel
 		TapticFeedback.shared.soft
-		addNumbersToPassword(sender.tag)
-		goToMainViewPassword()
-	}
-	
-	private func addNumbersToPassword(_ tag: Int) {
-		switch tag {
-		case 0: password.text! += "0"
-		case 1: password.text! += "1"
-		case 2: password.text! += "2"
-		case 3: password.text! += "3"
-		case 4: password.text! += "4"
-		case 5: password.text! += "5"
-		case 6: password.text! += "6"
-		case 7: password.text! += "7"
-		case 8: password.text! += "8"
-		case 9: password.text! += "9"
-		case 10: goToMainViewFaceId()
-		default:
-			break
+		if sender.tag < 10 {
+			text += "\(sender.tag)"
+			password.text = text
+			goToMainViewPassword()
+		} else if let settingKeys = SettingKeys(rawValue: sender.tag) {
+			switch settingKeys {
+			case .delete:
+				deleteButtonTapped()
+			case .faceID:
+				goToMainViewFaceId()
+			}
 		}
 	}
 	
@@ -196,6 +196,10 @@ extension PasswordVC {
 		viewModel.checkFaceId(view: self)
 	}
 	
+	private func deleteButtonTapped() {
+		guard password.text != "" else { return }
+		password.text?.removeLast()
+	}
 	private func goToMainViewPassword() {
 		guard password.text?.count == 4 else { return }
 		guard password.text == "4565" else {

@@ -26,11 +26,11 @@ final class Builder {
 		let taptic = TapticFeedback()
 		
 		let viewModel = MainViewModel(coreDataMethods: coreDataMethods,
-																	visualViewCell: visualViewCell,
-																	navController: navController,
-																	taptic: taptic,
-																	output: output)
-			view.viewModel = viewModel
+									  visualViewCell: visualViewCell,
+									  navController: navController,
+									  taptic: taptic,
+									  output: output)
+		view.viewModel = viewModel
 		return view
 	}
 	
@@ -42,10 +42,10 @@ final class Builder {
 		let coreDataMethods = CoreDataMethods()
 		
 		let viewModel = SecondViewModel(navController: navController,
-																		coreDataMethods: coreDataMethods,
-																		taptic: taptic,
-																    output: output,
-																		visualViewCell: visualViewCell
+										coreDataMethods: coreDataMethods,
+										taptic: taptic,
+										output: output,
+										visualViewCell: visualViewCell
 		)
 		
 		view.viewModel = viewModel
@@ -64,8 +64,8 @@ final class Builder {
 		let data = localTaskStruct.taskStruct
 		let infoAllert = InfoAlert()
 		let viewModel = DetailViewModel(data: data,
-																		infoAlert: infoAllert,
-																		output: output)
+										infoAlert: infoAllert,
+										output: output)
 		view.viewModel = viewModel
 		return view
 	}

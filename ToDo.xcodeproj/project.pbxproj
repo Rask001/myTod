@@ -41,6 +41,8 @@
 		3A958B6A29239B8E00F51606 /* PasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6929239B8E00F51606 /* PasswordVC.swift */; };
 		3A958B6C29251B4A00F51606 /* PasswordVCIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6B29251B4A00F51606 /* PasswordVCIO.swift */; };
 		3A958B6F29251CB900F51606 /* PasswordVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B6E29251CB900F51606 /* PasswordVCViewModel.swift */; };
+		3A958B7429263E4700F51606 /* PasswordSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B7329263E4700F51606 /* PasswordSettingsVC.swift */; };
+		3A958B7629263FE600F51606 /* PasswordSettingsVCViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A958B7529263FE500F51606 /* PasswordSettingsVCViewModel.swift */; };
 		3A9722D828D8BE20003BB436 /* RecordSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */; };
 		3A9722DA28D8BE83003BB436 /* RecordSheetConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */; };
 		3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DB28D8D3F5003BB436 /* DateFormat.swift */; };
@@ -123,6 +125,8 @@
 		3A958B6929239B8E00F51606 /* PasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVC.swift; sourceTree = "<group>"; };
 		3A958B6B29251B4A00F51606 /* PasswordVCIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVCIO.swift; sourceTree = "<group>"; };
 		3A958B6E29251CB900F51606 /* PasswordVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVCViewModel.swift; sourceTree = "<group>"; };
+		3A958B7329263E4700F51606 /* PasswordSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordSettingsVC.swift; sourceTree = "<group>"; };
+		3A958B7529263FE500F51606 /* PasswordSettingsVCViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordSettingsVCViewModel.swift; sourceTree = "<group>"; };
 		3A9722D728D8BE20003BB436 /* RecordSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetVC.swift; sourceTree = "<group>"; };
 		3A9722D928D8BE83003BB436 /* RecordSheetConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordSheetConst.swift; sourceTree = "<group>"; };
 		3A9722DB28D8D3F5003BB436 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 				3A3AE0C328F6508E00618442 /* SettingVC.swift */,
 				3A3AE0C228F6508E00618442 /* SettingViewModel.swift */,
 				3A3AE0C428F6508E00618442 /* SettingViewModelProtocol.swift */,
+				3A958B7329263E4700F51606 /* PasswordSettingsVC.swift */,
+				3A958B7529263FE500F51606 /* PasswordSettingsVCViewModel.swift */,
 			);
 			name = SettingVC;
 			path = ToDo/Modules/SettingVC;
@@ -537,9 +543,11 @@
 				3A7FFA5E28661EE500A7CC27 /* NewTask+ext.swift in Sources */,
 				3A576E6B282D9B2F004F108B /* LocalNotification.swift in Sources */,
 				3A45E26A29191C9100676C7C /* DetailVC.swift in Sources */,
+				3A958B7629263FE600F51606 /* PasswordSettingsVCViewModel.swift in Sources */,
 				3AB9C28C287234B700EB5544 /* UIColor+ext.swift in Sources */,
 				3A45E28C291D71E100676C7C /* MainViewModelProtocol.swift in Sources */,
 				3ADBF4D62827F316000BA06B /* Main.swift in Sources */,
+				3A958B7429263E4700F51606 /* PasswordSettingsVC.swift in Sources */,
 				3AFC0A0328BD34AD002C0C52 /* SectionStruct.swift in Sources */,
 				3AFC09F528BB5181002C0C52 /* SecondVC.swift in Sources */,
 				3AC8555627EFCE7500A7891D /* Tasks+CoreDataProperties.swift in Sources */,

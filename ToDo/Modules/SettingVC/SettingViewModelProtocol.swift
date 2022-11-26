@@ -13,4 +13,5 @@ protocol SettingViewModelProtocol {
 	func createNavController(view: UIViewController)
 	func getSegmentedItems() -> [String]
 	func changeLanguage()
+	func goToChangePassword()
 }

@@ -9,7 +9,8 @@ import UIKit
 
 //MARK: - Static Property
 fileprivate enum Constants {
-	static var buttonTitle: String { NSLocalizedString("Change language", comment: "") }
+	static var buttonLanguageTitle: String { NSLocalizedString("Change language", comment: "") }
+	static var buttonPasswordTitle: String { NSLocalizedString("Change password", comment: "") }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue", size: 18)!}
 	static var buttonBackgroundColor: UIColor { UIColor.newTaskButtonColor ?? .white }
 }
@@ -20,6 +21,7 @@ final class SettingVC: UIViewController {
 	//MARK: - Properties
 	private var segmentedControllerTheme = UISegmentedControl()
 	private var buttonChangeLanguage = UIButton()
+	private var passwordChange = UIButton()
 	private var gradient = CAGradientLayer()
 	var viewModel: SettingViewModelProtocol
 	
@@ -39,6 +41,7 @@ final class SettingVC: UIViewController {
 		viewModel.createNavController(view: self)
 		segmentedControllerSetup()
 		languageControllerSetup()
+		passwordChangeSetup()
 		addSubviewAndConfigure()
 		setConstraits()
 	}
@@ -49,8 +52,17 @@ final class SettingVC: UIViewController {
 	}
 	
 	//MARK: - Setup
+	
+	private func passwordChangeSetup() {
+		passwordChange = UIButton(title: Constants.buttonLanguageTitle, font: Constants.buttonFont)
+		passwordChange.layer.cornerRadius = 8
+		passwordChange.backgroundColor = Constants.buttonBackgroundColor
+		passwordChange.setTitleColor(.label, for: .normal)
+		passwordChange.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
+	}
+	
 	private func languageControllerSetup() {
-		buttonChangeLanguage = UIButton(title: Constants.buttonTitle, font: Constants.buttonFont)
+		buttonChangeLanguage = UIButton(title: Constants.buttonPasswordTitle, font: Constants.buttonFont)
 		buttonChangeLanguage.layer.cornerRadius = 8
 		buttonChangeLanguage.backgroundColor = Constants.buttonBackgroundColor
 		buttonChangeLanguage.setTitleColor(.label, for: .normal)
@@ -74,6 +86,10 @@ final class SettingVC: UIViewController {
 		viewModel.changeLanguage()
 	}
 	
+	@objc private func goToChangePassword() {
+		viewModel.goToChangePassword()
+	}
+	
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: view.traitCollection)
@@ -82,20 +98,27 @@ final class SettingVC: UIViewController {
 	//MARK: - addSubviewAndConfigure
 	private func addSubviewAndConfigure(){
 		self.view.addSubview(segmentedControllerTheme)
+		self.view.addSubview(passwordChange)
 		self.view.addSubview(buttonChangeLanguage)
 	}
 	
 	//MARK: - SetConstraits
 	private func setConstraits() {
-		self.segmentedControllerTheme.translatesAutoresizingMaskIntoConstraints = false
-		self.segmentedControllerTheme.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-		self.segmentedControllerTheme.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-		self.segmentedControllerTheme.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -120).isActive = true
+		segmentedControllerTheme.translatesAutoresizingMaskIntoConstraints = false
+		segmentedControllerTheme.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+		segmentedControllerTheme.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+		segmentedControllerTheme.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120).isActive = true
 		
-		self.buttonChangeLanguage.translatesAutoresizingMaskIntoConstraints = false
-		self.buttonChangeLanguage.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-		self.buttonChangeLanguage.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-		self.buttonChangeLanguage.heightAnchor.constraint(equalToConstant: 35).isActive = true
-		self.buttonChangeLanguage.bottomAnchor.constraint(equalTo: self.segmentedControllerTheme.topAnchor, constant: -30).isActive = true
+		passwordChange.translatesAutoresizingMaskIntoConstraints = false
+		passwordChange.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+		passwordChange.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+		passwordChange.heightAnchor.constraint(equalToConstant: 35).isActive = true
+		passwordChange.bottomAnchor.constraint(equalTo: buttonChangeLanguage.topAnchor, constant: -30).isActive = true
+		
+		buttonChangeLanguage.translatesAutoresizingMaskIntoConstraints = false
+		buttonChangeLanguage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+		buttonChangeLanguage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+		buttonChangeLanguage.heightAnchor.constraint(equalToConstant: 35).isActive = true
+		buttonChangeLanguage.bottomAnchor.constraint(equalTo: segmentedControllerTheme.topAnchor, constant: -30).isActive = true
 	}
 }

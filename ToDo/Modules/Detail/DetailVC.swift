@@ -116,7 +116,6 @@ class DetailVC: UIViewController {
 		viewModel.goToRecord()
 		super.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 	}
-	
 }
 
 

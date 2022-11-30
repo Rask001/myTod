@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: - VIEW
-class DetailVC: UIViewController {
+final class DetailVC: UIViewController {
 	static var shared = DetailVC()
 	//MARK: - PROPERTY
 	private let textView = UITextView()

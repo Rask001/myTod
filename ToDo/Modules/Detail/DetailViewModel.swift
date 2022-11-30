@@ -17,7 +17,7 @@ protocol DetailViewModelProtocol {
 	func saveDescription(description: String, descriptionSize: Double, view: UIView?)
 }
 
-class DetailViewModel: DetailViewModelProtocol {
+final class DetailViewModel: DetailViewModelProtocol {
 
 	//MARK: - PROPERTY
 	let data: TaskStruct!

@@ -58,15 +58,15 @@ final class SettingVC: UIViewController {
 		passwordChange.layer.cornerRadius = 8
 		passwordChange.backgroundColor = Constants.buttonBackgroundColor
 		passwordChange.setTitleColor(.label, for: .normal)
-		passwordChange.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
+		passwordChange.addTarget(self, action: #selector(changeLanguage), for: .touchUpInside)
 	}
-	
+    
 	private func languageControllerSetup() {
 		buttonChangeLanguage = UIButton(title: Constants.buttonPasswordTitle, font: Constants.buttonFont)
 		buttonChangeLanguage.layer.cornerRadius = 8
 		buttonChangeLanguage.backgroundColor = Constants.buttonBackgroundColor
 		buttonChangeLanguage.setTitleColor(.label, for: .normal)
-		buttonChangeLanguage.addTarget(self, action: #selector(changeLanguage), for: .touchUpInside)
+		buttonChangeLanguage.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
 	}
 	
 	private func segmentedControllerSetup() {

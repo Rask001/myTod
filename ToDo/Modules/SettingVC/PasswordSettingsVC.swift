@@ -13,7 +13,7 @@ protocol PasswordSettingsVCInput: AnyObject { }
 import UIKit
 
 //MARK: - VIEW
-class PasswordSettingsVC: UIViewController {
+final class PasswordSettingsVC: UIViewController {
 	
 	//MARK: - PROPERTY
 	private let tableView = UITableView()
@@ -67,6 +67,7 @@ class PasswordSettingsVC: UIViewController {
 		usePasswordLabel.text = "Passcode & FaceID"
 	}
 	private func usePasswordSwitchSetup() {
+        passwordSwitch.isOn = UserDefaults.standard.bool(forKey: "password")
 		passwordSwitch.addTarget(self, action: #selector(turnPassword(sender:)), for: .valueChanged)
 	}
 	
@@ -91,9 +92,9 @@ class PasswordSettingsVC: UIViewController {
 	}
 	
 	@objc func enterNewPassword() {
-		guard newPasswordTextField.text!.count < 4 else { return }
 		guard newPasswordTextField.text!.count == 4 else { return }
 		password = newPasswordTextField.text!
+        print("new password: \(password)")
 	}
 	
 	private func confirmPasswordTextFieldSetup() {
@@ -106,9 +107,11 @@ class PasswordSettingsVC: UIViewController {
 	}
 	
 	@objc func confirmNewPassword() {
-		guard confirmPasswordTextField.text!.count < 4 else { return }
 		guard confirmPasswordTextField.text!.count == 4 else { return }
+        guard confirmPasswordTextField.text! == password else { return }
+        
 		confirmPassword = confirmPasswordTextField.text!
+        print("password is ready: \(confirmPassword)")
 	}
 	
 	
@@ -166,22 +169,24 @@ class PasswordSettingsVC: UIViewController {
 		confirmPasswordTextField.isHidden = false
 		//	viewModel.saveDescription(description: textView.text, descriptionSize: stepper.value, view: view)
 	}
+    
 	
-	@objc func turnPassword(sender: UISwitch) {
-		print(#function)
-		if sender.isOn == true {
-			infoPasswordLabel.text = "Create and confirm your new password"
-			oldPasswordTextField.isHidden = true
-			newPasswordTextField.isHidden = false
-			confirmPasswordTextField.isHidden = false
-		} else {
-			print("else")
-			infoPasswordLabel.text = "To confirm, enter your old password"
-			oldPasswordTextField.isHidden = false
-			newPasswordTextField.isHidden = true
-			confirmPasswordTextField.isHidden = true
-		}
-	}
+    @objc func turnPassword(sender: UISwitch) {
+        if sender.isOn == true {
+            UserDefaults.standard.set(true, forKey: "password")
+            infoPasswordLabel.text = "Create and confirm your new password"
+            oldPasswordTextField.isHidden = true
+            newPasswordTextField.isHidden = false
+            confirmPasswordTextField.isHidden = false
+            
+        } else {
+            UserDefaults.standard.set(false, forKey: "password")
+            infoPasswordLabel.text = "To confirm, enter your old password"
+            oldPasswordTextField.isHidden = false
+            newPasswordTextField.isHidden = true
+            confirmPasswordTextField.isHidden = true
+        }
+    }
 	
 }
 

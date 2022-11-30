@@ -32,7 +32,7 @@ extension UIButton {
 	}
 }
 
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
 		override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
 				return bounds.insetBy(dx: -12, dy: -12).contains(point)
 		}

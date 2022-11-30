@@ -49,30 +49,30 @@ final class NewTask: UIViewController {
 	private var buttonMonth             = UIButton()
 	
 	private var buttonStackView         = UIStackView()
-  private var buttonMonthHStackView   = UIStackView()
+	private var buttonMonthHStackView   = UIStackView()
 	private var buttonMonthHStackView2  = UIStackView()
 	private var buttonMonthHStackView3  = UIStackView()
 	private var buttonMonthHStackView4  = UIStackView()
 	private var buttonMonthHStackView5  = UIStackView()
 	private var buttonMonthVStackView   = UIStackView()
 	private let segmentedItems          = [NSLocalizedString("day", comment: ""),
-																				 NSLocalizedString("week", comment: ""),
-																				 NSLocalizedString("month", comment: ""),
-																				 NSLocalizedString("set time", comment: "")]
+										   NSLocalizedString("week", comment: ""),
+										   NSLocalizedString("month", comment: ""),
+										   NSLocalizedString("set time", comment: "")]
 	private var segmented1Items          = ["Alarm", "Reapeat"]
 	internal let weekDaysArray           = [NSLocalizedString("Sunday", comment: ""),
-																				 NSLocalizedString("Monday", comment: ""),
-																				 NSLocalizedString("Tuesday", comment: ""),
-																				 NSLocalizedString("Wednesday", comment: ""),
-																				 NSLocalizedString("Thursday", comment: ""),
-																				 NSLocalizedString("Friday", comment: ""),
-																				 NSLocalizedString("Saturday", comment: "")]
+											NSLocalizedString("Monday", comment: ""),
+											NSLocalizedString("Tuesday", comment: ""),
+											NSLocalizedString("Wednesday", comment: ""),
+											NSLocalizedString("Thursday", comment: ""),
+											NSLocalizedString("Friday", comment: ""),
+											NSLocalizedString("Saturday", comment: "")]
 	
 	//["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 	private var buttonArray: [UIButton] = []
 	private var coreData                = CoreDataMethods()
 	private var animations              = Animations()
-  
+	
 	//MARK: - LiveCycles
 	//MARK: - viewDidAppear
 	override func viewDidAppear(_ animated: Bool) {
@@ -81,7 +81,7 @@ final class NewTask: UIViewController {
 		self.textField.becomeFirstResponder()
 	}
 	
-
+	
 	
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
@@ -179,10 +179,10 @@ final class NewTask: UIViewController {
 	
 	private func stackViewMonthSetup() {
 		let arrStackView = [buttonMonthHStackView,
-												buttonMonthHStackView2,
-												buttonMonthHStackView3,
-												buttonMonthHStackView4,
-												buttonMonthHStackView5]
+							buttonMonthHStackView2,
+							buttonMonthHStackView3,
+							buttonMonthHStackView4,
+							buttonMonthHStackView5]
 		for stackView in arrStackView {
 			stackView.isHidden = false
 			stackView.heightAnchor.constraint(equalTo: self.buttonMonth.heightAnchor).isActive = true
@@ -240,20 +240,20 @@ final class NewTask: UIViewController {
 		var weekDaysName: [String] = []
 		if locale.hasPrefix("en") {
 			weekDaysName = [NSLocalizedString("sun", comment: ""),
-													NSLocalizedString("mon", comment: ""),
-													NSLocalizedString("tue", comment: ""),
-													NSLocalizedString("wed", comment: ""),
-													NSLocalizedString("thu", comment: ""),
-													NSLocalizedString("fri", comment: ""),
-													NSLocalizedString("sat", comment: "")]
+							NSLocalizedString("mon", comment: ""),
+							NSLocalizedString("tue", comment: ""),
+							NSLocalizedString("wed", comment: ""),
+							NSLocalizedString("thu", comment: ""),
+							NSLocalizedString("fri", comment: ""),
+							NSLocalizedString("sat", comment: "")]
 		} else if locale.hasPrefix("ru") {
 			weekDaysName = [NSLocalizedString("mon", comment: ""),
-													NSLocalizedString("tue", comment: ""),
-													NSLocalizedString("wed", comment: ""),
-													NSLocalizedString("thu", comment: ""),
-													NSLocalizedString("fri", comment: ""),
-													NSLocalizedString("sat", comment: ""),
-										    	NSLocalizedString("sun", comment: ""),]
+							NSLocalizedString("tue", comment: ""),
+							NSLocalizedString("wed", comment: ""),
+							NSLocalizedString("thu", comment: ""),
+							NSLocalizedString("fri", comment: ""),
+							NSLocalizedString("sat", comment: ""),
+							NSLocalizedString("sun", comment: ""),]
 		}
 		var buttonTag = 0
 		for i in weekDaysName {
@@ -369,7 +369,7 @@ final class NewTask: UIViewController {
 		let time = taskStruct.taskTime!
 		switch repeatSegmented.selectedSegmentIndex {
 		case 0: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every day at %@", comment: ""), time)
-		//	NSLocalizedString("repeat every day at \(taskStruct.taskTime!)", comment: "")
+			//	NSLocalizedString("repeat every day at \(taskStruct.taskTime!)", comment: "")
 		case 1: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every selected day of the week at %@", comment: ""), time)
 		case 2: infoLabel.text = String.localizedStringWithFormat(NSLocalizedString("repeat every selected day of the month at %@", comment: ""), time)
 		default:
@@ -516,51 +516,51 @@ final class NewTask: UIViewController {
 		switch taskStruct.type {
 		case .justType:
 			coreData.saveJustTask(taskTitle:      taskStruct.taskTitle,
-														createdAt:      taskStruct.createdAt,
-														type:           taskStruct.type.rawValue)
+								  createdAt:      taskStruct.createdAt,
+								  type:           taskStruct.type.rawValue)
 		case .singleAlertType:
 			coreData.saveAlertTask(taskTitle:    taskStruct.taskTitle,
-														 taskTime:     taskStruct.taskTime!,
-														 taskDate:     taskStruct.taskDate!,
-														 taskDateDate: taskStruct.taskDateDate!,
-														 createdAt:    taskStruct.createdAt,
-														 alarmImage:   taskStruct.alarmImage,
-														 type:         taskStruct.type.rawValue)
+								   taskTime:     taskStruct.taskTime!,
+								   taskDate:     taskStruct.taskDate!,
+								   taskDateDate: taskStruct.taskDateDate!,
+								   createdAt:    taskStruct.createdAt,
+								   alarmImage:   taskStruct.alarmImage,
+								   type:         taskStruct.type.rawValue)
 		case .timeRepeatType:
 			coreData.saveRepeatTask(taskTitle:    taskStruct.taskTitle,
-															createdAt:    taskStruct.createdAt,
-															alarmImage:   taskStruct.alarmImage,
-															repeatImage:  taskStruct.repeatImage,
-															timeInterval: taskStruct.timeInterval!,
-															type:         taskStruct.type.rawValue)
+									createdAt:    taskStruct.createdAt,
+									alarmImage:   taskStruct.alarmImage,
+									repeatImage:  taskStruct.repeatImage,
+									timeInterval: taskStruct.timeInterval!,
+									type:         taskStruct.type.rawValue)
 		case .dayRepeatType:
 			coreData.saveDailyRepitionTask(taskTitle:    taskStruct.taskTitle,
-																		 taskTime:     taskStruct.taskTime!,
-																		 taskDateDate: taskStruct.taskDateDate!,
-																		 createdAt:    taskStruct.createdAt,
-																		 alarmImage:   taskStruct.alarmImage,
-																		 repeatImage:  taskStruct.repeatImage,
-																		 type:         taskStruct.type.rawValue)
+										   taskTime:     taskStruct.taskTime!,
+										   taskDateDate: taskStruct.taskDateDate!,
+										   createdAt:    taskStruct.createdAt,
+										   alarmImage:   taskStruct.alarmImage,
+										   repeatImage:  taskStruct.repeatImage,
+										   type:         taskStruct.type.rawValue)
 		case .weekRepeatType:
 			guard taskStruct.weekDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveWeekDaysRepitionTask(taskTitle:    taskStruct.taskTitle,
-																				taskTime:     taskStruct.taskTime!,
-																				taskDateDate: taskStruct.taskDateDate!,
-																				createdAt:    taskStruct.createdAt,
-																				alarmImage:   taskStruct.alarmImage,
-																				repeatImage:  taskStruct.repeatImage,
-																				type:         taskStruct.type.rawValue,
-																				weekDay:      taskStruct.weekDayChoice!)
+											  taskTime:     taskStruct.taskTime!,
+											  taskDateDate: taskStruct.taskDateDate!,
+											  createdAt:    taskStruct.createdAt,
+											  alarmImage:   taskStruct.alarmImage,
+											  repeatImage:  taskStruct.repeatImage,
+											  type:         taskStruct.type.rawValue,
+											  weekDay:      taskStruct.weekDayChoice!)
 		case .monthRepeatType:
 			guard taskStruct.monthDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveDaysMonthRepitionTask(taskTitle:    taskStruct.taskTitle,
-																				 taskTime:     taskStruct.taskTime!,
-																				 taskDateDate: taskStruct.taskDateDate!,
-																				 createdAt:    taskStruct.createdAt,
-																				 alarmImage:   taskStruct.alarmImage,
-																				 repeatImage:  taskStruct.repeatImage,
-																				 type:         taskStruct.type.rawValue,
-																				 monthDay:     taskStruct.monthDayChoice!)
+											   taskTime:     taskStruct.taskTime!,
+											   taskDateDate: taskStruct.taskDateDate!,
+											   createdAt:    taskStruct.createdAt,
+											   alarmImage:   taskStruct.alarmImage,
+											   repeatImage:  taskStruct.repeatImage,
+											   type:         taskStruct.type.rawValue,
+											   monthDay:     taskStruct.monthDayChoice!)
 		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
@@ -631,70 +631,70 @@ final class NewTask: UIViewController {
 	
 	//MARK: - SetConstraits
 	private func setConstraits() {
-		self.textField.translatesAutoresizingMaskIntoConstraints                                                        = false
-		self.textField.widthAnchor.constraint(equalToConstant: 300).isActive                                            = true
-		self.textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true
-		self.textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive                        = true
-		self.textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
+		textField.translatesAutoresizingMaskIntoConstraints                                                        = false
+		textField.widthAnchor.constraint(equalToConstant: 300).isActive                                            = true
+		textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true
+		textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive                        = true
+		textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
 		
-		self.dataPicker.translatesAutoresizingMaskIntoConstraints                                                       = false
-		self.dataPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
-		self.dataPicker.centerYAnchor.constraint(equalTo: self.repeatSegmented.centerYAnchor).isActive                  = true
+		dataPicker.translatesAutoresizingMaskIntoConstraints                                                       = false
+		dataPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
+		dataPicker.centerYAnchor.constraint(equalTo: self.repeatSegmented.centerYAnchor).isActive                  = true
 		
-		self.switchAlert.translatesAutoresizingMaskIntoConstraints                                                      = false
-		self.switchAlert.leadingAnchor.constraint(equalTo: self.alertLabel.trailingAnchor, constant: 10).isActive       = true
-		self.switchAlert.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive             = true
+		switchAlert.translatesAutoresizingMaskIntoConstraints                                                      = false
+		switchAlert.leadingAnchor.constraint(equalTo: self.alertLabel.trailingAnchor, constant: 10).isActive       = true
+		switchAlert.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive             = true
 		
-		self.switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                                = false
-		self.switchAlertRepeat.trailingAnchor.constraint(equalTo: self.repeatLabel.leadingAnchor, constant: -10).isActive = true
-		self.switchAlertRepeat.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
+		switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                                = false
+		switchAlertRepeat.trailingAnchor.constraint(equalTo: self.repeatLabel.leadingAnchor, constant: -10).isActive = true
+		switchAlertRepeat.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
 		
-		self.alertLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
-		self.alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                           = true
-		self.alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                            = true
-		self.alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70).isActive = true
-		self.alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                      = true
+		alertLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
+		alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                           = true
+		alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                            = true
+		alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70).isActive = true
+		alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                      = true
 		
-		self.repeatLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
-		self.repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
-		self.repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
-		self.repeatLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -70).isActive = true
-		self.repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive               = true
+		repeatLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
+		repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
+		repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
+		repeatLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -70).isActive = true
+		repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive               = true
 		
-		self.repeatSegmented.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
-		self.repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
-		self.repeatSegmented.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive          = true
-		self.repeatSegmented.topAnchor.constraint(equalTo: self.alertLabel.bottomAnchor, constant: 40).isActive         = true
+		repeatSegmented.translatesAutoresizingMaskIntoConstraints                                                  = false
+		repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
+		repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
+		repeatSegmented.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive          = true
+		repeatSegmented.topAnchor.constraint(equalTo: self.alertLabel.bottomAnchor, constant: 40).isActive         = true
 		
-		self.timePicker.translatesAutoresizingMaskIntoConstraints                                                       = false
-		self.timePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                           = true
-		self.timePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                          = true
-		self.timePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
-		self.timePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive         = true
-		 
-		self.timePickerDWM.translatesAutoresizingMaskIntoConstraints                                                    = false
-		self.timePickerDWM.widthAnchor.constraint(equalToConstant: 250).isActive                                        = true
-		self.timePickerDWM.heightAnchor.constraint(equalToConstant: 120).isActive                                       = true
-		self.timePickerDWM.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                          = true
-		self.timePickerDWM.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive      = true
-		 
-		self.buttonStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
-		self.buttonStackView.widthAnchor.constraint(equalToConstant: 350).isActive                                      = true
-		self.buttonStackView.heightAnchor.constraint(equalToConstant: 80).isActive                                      = true
-		self.buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
-		self.buttonStackView.topAnchor.constraint(equalTo: self.timePickerDWM.bottomAnchor, constant: 0).isActive       = true
-		 
-		self.buttonMonthVStackView.translatesAutoresizingMaskIntoConstraints                                            = false
-		self.buttonMonthVStackView.widthAnchor.constraint(equalToConstant: 294).isActive                                = true
-		self.buttonMonthVStackView.heightAnchor.constraint(equalToConstant: 208).isActive                               = true
-		self.buttonMonthVStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                  = true
-		self.buttonMonthVStackView.topAnchor.constraint(equalTo: self.timePickerDWM.bottomAnchor, constant: 0).isActive = true
+		timePicker.translatesAutoresizingMaskIntoConstraints                                                       = false
+		timePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                           = true
+		timePicker.heightAnchor.constraint(equalToConstant: 120).isActive                                          = true
+		timePicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
+		timePicker.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive         = true
 		
-		self.infoLabel.translatesAutoresizingMaskIntoConstraints                                                        = false
-		self.infoLabel.widthAnchor.constraint(equalToConstant: 350).isActive                                            = true
-		self.infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                            = true
-		self.infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
-		self.infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 15).isActive                = true
+		timePickerDWM.translatesAutoresizingMaskIntoConstraints                                                    = false
+		timePickerDWM.widthAnchor.constraint(equalToConstant: 250).isActive                                        = true
+		timePickerDWM.heightAnchor.constraint(equalToConstant: 120).isActive                                       = true
+		timePickerDWM.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                          = true
+		timePickerDWM.topAnchor.constraint(equalTo: self.repeatSegmented.bottomAnchor, constant: 10).isActive      = true
+		
+		buttonStackView.translatesAutoresizingMaskIntoConstraints                                                  = false
+		buttonStackView.widthAnchor.constraint(equalToConstant: 350).isActive                                      = true
+		buttonStackView.heightAnchor.constraint(equalToConstant: 80).isActive                                      = true
+		buttonStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                        = true
+		buttonStackView.topAnchor.constraint(equalTo: self.timePickerDWM.bottomAnchor, constant: 0).isActive       = true
+		
+		buttonMonthVStackView.translatesAutoresizingMaskIntoConstraints                                            = false
+		buttonMonthVStackView.widthAnchor.constraint(equalToConstant: 294).isActive                                = true
+		buttonMonthVStackView.heightAnchor.constraint(equalToConstant: 208).isActive                               = true
+		buttonMonthVStackView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                  = true
+		buttonMonthVStackView.topAnchor.constraint(equalTo: self.timePickerDWM.bottomAnchor, constant: 0).isActive = true
+		
+		infoLabel.translatesAutoresizingMaskIntoConstraints                                                        = false
+		infoLabel.widthAnchor.constraint(equalToConstant: 350).isActive                                            = true
+		infoLabel.heightAnchor.constraint(equalToConstant: 60).isActive                                            = true
+		infoLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
+		infoLabel.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 15).isActive                = true
 	}
 }

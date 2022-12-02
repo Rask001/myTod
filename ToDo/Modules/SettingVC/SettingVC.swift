@@ -10,7 +10,7 @@ import UIKit
 //MARK: - Static Property
 fileprivate enum Constants {
 	static var buttonLanguageTitle: String { NSLocalizedString("Change language", comment: "") }
-	static var buttonPasswordTitle: String { NSLocalizedString("Change password", comment: "") }
+	static var buttonPasswordTitle: String { NSLocalizedString("Password settings", comment: "") }
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue", size: 18)!}
 	static var buttonBackgroundColor: UIColor { UIColor.newTaskButtonColor ?? .white }
 }

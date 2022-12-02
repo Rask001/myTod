@@ -76,6 +76,20 @@
 "Light" = "Светлая";
 "Dark" = "Темная";
 "Change language" = "Cменить язык";
+"Password settings" = "Настроить пароль";
+"Passcode & FaceID" = "Пароль и FaceID";
+"...enter the password" = "...введите пароль";
+"...confirm the password" = "...подтвердите пароль";
+"...enter the old password" = "...введите ваш текущий пароль";
+"Create and confirm your new password" = "Создайте и подтвердите ваш новый пароль";
+"To confirm, enter your password" = "Для продолжения введите ваш пароль";
+"the password is set!" = "пароль установлен!";
+
+"password must be 4 characters long" = "пароль должен содержать 4 цифры";
+"the entered passwords do not match" = "введенные пароли не совпадают";
+"password removed" = "пароль удален!";
+"remove password" = "удалить пароль";
+"next" = "далее";
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "вы можете добавить описание а так же создать голосовую заметку";

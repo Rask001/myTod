@@ -79,6 +79,22 @@
 "Light" = "Light";
 "Dark" = "Dark";
 "Change language" = "Change language";
+"Password settings" = "Password settings";
+"Passcode & FaceID" = "Passcode & FaceID";
+"...enter the password" = "...enter the password";
+"...confirm the password" = "...confirm the password";
+"...enter the old password" = "...enter the old password";
+"Create and confirm your new password" = "Create and confirm your new password";
+"To confirm, enter your password" = "To confirm, enter your password";
+"the password is set!" = "the password is set!";
+
+"password must be 4 characters long" = "password must be 4 characters long";
+"the entered passwords do not match" = "the entered passwords do not match";
+"password removed" = "password removed";
+"remove password" = "remove password";
+"next" = "next";
+
+
 
 //MARK: - DescriptionVC
 "you can add a description and create a voice note" = "you can add a description and create a voice note";

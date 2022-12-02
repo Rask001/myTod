@@ -10,9 +10,10 @@ import UserNotifications
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-	
-	//let currentLanguage = "ru"
-
+    
+	///key to enable and disable password in userDefaults
+    static var passStatusKey = "password"
+    
 	var window: UIWindow?
 	private let builder = Builder()
 	private lazy var cootdinator = Coordinator(builder: builder)
@@ -22,11 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
 		 
-//		 
-//		 UserDefaults.standard.set(currentLanguage, forKey: "AppleLanguage")
-//		 Bundle.swizzleLocalization()
-		 
-
 		 //запрос у пользователя на отправку локал нотификейшн
 		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self

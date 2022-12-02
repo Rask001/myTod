@@ -27,7 +27,7 @@ final class Coordinator: NewTaskOutput, PasswordSettingsVCOutput {
 	private var tabBarVC = UITabBarController()
 	
 	func start(window: UIWindow) {
-        let isProtectPassword = UserDefaults.standard.bool(forKey: "password")
+        let isProtectPassword = UserDefaults.standard.bool(forKey: AppDelegate.passStatusKey)
         
 		passwordVC = builder.makePasswordVC(output: self)
 		mainView = builder.makeMain(output: self)

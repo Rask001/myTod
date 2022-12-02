@@ -14,6 +14,17 @@ import UIKit
 
 //MARK: - VIEW
 final class PasswordSettingsVC: UIViewController {
+    
+    private enum Constants {
+        static var passwordAndFaceID: String { NSLocalizedString("Passcode & FaceID", comment: "") }
+        static var enterOldPassword: String { NSLocalizedString("...enter the old password", comment: "") }
+        static var enterNewPassword: String { NSLocalizedString("...enter the new password", comment: "") }
+        static var confirmNewPassword: String { NSLocalizedString("...confirm the new password", comment: "") }
+        static var passwordIsSet: String { NSLocalizedString("The password is set!", comment: "") }
+        static var createAndConfirmNewPass: String { NSLocalizedString("Create and confirm your new password", comment: "") }
+        static var toConfirmEnterOldPass: String { NSLocalizedString("To confirm, enter your old password", comment: "") }
+        
+    }
 	
 	//MARK: - PROPERTY
 	private let tableView = UITableView()
@@ -28,7 +39,7 @@ final class PasswordSettingsVC: UIViewController {
 	private let keyboardToolbarNew = UIToolbar()
 	private let keyboardToolbarOld = UIToolbar()
 	private let keyboardToolbarConfirm = UIToolbar()
-	
+    private var animations = Animations()
 	
 	var viewModel: PasswordSettingsVCViewModelProtocol?
 	
@@ -43,19 +54,16 @@ final class PasswordSettingsVC: UIViewController {
 		newPasswordTextFieldSetup()
 		oldPasswordTextFieldSetup()
 		confirmPasswordTextFieldSetup()
-		setupTextFieldToolBar(title: NSLocalizedString("next", comment: ""), toolBar: keyboardToolbarOld, action: #selector(nextOldAction))
-		setupTextFieldToolBar(title: NSLocalizedString("next", comment: ""), toolBar: keyboardToolbarNew, action: #selector(nextNewAction))
-		setupTextFieldToolBar(title: NSLocalizedString("save", comment: ""), toolBar: keyboardToolbarConfirm, action: #selector(saveAction))
+		setupTextFieldToolBar(title: NSLocalizedString("remove password", comment: ""), toolBar: keyboardToolbarOld, action: #selector(offEnterOldPasswordToolBar))
+		setupTextFieldToolBar(title: NSLocalizedString("next", comment: ""), toolBar: keyboardToolbarNew, action: #selector(nextEnterNewPasswordToolBar))
+		setupTextFieldToolBar(title: NSLocalizedString("save", comment: ""), toolBar: keyboardToolbarConfirm, action: #selector(saveConfirmNewPasswordToolBar))
 		addSubview()
 		layout()
 	}
 	
-	var password = ""
-	var confirmPassword = ""
 	var newPassword = ""
-	var oldPassword = ""
+    
 	//MARK: - SETUP
-	
 	private func infoPasswordLabelSetup() {
 		infoPasswordLabel.text = ""
 		infoPasswordLabel.textAlignment = .center
@@ -64,8 +72,9 @@ final class PasswordSettingsVC: UIViewController {
 	}
 	
 	private func usePasswordLabelSetup() {
-		usePasswordLabel.text = "Passcode & FaceID"
+        usePasswordLabel.text = Constants.passwordAndFaceID
 	}
+    
 	private func usePasswordSwitchSetup() {
         passwordSwitch.isOn = UserDefaults.standard.bool(forKey: "password")
 		passwordSwitch.addTarget(self, action: #selector(turnPassword(sender:)), for: .valueChanged)
@@ -73,18 +82,20 @@ final class PasswordSettingsVC: UIViewController {
 	
 	private func oldPasswordTextFieldSetup() {
 		oldPasswordTextField.isHidden = true
-		oldPasswordTextField.placeholder = "...enter the old password"
+        oldPasswordTextField.placeholder = Constants.enterOldPassword
 		oldPasswordTextField.keyboardType = .numberPad
 		oldPasswordTextField.isSecureTextEntry = true
 		oldPasswordTextField.inputAccessoryView = keyboardToolbarOld
 		oldPasswordTextField.addTarget(self, action: #selector(enterOldPassword), for: .valueChanged)
 	}
-	@objc func enterOldPassword() {
-		
-	}
+    
+    @objc func enterOldPassword() {
+
+    }
+    
 	private func newPasswordTextFieldSetup() {
 		newPasswordTextField.isHidden = true
-		newPasswordTextField.placeholder = "...enter the new password"
+        newPasswordTextField.placeholder = Constants.enterNewPassword
 		newPasswordTextField.keyboardType = .numberPad
 		newPasswordTextField.isSecureTextEntry = true
 		newPasswordTextField.inputAccessoryView = keyboardToolbarNew
@@ -92,28 +103,22 @@ final class PasswordSettingsVC: UIViewController {
 	}
 	
 	@objc func enterNewPassword() {
-		guard newPasswordTextField.text!.count == 4 else { return }
-		password = newPasswordTextField.text!
-        print("new password: \(password)")
+
 	}
 	
-	private func confirmPasswordTextFieldSetup() {
-		confirmPasswordTextField.isHidden = true
-		confirmPasswordTextField.placeholder = "...confirm the new password"
-		confirmPasswordTextField.keyboardType = .numberPad
-		confirmPasswordTextField.isSecureTextEntry = true
-		confirmPasswordTextField.inputAccessoryView = keyboardToolbarConfirm
-		confirmPasswordTextField.addTarget(self, action: #selector(confirmNewPassword), for: .valueChanged)
-	}
 	
 	@objc func confirmNewPassword() {
-		guard confirmPasswordTextField.text!.count == 4 else { return }
-        guard confirmPasswordTextField.text! == password else { return }
-        
-		confirmPassword = confirmPasswordTextField.text!
-        print("password is ready: \(confirmPassword)")
+
 	}
-	
+    
+    private func confirmPasswordTextFieldSetup() {
+        confirmPasswordTextField.isHidden = true
+        confirmPasswordTextField.placeholder = Constants.confirmNewPassword
+        confirmPasswordTextField.keyboardType = .numberPad
+        confirmPasswordTextField.isSecureTextEntry = true
+        confirmPasswordTextField.inputAccessoryView = keyboardToolbarConfirm
+        confirmPasswordTextField.addTarget(self, action: #selector(confirmNewPassword), for: .valueChanged)
+    }
 	
 	private func textFieldStackViewSetup() {
 		textFieldStackView.isHidden = false
@@ -141,51 +146,105 @@ final class PasswordSettingsVC: UIViewController {
 		view.endEditing(true)
 	}
 	
-	@objc func nextOldAction() {
-		newPasswordTextField.becomeFirstResponder()
-	}
 	
-	@objc func nextNewAction() {
-		newPassword = newPasswordTextField.text!
-		confirmPasswordTextField.becomeFirstResponder()
-	}
-	
-	@objc func saveAction() {
-		if oldPasswordTextField.isHidden == false {
-			guard oldPasswordTextField.text == password else { print("wrong old password"); return }
-			oldPasswordTextField.isHidden = true
-		}
-		guard oldPasswordTextField.isHidden == true else { return }
-		guard newPassword == confirmPassword else { print("wrong confirm password"); return }
-		password = newPassword
-		print("Success")
-		view.endEditing(true)
-		infoPasswordLabel.text = "The password is set!\n You can change your password"
-		oldPasswordTextField.text = ""
-		newPasswordTextField.text = ""
-		confirmPasswordTextField.text = ""
-		oldPasswordTextField.isHidden = false
-		newPasswordTextField.isHidden = false
-		confirmPasswordTextField.isHidden = false
-		//	viewModel.saveDescription(description: textView.text, descriptionSize: stepper.value, view: view)
-	}
+    @objc func nextEnterNewPasswordToolBar() {
+        guard newPasswordTextField.text?.count == 4 else {
+            errorHandling(label: infoPasswordLabel,
+                          errorText: "должно быть 4 символа",
+                          previousText: Constants.createAndConfirmNewPass); return }
+        newPassword = newPasswordTextField.text!
+        confirmPasswordTextField.becomeFirstResponder()
+    }
     
-	
-    @objc func turnPassword(sender: UISwitch) {
-        if sender.isOn == true {
+    @objc func saveConfirmNewPasswordToolBar() {
+        guard confirmPasswordTextField.text?.count == 4 else {
+            errorHandling(label: infoPasswordLabel,
+                          errorText: "должно быть 4 символа",
+                          previousText: Constants.createAndConfirmNewPass); return }
+        
+        guard confirmPasswordTextField.text == newPassword else {
+            errorHandling(label: infoPasswordLabel,
+                          errorText: "введенные пароли не совпадают",
+                          previousText: Constants.createAndConfirmNewPass); return }
+        
+        do {
+            try KeychainManager.shared.saveAccount(service: "ToDo", account: "User", password: newPassword)
             UserDefaults.standard.set(true, forKey: "password")
-            infoPasswordLabel.text = "Create and confirm your new password"
+            view.endEditing(true)
+        } catch {
+            print("error")
+        }
+        do {
+            let pass = try KeychainManager.shared.getPassword(service: "ToDo", account: "User")
+            print("password is ready: \(pass!)")
+            infoPasswordLabel.text = Constants.passwordIsSet
+            oldPasswordTextField.text = ""
+            newPasswordTextField.text = ""
+            confirmPasswordTextField.text = ""
             oldPasswordTextField.isHidden = true
-            newPasswordTextField.isHidden = false
-            confirmPasswordTextField.isHidden = false
-            
-        } else {
-            UserDefaults.standard.set(false, forKey: "password")
-            infoPasswordLabel.text = "To confirm, enter your old password"
-            oldPasswordTextField.isHidden = false
             newPasswordTextField.isHidden = true
             confirmPasswordTextField.isHidden = true
+        } catch {
+            print("error")
         }
+    }
+    
+    @objc func offEnterOldPasswordToolBar() {
+        guard oldPasswordTextField.text?.count == 4 else {
+            errorHandling(label: infoPasswordLabel,
+                          errorText: "должно быть 4 символа",
+                          previousText: Constants.toConfirmEnterOldPass); return }
+        var pass = ""
+        do {
+            pass = try KeychainManager.shared.getPassword(service: "ToDo", account: "User") ?? ""
+        } catch {
+            print("error")
+        }
+        
+        if oldPasswordTextField.text == pass {
+            KeychainManager.shared.deleteAccount(service: "ToDo", account: "User")
+            UserDefaults.standard.set(false, forKey: "password")
+            infoPasswordLabel.text = "password has been deleted"
+            oldPasswordTextField.text = ""
+            oldPasswordTextField.isHidden = true
+            view.endEditing(true)
+            
+        } else {
+            errorHandling(label: infoPasswordLabel, errorText: "wrong password", previousText: Constants.toConfirmEnterOldPass)
+            oldPasswordTextField.text = ""
+        }
+        
+    }
+    
+    @objc func turnPassword(sender: UISwitch) {
+        if sender.isOn == true {
+            if UserDefaults.standard.bool(forKey: "password") {
+                newPasswordTextField.isHidden = true
+                oldPasswordTextField.isHidden = true
+                confirmPasswordTextField.isHidden = true
+                infoPasswordLabel.isHidden = true
+            } else {
+                infoPasswordLabel.isHidden = false
+                infoPasswordLabel.text = Constants.createAndConfirmNewPass
+                oldPasswordTextField.isHidden = true
+                newPasswordTextField.isHidden = false
+                confirmPasswordTextField.isHidden = false
+            }
+        } else {
+            if !UserDefaults.standard.bool(forKey: "password") {
+                infoPasswordLabel.isHidden = true
+                oldPasswordTextField.isHidden = true
+                newPasswordTextField.isHidden = true
+                confirmPasswordTextField.isHidden = true
+            } else {
+                infoPasswordLabel.isHidden = false
+                infoPasswordLabel.text = Constants.toConfirmEnterOldPass
+                oldPasswordTextField.isHidden = false
+                newPasswordTextField.isHidden = true
+                confirmPasswordTextField.isHidden = true
+            }
+        }
+        
     }
 	
 }
@@ -218,8 +277,19 @@ extension PasswordSettingsVC {
 		
 		textFieldStackView.translatesAutoresizingMaskIntoConstraints = false
 		textFieldStackView.widthAnchor.constraint(equalToConstant: 335).isActive = true
-		textFieldStackView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: view.bottomAnchor, multiplier: -400).isActive = true //view.bottomAnchor, constant: -335).isActive = true
+		textFieldStackView.bottomAnchor.constraint(lessThanOrEqualToSystemSpacingBelow: view.bottomAnchor, multiplier: -400).isActive = true
 		textFieldStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 		textFieldStackView.topAnchor.constraint(equalTo: infoPasswordLabel.bottomAnchor, constant: 40).isActive = true
 	}
+}
+
+
+private extension PasswordSettingsVC {
+   private func errorHandling(label: UILabel, errorText: String, previousText: String) {
+        label.text = errorText
+        animations.shake(text: label, duration: 0.5)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            label.text = previousText
+        }
+    }
 }

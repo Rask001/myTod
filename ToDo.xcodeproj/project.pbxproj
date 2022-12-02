@@ -48,6 +48,7 @@
 		3A9722DC28D8D3F6003BB436 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DB28D8D3F5003BB436 /* DateFormat.swift */; };
 		3A9722DE28D92B8C003BB436 /* VoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9722DD28D92B8A003BB436 /* VoiceCell.swift */; };
 		3A975B89288B01D90049A4E1 /* VisualViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A975B88288B01D90049A4E1 /* VisualViewCell.swift */; };
+		3A979F7F29379CA000DCEB95 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A979F7E29379CA000DCEB95 /* KeychainManager.swift */; };
 		3A9B533428E26A4B002F0E95 /* Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A9B533328E26A4B002F0E95 /* Animations.swift */; };
 		3AA1D6B7289D513200C0DEC2 /* TapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */; };
 		3AA3149E28B9496E00C6AD32 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA3149D28B9496E00C6AD32 /* TabBarController.swift */; };
@@ -132,6 +133,7 @@
 		3A9722DB28D8D3F5003BB436 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		3A9722DD28D92B8A003BB436 /* VoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCell.swift; sourceTree = "<group>"; };
 		3A975B88288B01D90049A4E1 /* VisualViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualViewCell.swift; sourceTree = "<group>"; };
+		3A979F7E29379CA000DCEB95 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		3A9B533328E26A4B002F0E95 /* Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations.swift; sourceTree = "<group>"; };
 		3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapticFeedback.swift; sourceTree = "<group>"; };
 		3AA3149D28B9496E00C6AD32 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 				3AA1D6B6289D513200C0DEC2 /* TapticFeedback.swift */,
 				3AE493592934FDF500608B35 /* KeyChainPassword.swift */,
 				3A1FD7A228DA076900F6953D /* FileAdmin.swift */,
+				3A979F7E29379CA000DCEB95 /* KeychainManager.swift */,
 				3A9722DB28D8D3F5003BB436 /* DateFormat.swift */,
 				3A3E17C628CE369500C025D2 /* Helper.swift */,
 				3AA3149D28B9496E00C6AD32 /* TabBarController.swift */,
@@ -472,7 +475,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					3A4F560A27EF947F00ECF06B = {
 						CreatedOnToolsVersion = 13.3;
@@ -567,6 +570,7 @@
 				3A4F560F27EF947F00ECF06B /* AppDelegate.swift in Sources */,
 				3A3AE0C628F6508E00618442 /* SettingViewModel.swift in Sources */,
 				3ADB459E288827FF00427BD8 /* MainIO.swift in Sources */,
+				3A979F7F29379CA000DCEB95 /* KeychainManager.swift in Sources */,
 				3AC8555527EFCE7500A7891D /* Tasks+CoreDataClass.swift in Sources */,
 				3AE4935A2934FDF500608B35 /* KeyChainPassword.swift in Sources */,
 				3A3E17C728CE369500C025D2 /* Helper.swift in Sources */,
@@ -694,7 +698,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 			};
 			name = Debug;
 		};
@@ -751,7 +755,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_WHOLE_MODULE_OPTIMIZATION = YES;
+				SWIFT_WHOLE_MODULE_OPTIMIZATION = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

@@ -15,6 +15,7 @@ final class DetailVC: UIViewController {
 	private let textView = UITextView()
 	private	var infoLaber = UILabel()
 	private let stepper = UIStepper()
+    private var theTap = UITapGestureRecognizer()
 	private let keyboardToolbar = UIToolbar()
 	private let voiceButton = UIButton(type: .system)
 	private	var rightButtonItem = UIBarButtonItem()
@@ -34,6 +35,7 @@ final class DetailVC: UIViewController {
 		createNavInfo()
 		setupButton()
 		setupTextFieldToolBar()
+        setupTapForDismissAndSave()
 		addSubview()
 		layout()
 	}
@@ -68,8 +70,6 @@ final class DetailVC: UIViewController {
 		present(viewModel.infoAlert, animated: true)
 	}
 	
-	
-	
 	private func setupStepper() {
 		stepper.value = viewModel.data.descriptSize
 		stepper.minimumValue = Constants.minimumTextSize
@@ -98,6 +98,11 @@ final class DetailVC: UIViewController {
 	@objc func okAction() {
 		viewModel.saveDescription(description: textView.text, descriptionSize: stepper.value, view: view)
 	}
+    
+    private func setupTapForDismissAndSave() {
+        theTap = UITapGestureRecognizer(target: self, action: #selector(okAction))
+        view.addGestureRecognizer(theTap)
+    }
 	
 	private func setupButton() {
 		voiceButton.backgroundColor = .clear

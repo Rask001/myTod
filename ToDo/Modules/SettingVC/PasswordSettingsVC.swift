@@ -66,7 +66,7 @@ final class PasswordSettingsVC: UIViewController {
         addSubview()
         layout()
     }
-    
+
     var newPassword = ""
     
     //MARK: - SETUP
@@ -153,22 +153,26 @@ final class PasswordSettingsVC: UIViewController {
         guard confirmPasswordTextField.text?.count == 4 else {
             errorHandling(label: infoPasswordLabel,
                           errorText: Constants.errorPassLong,
-                          previousText: Constants.createAndConfirmNewPass); return }
+                          previousText: Constants.createAndConfirmNewPass)
+            return
+        }
         
         guard confirmPasswordTextField.text == newPassword else {
             errorHandling(label: infoPasswordLabel,
                           errorText: Constants.errorPassDontMatch,
-                          previousText: Constants.createAndConfirmNewPass); return }
+                          previousText: Constants.createAndConfirmNewPass)
+            return
+        }
         
         do {
             try KeychainManager.shared.saveAccount(service: "ToDo", account: "User", password: newPassword)
             UserDefaults.standard.set(true, forKey: AppDelegate.passStatusKey)
             view.endEditing(true)
         } catch {
-            print("error")
+            print("error saveAccount")
         }
         do {
-            let pass = try KeychainManager.shared.getPassword(service: "ToDo", account: "User")
+            _ = try KeychainManager.shared.getPassword(service: "ToDo", account: "User")
             infoPasswordLabel.text = Constants.passwordIsSet
             oldPasswordTextField.text = ""
             newPasswordTextField.text = ""
@@ -177,7 +181,7 @@ final class PasswordSettingsVC: UIViewController {
             newPasswordTextField.isHidden = true
             confirmPasswordTextField.isHidden = true
         } catch {
-            print("error")
+            print("error getPassword")
         }
     }
     

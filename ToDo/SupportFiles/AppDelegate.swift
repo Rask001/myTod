@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		 guard let window = window else { return false }
 		 cootdinator.start(window: window)
-		 
+        //TODO: - написать экран с авторизацией, задействовать юзер и сервис в кейчейн. либо логин + пароль, либо без защиты, просто имя.
 		 //запрос у пользователя на отправку локал нотификейшн
 		 let notificationCenter = UNUserNotificationCenter.current()
 		 notificationCenter.delegate = self

@@ -54,21 +54,21 @@ final class SettingVC: UIViewController {
 	//MARK: - Setup
 	
 	private func passwordChangeSetup() {
-		passwordChange = UIButton(title: Constants.buttonLanguageTitle, font: Constants.buttonFont)
+		passwordChange = UIButton(title: Constants.buttonPasswordTitle, font: Constants.buttonFont)
 		passwordChange.layer.cornerRadius = 8
 		passwordChange.backgroundColor = Constants.buttonBackgroundColor
 		passwordChange.setTitleColor(.label, for: .normal)
-		passwordChange.addTarget(self, action: #selector(changeLanguage), for: .touchUpInside)
+		passwordChange.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
 	}
     
 	private func languageControllerSetup() {
-		buttonChangeLanguage = UIButton(title: Constants.buttonPasswordTitle, font: Constants.buttonFont)
+		buttonChangeLanguage = UIButton(title: Constants.buttonLanguageTitle, font: Constants.buttonFont)
 		buttonChangeLanguage.layer.cornerRadius = 8
 		buttonChangeLanguage.backgroundColor = Constants.buttonBackgroundColor
 		buttonChangeLanguage.setTitleColor(.label, for: .normal)
-		buttonChangeLanguage.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
+		buttonChangeLanguage.addTarget(self, action: #selector(changeLanguage), for: .touchUpInside)
 	}
-	
+    
 	private func segmentedControllerSetup() {
 		segmentedControllerTheme = UISegmentedControl(items: viewModel.getSegmentedItems())
 		segmentedControllerTheme.selectedSegmentIndex = MTUserDefaults.shared.theme.rawValue //SegmIndex = themeEnumIndex

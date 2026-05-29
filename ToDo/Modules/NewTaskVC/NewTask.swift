@@ -17,9 +17,9 @@ fileprivate enum Constants {
 	static var rightButtonImage: UIImage { UIImage(named: "chckmrk")! }
 	static var alertLabelImage: UIImage { UIImage(systemName: "alarm")! }
 	static var repeatLabelImage: UIImage { UIImage(systemName: "repeat")! }
-	static var infoLabelFont: UIFont { UIFont(name: "Futura", size: 17)!}
-	static var infoLabelFont20: UIFont { UIFont(name: "Futura", size: 20)!}
-	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var infoLabelFont: UIFont { .systemFont(ofSize: 16, weight: .regular) }
+	static var infoLabelFont20: UIFont { .systemFont(ofSize: 20, weight: .regular) }
+	static var navigationTitleFont: UIFont { .systemFont(ofSize: 17, weight: .semibold) }
 	static var backgroundColorView: UIColor { .systemBackground }
 	static var barColorView: UIColor { UIColor(named: "barNewTask") ?? .systemBackground }
 }
@@ -43,6 +43,7 @@ final class NewTask: UIViewController {
 	private let textField               = UITextField()
 	private let navigationBar           = UINavigationBar()
 	private var repeatSegmented         = UISegmentedControl()
+	private let reminderControlsStack   = UIStackView()
 	
 	private var button                  = UIButton()
 	private let weekDayButton           = UIButton()
@@ -108,23 +109,35 @@ final class NewTask: UIViewController {
 	
 	//MARK: - Setup
 	private func navigationBarSetup() {
-		let leftButton  = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(cancelFunc))
-		let rightButton = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(continueFunc))
-		leftButton.image = Constants.leftButtonImage
-		rightButton.image = Constants.rightButtonImage
+		let leftButton  = UIBarButtonItem(image: UIImage(systemName: "xmark"),
+										  style: .plain,
+										  target: self,
+										  action: #selector(cancelFunc))
+		let rightButton = UIBarButtonItem(image: UIImage(systemName: "checkmark"),
+										  style: .plain,
+										  target: self,
+										  action: #selector(continueFunc))
 		leftButton.tintColor = .blackWhite
 		rightButton.tintColor = .blackWhite
-		self.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: Constants.navigationTitleFont, NSAttributedString.Key.foregroundColor: UIColor.blackWhite as Any]
-		self.navigationBar.frame               = CGRect(x: 0, y: 0, width: Int(self.view.bounds.size.width), height: 44)
-		let navigationItem                     = UINavigationItem(title: Constants.navigationItemTitle)
-		navigationItem.leftBarButtonItem       = leftButton
-		navigationItem.rightBarButtonItem      = rightButton
-		self.navigationBar.items               = [navigationItem]
-		self.navigationBar.backgroundColor = Constants.barColorView
-		self.navigationBar.setValue(true, forKey: "hidesShadow")
-		self.navigationBar.barTintColor = Constants.barColorView
-		self.navigationBar.backgroundColor = Constants.barColorView//Constants.backgroundColorView
-		self.view.addSubview(navigationBar)
+		
+		let appearance = UINavigationBarAppearance()
+		appearance.configureWithOpaqueBackground()
+		appearance.backgroundColor = Constants.barColorView
+		appearance.shadowColor = .clear
+		appearance.titleTextAttributes = [
+			.font: Constants.navigationTitleFont,
+			.foregroundColor: UIColor.blackWhite ?? .label
+		]
+		
+		let navigationItem                = UINavigationItem(title: Constants.navigationItemTitle)
+		navigationItem.leftBarButtonItem  = leftButton
+		navigationItem.rightBarButtonItem = rightButton
+		navigationBar.items               = [navigationItem]
+		navigationBar.standardAppearance  = appearance
+		navigationBar.compactAppearance   = appearance
+		navigationBar.scrollEdgeAppearance = appearance
+		navigationBar.isTranslucent       = false
+		view.addSubview(navigationBar)
 	}
 	
 	private func textFieldSetup() {
@@ -177,6 +190,13 @@ final class NewTask: UIViewController {
 		self.buttonStackView.distribution = .fillEqually
 	}
 	
+	private func reminderControlsStackSetup() {
+		reminderControlsStack.axis = .horizontal
+		reminderControlsStack.alignment = .center
+		reminderControlsStack.distribution = .equalSpacing
+		reminderControlsStack.spacing = 14
+	}
+	
 	private func stackViewMonthSetup() {
 		let arrStackView = [buttonMonthHStackView,
 							buttonMonthHStackView2,
@@ -189,7 +209,7 @@ final class NewTask: UIViewController {
 			stackView.axis = .horizontal
 			stackView.spacing = 7
 			stackView.alignment = .fill
-			stackView.distribution = .fillProportionally
+			stackView.distribution = .fillEqually
 		}
 	}
 	
@@ -197,8 +217,8 @@ final class NewTask: UIViewController {
 		buttonMonthVStackView.isHidden = true
 		buttonMonthVStackView.axis = .vertical
 		buttonMonthVStackView.spacing = 7
-		buttonMonthVStackView.alignment = .leading
-		buttonMonthVStackView.distribution = .fillProportionally
+		buttonMonthVStackView.alignment = .fill
+		buttonMonthVStackView.distribution = .fillEqually
 	}
 	
 	private func infoLabelSetup() {
@@ -286,7 +306,20 @@ final class NewTask: UIViewController {
 		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView3)
 		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView4)
 		buttonMonthVStackView.addArrangedSubview(buttonMonthHStackView5)
+		centerLastMonthRow()
 		buttonMonthVStackViewSetup()
+	}
+	
+	private func centerLastMonthRow() {
+		for _ in 0..<2 {
+			let leadingSpacer = UIView()
+			leadingSpacer.isUserInteractionEnabled = false
+			buttonMonthHStackView5.insertArrangedSubview(leadingSpacer, at: 0)
+			
+			let trailingSpacer = UIView()
+			trailingSpacer.isUserInteractionEnabled = false
+			buttonMonthHStackView5.addArrangedSubview(trailingSpacer)
+		}
 	}
 	
 	private func addMonthButtonInStackView(_ button: UIButton) {
@@ -519,48 +552,60 @@ final class NewTask: UIViewController {
 								  createdAt:      taskStruct.createdAt,
 								  type:           taskStruct.type.rawValue)
 		case .singleAlertType:
+			guard let taskTime = taskStruct.taskTime,
+				  let taskDate = taskStruct.taskDate,
+				  let taskDateDate = taskStruct.taskDateDate else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveAlertTask(taskTitle:    taskStruct.taskTitle,
-								   taskTime:     taskStruct.taskTime!,
-								   taskDate:     taskStruct.taskDate!,
-								   taskDateDate: taskStruct.taskDateDate!,
+								   taskTime:     taskTime,
+								   taskDate:     taskDate,
+								   taskDateDate: taskDateDate,
 								   createdAt:    taskStruct.createdAt,
 								   alarmImage:   taskStruct.alarmImage,
 								   type:         taskStruct.type.rawValue)
 		case .timeRepeatType:
+			guard let timeInterval = taskStruct.timeInterval else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveRepeatTask(taskTitle:    taskStruct.taskTitle,
 									createdAt:    taskStruct.createdAt,
 									alarmImage:   taskStruct.alarmImage,
 									repeatImage:  taskStruct.repeatImage,
-									timeInterval: taskStruct.timeInterval!,
+									timeInterval: timeInterval,
 									type:         taskStruct.type.rawValue)
 		case .dayRepeatType:
+			guard let taskTime = taskStruct.taskTime,
+				  let taskDateDate = taskStruct.taskDateDate else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveDailyRepitionTask(taskTitle:    taskStruct.taskTitle,
-										   taskTime:     taskStruct.taskTime!,
-										   taskDateDate: taskStruct.taskDateDate!,
+										   taskTime:     taskTime,
+										   taskDateDate: taskDateDate,
 										   createdAt:    taskStruct.createdAt,
 										   alarmImage:   taskStruct.alarmImage,
 										   repeatImage:  taskStruct.repeatImage,
 										   type:         taskStruct.type.rawValue)
 		case .weekRepeatType:
-			guard taskStruct.weekDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
+			guard let taskTime = taskStruct.taskTime,
+				  let taskDateDate = taskStruct.taskDateDate,
+				  let weekDayChoice = taskStruct.weekDayChoice,
+				  !weekDayChoice.isEmpty else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveWeekDaysRepitionTask(taskTitle:    taskStruct.taskTitle,
-											  taskTime:     taskStruct.taskTime!,
-											  taskDateDate: taskStruct.taskDateDate!,
+											  taskTime:     taskTime,
+											  taskDateDate: taskDateDate,
 											  createdAt:    taskStruct.createdAt,
 											  alarmImage:   taskStruct.alarmImage,
 											  repeatImage:  taskStruct.repeatImage,
 											  type:         taskStruct.type.rawValue,
-											  weekDay:      taskStruct.weekDayChoice!)
+											  weekDay:      weekDayChoice)
 		case .monthRepeatType:
-			guard taskStruct.monthDayChoice != [] else { animations.shake(text: infoLabel, duration: 0.4); return }
+			guard let taskTime = taskStruct.taskTime,
+				  let taskDateDate = taskStruct.taskDateDate,
+				  let monthDayChoice = taskStruct.monthDayChoice,
+				  !monthDayChoice.isEmpty else { animations.shake(text: infoLabel, duration: 0.4); return }
 			coreData.saveDaysMonthRepitionTask(taskTitle:    taskStruct.taskTitle,
-											   taskTime:     taskStruct.taskTime!,
-											   taskDateDate: taskStruct.taskDateDate!,
+											   taskTime:     taskTime,
+											   taskDateDate: taskDateDate,
 											   createdAt:    taskStruct.createdAt,
 											   alarmImage:   taskStruct.alarmImage,
 											   repeatImage:  taskStruct.repeatImage,
 											   type:         taskStruct.type.rawValue,
-											   monthDay:     taskStruct.monthDayChoice!)
+											   monthDay:     monthDayChoice)
 		}
 		cancelFunc()
 		NotificationCenter.default.post(name: Notification.Name("TableViewReloadData"), object: .none)
@@ -616,10 +661,12 @@ final class NewTask: UIViewController {
 		self.view.backgroundColor = Constants.backgroundColorView
 		self.view.addSubview(self.textField)
 		self.view.addSubview(self.dataPicker)
-		self.view.addSubview(self.switchAlert)
-		self.view.addSubview(self.switchAlertRepeat)
-		self.view.addSubview(self.alertLabel)
-		self.view.addSubview(self.repeatLabel)
+		reminderControlsStackSetup()
+		reminderControlsStack.addArrangedSubview(alertLabel)
+		reminderControlsStack.addArrangedSubview(switchAlert)
+		reminderControlsStack.addArrangedSubview(switchAlertRepeat)
+		reminderControlsStack.addArrangedSubview(repeatLabel)
+		self.view.addSubview(self.reminderControlsStack)
 		self.view.addSubview(self.repeatSegmented)
 		self.view.addSubview(self.timePicker)
 		self.view.addSubview(self.timePickerDWM)
@@ -631,41 +678,41 @@ final class NewTask: UIViewController {
 	
 	//MARK: - SetConstraits
 	private func setConstraits() {
+		navigationBar.translatesAutoresizingMaskIntoConstraints = false
+		navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16).isActive = true
+		navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+		navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+		navigationBar.heightAnchor.constraint(equalToConstant: 48).isActive = true
+		
 		textField.translatesAutoresizingMaskIntoConstraints                                                        = false
-		textField.widthAnchor.constraint(equalToConstant: 300).isActive                                            = true
+		textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 28).isActive                     = true
+		textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -28).isActive                  = true
 		textField.heightAnchor.constraint(equalToConstant: 31).isActive                                            = true
-		textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive                        = true
+		textField.topAnchor.constraint(equalTo: self.navigationBar.bottomAnchor, constant: 20).isActive            = true
 		textField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                              = true
 		
 		dataPicker.translatesAutoresizingMaskIntoConstraints                                                       = false
 		dataPicker.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive                             = true
 		dataPicker.centerYAnchor.constraint(equalTo: self.repeatSegmented.centerYAnchor).isActive                  = true
 		
-		switchAlert.translatesAutoresizingMaskIntoConstraints                                                      = false
-		switchAlert.leadingAnchor.constraint(equalTo: self.alertLabel.trailingAnchor, constant: 10).isActive       = true
-		switchAlert.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive             = true
-		
-		switchAlertRepeat.translatesAutoresizingMaskIntoConstraints                                                = false
-		switchAlertRepeat.trailingAnchor.constraint(equalTo: self.repeatLabel.leadingAnchor, constant: -10).isActive = true
-		switchAlertRepeat.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                 = true
+		reminderControlsStack.translatesAutoresizingMaskIntoConstraints                                            = false
+		reminderControlsStack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive                       = true
+		reminderControlsStack.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 100).isActive   = true
+		reminderControlsStack.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, constant: -80).isActive  = true
 		
 		alertLabel.translatesAutoresizingMaskIntoConstraints                                                       = false
 		alertLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                           = true
 		alertLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                            = true
-		alertLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 70).isActive = true
-		alertLabel.centerYAnchor.constraint(equalTo: self.switchAlert.centerYAnchor).isActive                      = true
 		
 		repeatLabel.translatesAutoresizingMaskIntoConstraints                                                      = false
 		repeatLabel.heightAnchor.constraint(equalToConstant: 30).isActive                                          = true
 		repeatLabel.widthAnchor.constraint(equalToConstant: 30).isActive                                           = true
-		repeatLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -70).isActive = true
-		repeatLabel.centerYAnchor.constraint(equalTo: self.switchAlertRepeat.centerYAnchor).isActive               = true
 		
 		repeatSegmented.translatesAutoresizingMaskIntoConstraints                                                  = false
 		repeatSegmented.heightAnchor.constraint(equalToConstant: 30).isActive                                      = true
 		repeatSegmented.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive       = true
 		repeatSegmented.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive          = true
-		repeatSegmented.topAnchor.constraint(equalTo: self.alertLabel.bottomAnchor, constant: 40).isActive         = true
+		repeatSegmented.topAnchor.constraint(equalTo: self.reminderControlsStack.bottomAnchor, constant: 40).isActive = true
 		
 		timePicker.translatesAutoresizingMaskIntoConstraints                                                       = false
 		timePicker.widthAnchor.constraint(equalToConstant: 250).isActive                                           = true

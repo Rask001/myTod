@@ -42,12 +42,15 @@ final class Main: UIViewController {
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.configureBars(for: self)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(false)
 		viewModel.coreDataMethods.fetchRequest()
 		CurrentTabBar.number = 1
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.configureBars(for: self)
 	}
 	
 	
@@ -83,25 +86,14 @@ final class Main: UIViewController {
 	
 	@objc private func goToNewTaskVCDown() {
 		TapticFeedback.shared.soft
-		print(buttonNewTaskHeightAnchor?.isActive as Any)
-		buttonNewTaskHeightAnchor?.isActive = false
-		buttonNewTaskWidthAnchor?.isActive = false
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
-		buttonNewTask.layer.cornerRadius = 40
 		UIView.animate(withDuration: 0.1) { [weak self] in
-			self?.view.layoutIfNeeded()
+			self?.buttonNewTask.transform = CGAffineTransform(scaleX: 1.12, y: 1.12)
 		}
 	}
 	
 	@objc private func goToNewTaskVC() {
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor?.isActive = true
-		buttonNewTaskWidthAnchor?.isActive = true
-		buttonNewTask.layer.cornerRadius = 35
 		UIView.animate(withDuration: 0.1) { [weak self] in
-			self?.view.layoutIfNeeded()
+			self?.buttonNewTask.transform = .identity
 		}
 		if Counter.count == 0 {
 			TapticFeedback.shared.light
@@ -122,8 +114,8 @@ final class Main: UIViewController {
 		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints = false
-		buttonNewTask.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: -135).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: view.trailingAnchor, constant: -66).isActive = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26).isActive = true
+		buttonNewTask.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -36).isActive = true
 		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
 		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
 		buttonNewTaskWidthAnchor?.isActive = true
@@ -183,9 +175,29 @@ extension Main: UITableViewDelegate, UITableViewDataSource {
 		return viewModel.selectionStructArray.count
 	}
 	
-	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		viewModel.selectionStructArray[section].header
-	}
+		func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+			nil
+		}
+		
+		func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+			let container = UIView()
+			container.backgroundColor = .clear
+			
+			let label = UILabel()
+			label.font = Constants.sectionHeaderFont
+			label.textColor = Constants.sectionHeaderColor
+			label.text = viewModel.selectionStructArray[section].header
+			label.translatesAutoresizingMaskIntoConstraints = false
+			
+			container.addSubview(label)
+			NSLayoutConstraint.activate([
+				label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 22),
+				label.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
+				label.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4)
+			])
+			
+			return container
+		}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 30
@@ -224,4 +236,6 @@ fileprivate enum Constants {
 	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue Medium", size: 40)!}
 	static var backgroundColorView: UIColor { .backgroundColor! }
 	static var buttonNewTaskImage = "plus"
+	static var sectionHeaderFont: UIFont { .systemFont(ofSize: 13, weight: .semibold) }
+	static var sectionHeaderColor: UIColor { UIColor.blackWhite?.withAlphaComponent(0.45) ?? .secondaryLabel }
 }

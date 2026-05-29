@@ -32,6 +32,13 @@ final class TabBarController: UITabBarController {
 		UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.systemBlue], for: .selected)
 		UITabBar.appearance().tintColor = .systemBlue
 		let tabBarVC = UITabBarController()
+		if #available(iOS 18.0, *) {
+			tabBarVC.mode = .tabBar
+		}
+		if #available(iOS 26.0, *) {
+			tabBarVC.tabBarMinimizeBehavior = .never
+		}
+		configureTabBarAppearance(tabBarVC.tabBar)
 		let firstPic = UIImage(systemName: "list.bullet.rectangle.fill")
 		
 		
@@ -55,6 +62,16 @@ final class TabBarController: UITabBarController {
 		return tabBarVC
 	}
 	
+	private func configureTabBarAppearance(_ tabBar: UITabBar) {
+		let appearance = UITabBarAppearance()
+		appearance.configureWithOpaqueBackground()
+		appearance.backgroundColor = .systemBackground
+		appearance.shadowColor = .clear
+		tabBar.standardAppearance = appearance
+		tabBar.scrollEdgeAppearance = appearance
+		tabBar.isTranslucent = false
+	}
+	
 	private func calendarDate() -> String {
 		let day = Calendar.current.dateComponents([.day], from: dateNow)
 		let componentsForm = DateComponentsFormatter()
@@ -67,4 +84,3 @@ final class TabBarController: UITabBarController {
 	
 	
 }
-

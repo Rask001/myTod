@@ -10,7 +10,7 @@ import UIKit
 
 //MARK: - Static Property
 fileprivate enum Constants {
-	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var navigationTitleFont: UIFont { .systemFont(ofSize: 17, weight: .semibold)}
 	static var navigationTitle: String { NSLocalizedString("settings", comment: "")}
 }
 

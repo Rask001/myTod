@@ -10,18 +10,28 @@ import Foundation
 extension CAGradientLayer {
 	
 	static func light(gradient: CAGradientLayer, view: UIView) {
-		gradient.frame = view.bounds
-		gradient.colors = [UIColor(named: "blue")!.cgColor, UIColor.white.cgColor]
-		gradient.startPoint = CGPoint(x: 0.5, y: 0)
-		gradient.endPoint = CGPoint(x: 0.5, y: 1)
-		view.layer.insertSublayer(gradient, at: 0)
+		configure(gradient: gradient,
+				  view: view,
+				  colors: [UIColor(named: "blue") ?? .systemBlue, .white])
 	}
 
 	static func dark(gradient: CAGradientLayer, view: UIView) {
-	gradient.frame = view.bounds
-		gradient.colors = [UIColor(named: "BackgroundColorDarkTop")!.cgColor, UIColor(named: "BackgroundColorDarkBottom")!.cgColor]
+		configure(gradient: gradient,
+				  view: view,
+				  colors: [UIColor(named: "BackgroundColorDarkTop") ?? .systemGray6,
+						   UIColor(named: "BackgroundColorDarkBottom") ?? .systemGray5])
+	}
+	
+	private static func configure(gradient: CAGradientLayer, view: UIView, colors: [UIColor]) {
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
+		gradient.frame = view.bounds
+		gradient.colors = colors.map { $0.resolvedColor(with: view.traitCollection).cgColor }
 		gradient.startPoint = CGPoint(x: 0.5, y: 0)
 		gradient.endPoint = CGPoint(x: 0.5, y: 1)
-	view.layer.insertSublayer(gradient, at: 0)
+		if gradient.superlayer == nil {
+			view.layer.insertSublayer(gradient, at: 0)
+		}
+		CATransaction.commit()
 	}
 }

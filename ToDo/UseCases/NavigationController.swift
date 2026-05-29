@@ -31,13 +31,21 @@ struct NavigationController {
 			control.navigationController?.navigationBar.isTranslucent = false
 
 	
-		let leftButtonItem = UIBarButtonItem(title: leftItemText, style: .plain, target: nil, action: nil)
-		leftButtonItem.tintColor = itemColor
-//		 leftButtonItem.image = UIImage(systemName: image ?? "plus")
-		control.navigationItem.leftBarButtonItems = [leftButtonItem]
-		let rightButtonItem = UIBarButtonItem(title: rightItemText, style: .plain, target: nil, action: nil)
-		rightButtonItem.tintColor = itemColor
-		control.navigationItem.rightBarButtonItems = [rightButtonItem]
+		if leftItemText.isEmpty {
+			control.navigationItem.leftBarButtonItems = nil
+		} else {
+			let leftButtonItem = UIBarButtonItem(title: leftItemText, style: .plain, target: nil, action: nil)
+			leftButtonItem.tintColor = itemColor
+			control.navigationItem.leftBarButtonItems = [leftButtonItem]
+		}
+		
+		if rightItemText.isEmpty {
+			control.navigationItem.rightBarButtonItems = nil
+		} else {
+			let rightButtonItem = UIBarButtonItem(title: rightItemText, style: .plain, target: nil, action: nil)
+			rightButtonItem.tintColor = itemColor
+			control.navigationItem.rightBarButtonItems = [rightButtonItem]
+		}
 		
 	}
 }

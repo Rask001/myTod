@@ -11,8 +11,8 @@ import UIKit
 fileprivate enum Constants {
 	static var buttonLanguageTitle: String { NSLocalizedString("Change language", comment: "") }
 	static var buttonPasswordTitle: String { NSLocalizedString("Password settings", comment: "") }
-	static var buttonFont: UIFont { UIFont(name: "Helvetica Neue", size: 18)!}
-	static var buttonBackgroundColor: UIColor { UIColor.newTaskButtonColor ?? .white }
+	static var buttonFont: UIFont { .systemFont(ofSize: 18, weight: .medium) }
+	static var buttonHeight: CGFloat { 56 }
 }
 
 //MARK: - SettingVC
@@ -22,6 +22,7 @@ final class SettingVC: UIViewController {
 	private var segmentedControllerTheme = UISegmentedControl()
 	private var buttonChangeLanguage = UIButton()
 	private var passwordChange = UIButton()
+	private let controlsStackView = UIStackView()
 	private var gradient = CAGradientLayer()
 	var viewModel: SettingViewModelProtocol
 	
@@ -42,6 +43,7 @@ final class SettingVC: UIViewController {
 		segmentedControllerSetup()
 		languageControllerSetup()
 		passwordChangeSetup()
+		controlsStackViewSetup()
 		addSubviewAndConfigure()
 		setConstraits()
 	}
@@ -49,37 +51,69 @@ final class SettingVC: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(false)
 		CurrentTabBar.number = 3
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: view.traitCollection)
+		Theme.configureBars(for: self)
+		updateLiquidButtonsAppearance()
 	}
 	
 	//MARK: - Setup
 	
 	private func passwordChangeSetup() {
 		passwordChange = UIButton(title: Constants.buttonPasswordTitle, font: Constants.buttonFont)
-		passwordChange.layer.cornerRadius = 8
-		passwordChange.backgroundColor = Constants.buttonBackgroundColor
-		passwordChange.setTitleColor(.label, for: .normal)
+		configureLiquidButton(passwordChange)
 		passwordChange.addTarget(self, action: #selector(goToChangePassword), for: .touchUpInside)
 	}
     
 	private func languageControllerSetup() {
 		buttonChangeLanguage = UIButton(title: Constants.buttonLanguageTitle, font: Constants.buttonFont)
-		buttonChangeLanguage.layer.cornerRadius = 8
-		buttonChangeLanguage.backgroundColor = Constants.buttonBackgroundColor
-		buttonChangeLanguage.setTitleColor(.label, for: .normal)
+		configureLiquidButton(buttonChangeLanguage)
 		buttonChangeLanguage.addTarget(self, action: #selector(changeLanguage), for: .touchUpInside)
 	}
+	
+	private func configureLiquidButton(_ button: UIButton) {
+		var configuration = UIButton.Configuration.filled()
+		configuration.cornerStyle = .capsule
+		configuration.baseForegroundColor = .label
+		configuration.baseBackgroundColor = UIColor.white.withAlphaComponent(0.72)
+		configuration.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
+		button.configuration = configuration
+		button.titleLabel?.font = Constants.buttonFont
+		button.clipsToBounds = false
+		button.layer.cornerRadius = Constants.buttonHeight / 2
+		button.layer.cornerCurve = .continuous
+		button.layer.borderWidth = 1
+		button.layer.borderColor = UIColor.white.withAlphaComponent(0.45).cgColor
+		button.layer.shadowColor = UIColor.black.cgColor
+		button.layer.shadowOpacity = 0.08
+		button.layer.shadowRadius = 16
+		button.layer.shadowOffset = CGSize(width: 0, height: 8)
+	}
     
-	private func segmentedControllerSetup() {
-		segmentedControllerTheme = UISegmentedControl(items: viewModel.getSegmentedItems())
-		segmentedControllerTheme.selectedSegmentIndex = MTUserDefaults.shared.theme.rawValue //SegmIndex = themeEnumIndex
-		segmentedControllerTheme.addTarget(self, action: #selector(changeTheme(paramTheme:)), for: .valueChanged)
+		private func segmentedControllerSetup() {
+			segmentedControllerTheme = UISegmentedControl(items: viewModel.getSegmentedItems())
+			segmentedControllerTheme.selectedSegmentIndex = MTUserDefaults.shared.theme.rawValue //SegmIndex = themeEnumIndex
+			segmentedControllerTheme.addTarget(self, action: #selector(changeTheme(paramTheme:)), for: .valueChanged)
+		}
+	
+	private func controlsStackViewSetup() {
+		controlsStackView.axis = .vertical
+		controlsStackView.alignment = .fill
+		controlsStackView.distribution = .fill
+		controlsStackView.spacing = 20
 	}
 	
 	//MARK: - Actions
 	@objc private func changeTheme(paramTheme: UISegmentedControl) {
 		MTUserDefaults.shared.theme = ThemeEnum(rawValue: paramTheme.selectedSegmentIndex) ?? .system
 		view.window?.overrideUserInterfaceStyle = MTUserDefaults.shared.theme.getUserIntefaceStyle()
-		Theme.switchTheme(gradient: gradient, view: view, traitCollection: view.traitCollection)
+		view.setNeedsLayout()
+		
+		DispatchQueue.main.async { [weak self] in
+			guard let self else { return }
+			Theme.switchTheme(gradient: self.gradient, view: self.view, traitCollection: self.view.traitCollection)
+			Theme.configureBars(for: self)
+			self.updateLiquidButtonsAppearance()
+		}
 	}
 	
 	@objc private func changeLanguage() {
@@ -90,35 +124,54 @@ final class SettingVC: UIViewController {
 		viewModel.goToChangePassword()
 	}
 	
-	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: view.traitCollection)
+		Theme.configureBars(for: self)
+		updateLiquidButtonsAppearance()
+	}
+	
+	private func updateLiquidButtonsAppearance() {
+		let style = Theme.resolvedInterfaceStyle(for: view.traitCollection)
+		let fillColor: UIColor
+		let borderColor: UIColor
+		let titleColor: UIColor
+		
+		switch style {
+		case .dark:
+			fillColor = UIColor.white.withAlphaComponent(0.16)
+			borderColor = UIColor.white.withAlphaComponent(0.18)
+			titleColor = .white
+		default:
+			fillColor = UIColor.white.withAlphaComponent(0.72)
+			borderColor = UIColor.white.withAlphaComponent(0.45)
+			titleColor = .label
+		}
+		
+		[passwordChange, buttonChangeLanguage].forEach { button in
+			button.configuration?.baseBackgroundColor = fillColor
+			button.configuration?.baseForegroundColor = titleColor
+			button.layer.borderColor = borderColor.cgColor
+		}
 	}
 	
 	//MARK: - addSubviewAndConfigure
 	private func addSubviewAndConfigure(){
-		self.view.addSubview(segmentedControllerTheme)
-		self.view.addSubview(passwordChange)
-		self.view.addSubview(buttonChangeLanguage)
+		controlsStackView.addArrangedSubview(passwordChange)
+		controlsStackView.addArrangedSubview(buttonChangeLanguage)
+		controlsStackView.addArrangedSubview(segmentedControllerTheme)
+		self.view.addSubview(controlsStackView)
 	}
 	
 	//MARK: - SetConstraits
 	private func setConstraits() {
-		segmentedControllerTheme.translatesAutoresizingMaskIntoConstraints = false
-		segmentedControllerTheme.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-		segmentedControllerTheme.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-		segmentedControllerTheme.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -120).isActive = true
+		controlsStackView.translatesAutoresizingMaskIntoConstraints = false
+		controlsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
+		controlsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
+		controlsStackView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 120).isActive = true
 		
-		passwordChange.translatesAutoresizingMaskIntoConstraints = false
-		passwordChange.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-		passwordChange.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-		passwordChange.heightAnchor.constraint(equalToConstant: 35).isActive = true
-		passwordChange.bottomAnchor.constraint(equalTo: buttonChangeLanguage.topAnchor, constant: -30).isActive = true
-		
-		buttonChangeLanguage.translatesAutoresizingMaskIntoConstraints = false
-		buttonChangeLanguage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30).isActive = true
-		buttonChangeLanguage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30).isActive = true
-		buttonChangeLanguage.heightAnchor.constraint(equalToConstant: 35).isActive = true
-		buttonChangeLanguage.bottomAnchor.constraint(equalTo: segmentedControllerTheme.topAnchor, constant: -30).isActive = true
+			passwordChange.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
+			buttonChangeLanguage.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
+		segmentedControllerTheme.heightAnchor.constraint(equalToConstant: 34).isActive = true
 	}
 }

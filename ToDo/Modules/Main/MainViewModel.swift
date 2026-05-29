@@ -216,7 +216,7 @@ extension MainViewModel: MainViewModelProtocol {
 
 
 fileprivate enum Constants {
-	static var navigationTitleFont: UIFont { UIFont(name: "Futura", size: 20)!}
+	static var navigationTitleFont: UIFont { .systemFont(ofSize: 17, weight: .semibold)}
 	static var title: String { NSLocalizedString("my tasks", comment: "") }
 	static var currentTasks: String { NSLocalizedString("current tasks", comment: "") }
 	static var overdueTasks: String { NSLocalizedString("overdue tasks", comment: "") }

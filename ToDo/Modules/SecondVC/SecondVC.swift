@@ -48,12 +48,15 @@ final class SecondVC: UIViewController {
 	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
 		super.traitCollectionDidChange(previousTraitCollection)
 		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.configureBars(for: self)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(true)
 		viewModel.coreDataMethods.fetchRequest()
 		CurrentTabBar.number = 2
+		Theme.switchTheme(gradient: gradient, view: view, traitCollection: traitCollection)
+		Theme.configureBars(for: self)
 	}
 	
 	//MARK: - Configure
@@ -120,25 +123,14 @@ final class SecondVC: UIViewController {
 	
 	@objc private func goToNewTaskVCDown() {
 		viewModel.taptic.soft
-		print(buttonNewTaskHeightAnchor?.isActive as Any)
-		buttonNewTaskHeightAnchor?.isActive = false
-		buttonNewTaskWidthAnchor?.isActive = false
-		buttonNewTask.heightAnchor.constraint(equalToConstant: 80).isActive = true
-		buttonNewTask.widthAnchor.constraint(equalToConstant: 80).isActive = true
-		self.buttonNewTask.layer.cornerRadius = 40
 		UIView.animate(withDuration: 0.1) { [weak self] in
-			self?.view.layoutIfNeeded()
+			self?.buttonNewTask.transform = CGAffineTransform(scaleX: 1.12, y: 1.12)
 		}
 	}
 	
 	@objc private func goToNewTaskVC() {
-		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
-		buttonNewTaskHeightAnchor?.isActive = true
-		buttonNewTaskWidthAnchor?.isActive = true
-		buttonNewTask.layer.cornerRadius = 35
 		UIView.animate(withDuration: 0.1) { [weak self] in
-			self?.view.layoutIfNeeded()
+			self?.buttonNewTask.transform = .identity
 		}
 		if Counter.count == 0 {
 			TapticFeedback.shared.light
@@ -161,8 +153,8 @@ extension SecondVC {
 		tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true
 		
 		buttonNewTask.translatesAutoresizingMaskIntoConstraints = false
-		buttonNewTask.centerYAnchor.constraint(equalTo: view.bottomAnchor, constant: -135).isActive = true
-		buttonNewTask.centerXAnchor.constraint(equalTo: view.trailingAnchor, constant: -66).isActive = true
+		buttonNewTask.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26).isActive = true
+		buttonNewTask.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -36).isActive = true
 		buttonNewTaskWidthAnchor = buttonNewTask.widthAnchor.constraint(equalToConstant: 70)
 		buttonNewTaskHeightAnchor = buttonNewTask.heightAnchor.constraint(equalToConstant: 70)
 		buttonNewTaskWidthAnchor?.isActive = true
